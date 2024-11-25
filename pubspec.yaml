@@ -38,6 +38,7 @@ dependencies:
   persistent_bottom_nav_bar: ^6.2.1
   introduction_screen: ^3.1.14
   smooth_page_indicator: ^1.2.0+3
+  # shared_preferences: ^2.3.3
   # google_fonts: ^6.2.1
 
 dev_dependencies:
@@ -79,9 +80,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: PoltawskiNowy
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/PoltawskiNowy-VariableFont_wght.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
