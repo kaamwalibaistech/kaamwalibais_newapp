@@ -83,7 +83,7 @@ class _OnboardingScreenState extends State<OnboardingView> {
               Padding(
                 padding: const EdgeInsets.only(top:4.0),
                 child: Text(textAlign: TextAlign.center,
-                  controller.items[index].descriptions,style: const TextStyle(color: textGreyColor ,fontFamily: "PoltawskiNowy"),),
+                  controller.items[index].descriptions,style: const TextStyle(color: textGreyColor ),),
               )
               ],);
           
