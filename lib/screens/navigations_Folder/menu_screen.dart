@@ -3,6 +3,7 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_login_signup.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/about_us.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/employer_login_signup.dart';
+import 'package:kaamwalijobs_new/screens/navigations_Folder/privacy_policy.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -293,29 +294,37 @@ class MenuScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "lib/assets/images/privacy_policy.png",
-                          color: Colors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PrivacyPolicy()));
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                              color: whiteColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset(
+                            "lib/assets/images/privacy_policy.png",
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          "Privacy & \n Policy",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "Privacy & \n Policy",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),
