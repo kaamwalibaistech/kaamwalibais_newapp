@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_login_signup.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/about_us.dart';
+import 'package:kaamwalijobs_new/screens/navigations_Folder/contact_us.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/employer_login_signup.dart';
+import 'package:kaamwalijobs_new/screens/navigations_Folder/packages.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/privacy_policy.dart';
+import 'package:kaamwalijobs_new/screens/navigations_Folder/term_condition.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -162,28 +165,36 @@ class MenuScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "lib/assets/images/packages.png",
-                          color: Colors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Packages()));
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                              color: whiteColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset(
+                            "lib/assets/images/packages.png",
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          "Packages",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "Packages",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
@@ -271,28 +282,36 @@ class MenuScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "lib/assets/images/contact_us.png",
-                          color: Colors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ContactUs()));
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                              color: whiteColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset(
+                            "lib/assets/images/contact_us.png",
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          "Contact us",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "Contact us",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -330,26 +349,39 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                height: MediaQuery.of(context).size.height * 0.08,
-                width: MediaQuery.of(context).size.width * 0.25,
-                decoration: BoxDecoration(
-                    color: whiteColor, borderRadius: BorderRadius.circular(10)),
-                child: Image.asset(
-                  "lib/assets/images/terms_and_conditions.png",
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                "Term & \n Conditions",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TermCondition()));
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      height: MediaQuery.of(context).size.height * 0.08,
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      decoration: BoxDecoration(
+                          color: whiteColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Image.asset(
+                        "lib/assets/images/terms_and_conditions.png",
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "Term & \n Conditions",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
               ),
             ),
 
