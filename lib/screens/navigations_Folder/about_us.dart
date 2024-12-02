@@ -13,7 +13,7 @@ class AboutUs extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         leading: GestureDetector(
-          child: const Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back),
           onTap: () {
             Navigator.pop(context);
           },
