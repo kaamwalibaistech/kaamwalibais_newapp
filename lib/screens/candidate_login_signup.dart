@@ -122,8 +122,8 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                       style: TextStyle(color: whiteColor, fontSize: 16),
                     )),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   GestureDetector(
                     onTap: () {

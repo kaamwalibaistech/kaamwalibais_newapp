@@ -18,7 +18,7 @@ class PrivacyPolicy extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(Icons.arrow_back_ios)),
+            child: const Icon(Icons.arrow_back)),
       ),
       backgroundColor: scaffoldColor,
       body: SingleChildScrollView(

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kaamwalijobs_new/api_repository/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
 import 'package:kaamwalijobs_new/screens/onboardingScreen/onboarding_items.dart';
+
+import '../../models/homepage_model.dart';
+import 'allcategories.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -13,6 +18,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
   final TextEditingController _controller = TextEditingController();
   final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
+  late Homepagemodel data;
+  @override
+  void initState() {
+    super.initState();
+
+    Repositiory().getHomePageData().then((value) {
+      setState(() {
+        data = value!;
+      });
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+          context: context,
+          builder: (context) => const AlertDialog(content: LoginPopup()
+              // actions: const [],
+
+              ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +119,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       ),
                       GestureDetector(
                           onTap: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    duration: Duration(seconds: 2),
-                                    content: Text("This will Work Soon")));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const Allcategories()));
                           },
                           child: const Text(
                             "See all",
@@ -127,11 +152,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Image.asset(
-                            listViewController.items[index].images,
+                          Image.network(
+                            data.categorylist[index].image,
                             height: 60,
                           ),
-                          Text(listViewController.items[index].name)
+                          Text(data.categorylist[index].categoryName)
                         ],
                       ),
                     );
@@ -145,6 +170,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     child: Image.asset(
                       "lib/assets/images/apply_job_banner.jpg",
                       fit: BoxFit.fill,
+                      width: MediaQuery.of(context).size.width,
                     ),
                   ),
                 ),
@@ -192,7 +218,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               featuredJobsController.items[index].locations),
                           trailing: Container(
                             decoration: const BoxDecoration(),
-                            child: InkWell(
+                            child: GestureDetector(
                                 onTap: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
