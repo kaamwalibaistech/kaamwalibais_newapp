@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
-class ContactUs extends StatelessWidget {
+class ContactUs extends StatefulWidget {
   const ContactUs({super.key});
 
+  @override
+  State<ContactUs> createState() => _ContactUsState();
+}
+
+class _ContactUsState extends State<ContactUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +19,7 @@ class ContactUs extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(Icons.arrow_back_ios)),
+            child: const Icon(Icons.arrow_back)),
       ),
       body: Column(
         children: [
@@ -23,7 +28,7 @@ class ContactUs extends StatelessWidget {
           ),
           Center(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.20,
+              height: MediaQuery.of(context).size.height * 0.23,
               width: MediaQuery.of(context).size.width * 0.900,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -139,7 +144,7 @@ class ContactUs extends StatelessWidget {
                 )
               ],
             ),
-          )
+          ),
         ],
       ),
     );
