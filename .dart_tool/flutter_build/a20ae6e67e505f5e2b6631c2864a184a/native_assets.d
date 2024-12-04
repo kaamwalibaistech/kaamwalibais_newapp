@@ -1,0 +1,1 @@
+ /Users/ritesh/Downloads/kaamwalibais_newapp-main/.dart_tool/flutter_build/a20ae6e67e505f5e2b6631c2864a184a/native_assets.yaml: 
