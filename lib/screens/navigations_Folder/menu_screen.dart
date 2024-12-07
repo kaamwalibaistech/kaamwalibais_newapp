@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/packages.dart';
@@ -46,19 +47,22 @@ class MenuScreen extends StatelessWidget {
                                     // actions: const [],
                                     ));
                       },
-                      child: const Text.rich(
+                      child: Text.rich(
                         TextSpan(
                           children: [
                             TextSpan(
-                                text: 'Login ', style: TextStyle(fontSize: 18)),
-                            TextSpan(
+                              text: 'Login ',
+                              style: GoogleFonts.poltawskiNowy(fontSize: 18),
+                            ),
+                            const TextSpan(
                               text: '/',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18),
                             ),
                             TextSpan(
-                                text: ' Signup',
-                                style: TextStyle(fontSize: 18)),
+                              text: ' Signup',
+                              style: GoogleFonts.poltawskiNowy(fontSize: 18),
+                            ),
                           ],
                         ),
                       ),
@@ -74,9 +78,10 @@ class MenuScreen extends StatelessWidget {
               ),
             ),
 
-            const Text(
+            Text(
               "Menu",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: GoogleFonts.poltawskiNowy(
+                  fontWeight: FontWeight.bold, fontSize: 20),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30.0),

@@ -59,7 +59,7 @@ class _WebviewWidgetState extends State<WebviewWidget> {
                     action: PermissionResponseAction.GRANT);
               },
               shouldOverrideUrlLoading: (controller, navigationAction) async {
-                var uri = navigationAction.request.url!;
+                // var uri = navigationAction.request.url!;
 
                 return NavigationActionPolicy.ALLOW;
               },

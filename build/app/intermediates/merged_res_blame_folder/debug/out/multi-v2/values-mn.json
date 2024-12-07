@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.kaamwalijobs_new.app-mergeDebugResources-31:/values-mn/values-mn.xml",
+            "outputFile": "com.example.kaamwalijobs_new.app-mergeDebugResources-5:/values-mn/values-mn.xml",
             "map": [
                 {
-                    "source": "/Users/ritesh/.gradle/caches/transforms-3/c666c258fca39b3353b46678a6b928ab/transformed/core-1.13.1/res/values-mn/values-mn.xml",
+                    "source": "C:\\Users\\Sunil\\.gradle\\caches\\8.10.2\\transforms\\9644d702a020ac54c098d497648161f0\\transformed\\core-1.13.1\\res\\values-mn\\values-mn.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/Users/ritesh/.gradle/caches/transforms-3/8b51bb040b32a2abc8f296afdae29f34/transformed/appcompat-1.6.1/res/values-mn/values-mn.xml",
+                    "source": "C:\\Users\\Sunil\\.gradle\\caches\\8.10.2\\transforms\\2ec4a52affed8824ebe1c029e90c03a3\\transformed\\appcompat-1.6.1\\res\\values-mn\\values-mn.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "/Users/ritesh/.gradle/caches/transforms-3/9a7a783aa8682aaa028c57031d48c15e/transformed/browser-1.8.0/res/values-mn/values-mn.xml",
+                    "source": "C:\\Users\\Sunil\\.gradle\\caches\\8.10.2\\transforms\\3235f994138ad5ccf11b6756e7f10145\\transformed\\browser-1.8.0\\res\\values-mn\\values-mn.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

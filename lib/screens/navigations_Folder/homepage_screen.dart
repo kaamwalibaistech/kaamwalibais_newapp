@@ -31,10 +31,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(
           context: context,
-          builder: (context) => const AlertDialog(content: LoginPopup()
-              // actions: const [],
-
-              ));
+          builder: (context) => const AlertDialog(content: LoginPopup()));
     });
   }
 
@@ -43,7 +40,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     return Scaffold(
         backgroundColor: scaffoldColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -80,7 +77,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       Container(
                         padding: const EdgeInsets.only(left: 10),
                         height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.75,
+                        width: MediaQuery.of(context).size.width * 0.82,
                         decoration: BoxDecoration(
                             color: whiteColor,
                             borderRadius: BorderRadius.circular(10)),
@@ -104,7 +101,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
@@ -137,7 +133,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     padding: EdgeInsets.zero,
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    // scrollDirection: Axis.horizontal,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             mainAxisSpacing: 20,
@@ -155,6 +150,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromARGB(255, 200, 197, 197),
+                                  // spreadRadius: 1,
+                                  blurRadius: 7,
+                                  offset: Offset(
+                                      5, 5), // changes position of shadow
+                                ),
+                              ],
                               color: whiteColor,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
@@ -165,9 +169,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             children: [
                               Image.network(
                                 categories[index].image,
+                                // color: const Color.fromARGB(255, 247, 115, 106),
                                 height: 60,
                               ),
-                              Text(categories[index].categoryName)
+                              Text(
+                                categories[index].categoryName,
+                                style: const TextStyle(
+                                    // color: blueColor,
+                                    fontWeight: FontWeight.bold),
+                              )
                             ],
                           ),
                         ),
@@ -192,7 +202,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Featured Jobs",
+                        "Job Openings",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -209,7 +219,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     ],
                   ),
                 ),
-
                 ListView.builder(
                   padding: EdgeInsets.zero,
                   shrinkWrap: true,
@@ -247,24 +256,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     );
                   },
                 ),
-
-                // GridView.builder(
-                //   shrinkWrap: true,
-                //   physics: const NeverScrollableScrollPhysics(),
-
-                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                //     crossAxisSpacing: 10,mainAxisSpacing: 10,
-                //     crossAxisCount: 2,
-
-                //   ),
-                //   itemCount: 4,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return Container(decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(10),
-                //       color: const Color.fromARGB(255, 254, 254, 255),
-                //       border:Border.all(color: const Color.fromARGB(255, 243, 243, 245))),) ;
-                //   },
-                // ),
                 const SizedBox(
                   height: 10,
                 )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../assets/colors.dart';
 
@@ -25,9 +26,9 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10), color: blueColor),
                 child: TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       "Post job",
-                      style: TextStyle(color: whiteColor),
+                      style: GoogleFonts.poltawskiNowy(color: whiteColor),
                     ))),
           ),
         ],
@@ -40,9 +41,9 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.04,
               ),
-              const Text(
+              Text(
                 "Personal Details",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.poltawskiNowy(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
@@ -64,42 +65,84 @@ class ProfileScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Column(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Name"), Text("Ritesh Dixit")],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Contact"), Text("8169669043")],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("Location"), Text("Mumbai")],
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Email"),
-                            Text("ritesh.dixit@gmail.com")
+                            Text(
+                              "Name",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              "Ritesh Dixit",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
                           ],
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15.0),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [Text("GST No."), Text("----")],
+                          children: [
+                            Text(
+                              "Contact",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              "8169669043",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Location",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              "Mumbai",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Email",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              "ritesh.dixit@gmail.com",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "GST No.",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              "----",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -111,10 +154,10 @@ class ProfileScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(color: blueColor)),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             "Edit profile",
-                            style: TextStyle(color: blueColor),
+                            style: GoogleFonts.poltawskiNowy(color: blueColor),
                           ),
                         ),
                       )
@@ -125,9 +168,9 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
               ),
-              const Text(
+              Text(
                 "KYC Details",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.poltawskiNowy(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,

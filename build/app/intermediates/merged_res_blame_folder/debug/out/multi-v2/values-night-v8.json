@@ -1,17 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.kaamwalijobs_new.app-mergeDebugResources-31:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.kaamwalijobs_new.app-mergeDebugResources-5:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/Users/ritesh/Downloads/kaamwalibais_newapp-main/android/app/src/main/res/values-night/styles.xml",
+                    "source": "C:\\Ritesh\\kaamwalijobs_new\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "172,817",
+                        "startOffsets": "175,831",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "475,981"
+                        "endOffsets": "482,997"
                     },
                     "to": {
                         "startLines": "2,6",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/ritesh/.gradle/caches/transforms-3/8b51bb040b32a2abc8f296afdae29f34/transformed/appcompat-1.6.1/res/values-night-v8/values-night-v8.xml",
+                    "source": "C:\\Users\\Sunil\\.gradle\\caches\\8.10.2\\transforms\\2ec4a52affed8824ebe1c029e90c03a3\\transformed\\appcompat-1.6.1\\res\\values-night-v8\\values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

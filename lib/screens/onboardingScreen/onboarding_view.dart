@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/navigationscreen.dart';
@@ -97,18 +98,17 @@ class _OnboardingScreenState extends State<OnboardingView> {
                   ),
                   Text(
                     controller.items[index].title,
-                    style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff0D0D26),
-                    ),
+                    style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        color: textBlackColor4,
+                        fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
                       textAlign: TextAlign.center,
                       controller.items[index].descriptions,
-                      style: const TextStyle(color: textGreyColor),
+                      style: GoogleFonts.poltawskiNowy(color: textBlackColor4),
                     ),
                   )
                 ],
