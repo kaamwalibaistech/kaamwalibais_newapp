@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/models/empolyer_register_model.dart';
 
 class EmployerRegister extends StatefulWidget {
   const EmployerRegister({super.key});
@@ -9,6 +10,12 @@ class EmployerRegister extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<EmployerRegister> {
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  Otp? otp;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

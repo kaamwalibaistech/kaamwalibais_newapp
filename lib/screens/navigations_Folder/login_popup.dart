@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_login_signup.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/employer_login_signup.dart';
+import 'package:kaamwalijobs_new/screens/employer_login_signup.dart';
 
 class LoginPopup extends StatelessWidget {
   const LoginPopup({super.key});
@@ -9,7 +9,7 @@ class LoginPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.25,
+        height: MediaQuery.of(context).size.height * 0.22,
         decoration: const BoxDecoration(),
         child: Column(
           children: [
