@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/screens/employer_register.dart';
+// import 'package:kaamwalijobs_new/screens/';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/forget_password.dart';
+
+// import 'employer_register.dart';
+import 'navigations_Folder/employer_register.dart';
 
 class EmployerLoginSignup extends StatefulWidget {
   const EmployerLoginSignup({super.key});

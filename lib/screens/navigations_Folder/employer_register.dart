@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/models/empolyer_register_model.dart';
+import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
+
+import 'emolpyer_register_otpscreen.dart';
 
 class EmployerRegister extends StatefulWidget {
   const EmployerRegister({super.key});
@@ -152,17 +154,26 @@ class _MyWidgetState extends State<EmployerRegister> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: blueColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.77,
-                    child: const Center(
-                        child: Text(
-                      "Register Now",
-                      style: TextStyle(color: whiteColor, fontSize: 16),
-                    )),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const EmolpyerRegisterOtpscreen()));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: blueColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.77,
+                      child: const Center(
+                          child: Text(
+                        "Register Now ",
+                        style: TextStyle(color: whiteColor, fontSize: 16),
+                      )),
+                    ),
                   )
                 ],
               ),

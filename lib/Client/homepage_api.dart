@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:kaamwalijobs_new/models/empolyer_register_model.dart';
+import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
 
 import '../models/homepage_model.dart';
 
