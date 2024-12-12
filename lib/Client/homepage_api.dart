@@ -29,17 +29,9 @@ class Repositiory {
   }
 
   Future<Otp?> getEmployerRegisterOtp(String number) async {
-    // final url =
-    //     Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendsignupotp");
-
-    // final body = {
-    //   "Mobile_no": number,
-    // };
     try {
-      // var uri = Uri.parse('http://localhost.com');
       var headers = {
         'API-KEY': 'ea3652c8-d890-44c6-9789-48dfc5831998',
-        // 'Cookie': 'ci_session=1534355d9ddc428a766c22e5417da9b3790733dd'
       };
       var request = http.MultipartRequest(
           'POST',

@@ -1,7 +1,14 @@
-import 'package:animated_rating_stars/animated_rating_stars.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
+import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
+import 'package:kaamwalijobs_new/models/candidate_model.dart';
+import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
 class BookmaidScreen extends StatefulWidget {
   const BookmaidScreen({super.key});
@@ -11,17 +18,40 @@ class BookmaidScreen extends StatefulWidget {
 }
 
 class _BookmaidScreenState extends State<BookmaidScreen> {
-  bool isloading = true;
+  CandidateRequest candidateRequest = CandidateRequest();
+  late DashboardBloc dashboardBloc;
+  int _pageSize = 10;
+  @override
+  void initState() {
+    super.initState();
+    dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    _paginationController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+  }
+
+  final PagingController<int, CandidateData?> _paginationController =
+      PagingController(firstPageKey: 1);
+
+  ScrollController _scrollController = ScrollController();
+
+  Future<void> _fetchPage(int pageKey) async {
+    candidateRequest.page = pageKey.toString();
+    dashboardBloc.add(GetCandidates(candidateRequest: candidateRequest));
+  }
+
+  @override
+  void dispose() {
+    _paginationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
         backgroundColor: scaffoldColor,
-        // title: Image.asset(
-        //   "lib/assets/images/kaamwalijobs.png",
-        //   height: 50,
-        // ),
 
         title: Container(
           padding: const EdgeInsets.only(left: 10),
@@ -44,389 +74,601 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
         ),
         // centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 50,
+      body: BlocListener<DashboardBloc, DashboardState>(
+        bloc: dashboardBloc,
+        listener: (context, state) {
+          if (state is CandidateListLoadedState) {
+            try {
+              final candidates = state.candidates;
+              final isLastPage = candidates.length < _pageSize;
+              if (isLastPage) {
+                _paginationController.appendLastPage(candidates);
+              } else {
+                _paginationController.appendPage(
+                    candidates, _paginationController.nextPageKey! + 1);
+              }
+            } catch (error) {
+              _paginationController.error = error;
+            }
+          }
+        },
+        child: BlocBuilder<DashboardBloc, DashboardState>(
+            bloc: dashboardBloc,
+            builder: (context, state) {
+              return PagedListView<int, CandidateData?>(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
                 shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Stack(children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 222, 219, 219)),
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        height: MediaQuery.of(context).size.height * 0.38,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Row(
+                pagingController: _paginationController,
+                scrollController: _scrollController,
+                builderDelegate: PagedChildBuilderDelegate<CandidateData?>(
+                    noMoreItemsIndicatorBuilder: (_) => Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Center(
+                            child: SizedBox(
+                              height: 21,
+                            ),
+                          ),
+                        ),
+                    newPageProgressIndicatorBuilder: (_) => SizedBox(
+                          width: 32,
+                          height: 32,
+                          child: CircularProgressIndicator(),
+                        ),
+                    firstPageProgressIndicatorBuilder: (_) =>
+                        CircularProgressIndicator(),
+                    itemBuilder: (context, model, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 10.0),
+                        child: Container(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          decoration: ShapeDecoration(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  AnimatedRatingStars(
-                                    initialRating: 5,
-                                    onChanged: (_) {
-                                      // setState(() {});
-                                    },
-                                    displayRatingValue:
-                                        true, // Display the rating value
-                                    interactiveTooltips:
-                                        true, // Allow toggling half-star state
-                                    customFilledIcon: Icons.star,
-                                    customHalfFilledIcon: Icons.star_half,
-                                    customEmptyIcon: Icons.star_border,
-                                    starSize: 15.0,
-                                    animationDuration:
-                                        const Duration(milliseconds: 500),
-                                    animationCurve: Curves.easeInOut,
-                                  ),
-                                  Container(
-                                    decoration:
-                                        const BoxDecoration(color: blueColor),
-                                    height: 30,
-                                    width: 80,
-                                    child: Center(
-                                      child: Text(
-                                        "Babysitter",
-                                        style: GoogleFonts.roboto(
-                                            color: whiteColor),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, top: 8.0),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 42,
+                                            height: 20,
+                                            decoration: ShapeDecoration(
+                                              color: const Color(0xFF0CA930),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                model?.rating ?? '',
+                                                style: const TextStyle(
+                                                  color: whiteColor,
+                                                  fontSize: 13,
+                                                  fontFamily: 'Arial',
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          RatingBarIndicator(
+                                            rating:
+                                                double.parse(model!.rating!),
+                                            itemBuilder: (context, index) =>
+                                                const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            itemCount: 5,
+                                            itemSize: 15.0,
+                                            direction: Axis.horizontal,
+                                          ),
+                                          const SizedBox(
+                                            width: 3,
+                                          ),
+                                          Text(
+                                            '${model.ratingCount!} Ratings',
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12,
+                                              color: textGreyColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            ListTile(
-                              leading: Container(
-                                height: 50,
-                                width: 50,
-                                decoration: const BoxDecoration(
-                                    color: Color.fromARGB(255, 158, 153, 153)),
-                                child: const Icon(
-                                  Icons.person_add_alt_1_rounded,
-                                  size: 28,
-                                ),
-                              ),
-                              title: Text(
-                                "Ritesh Dixit",
-                                style: GoogleFonts.roboto(),
-                              ),
-                              subtitle: Text(
-                                "Kalyan , Maharashtra",
-                                style: GoogleFonts.roboto(),
-                              ),
-                              trailing: Image.asset(
-                                "lib/assets/images/verified_2x.gif",
-                                height: 30,
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 18.0),
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 5,
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Age: ",
-                                              style: GoogleFonts.roboto(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Container(
+                                            padding: const EdgeInsets.all(5.0),
+                                            decoration: const ShapeDecoration(
+                                              color: blueColor,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(5),
+                                                  bottomLeft:
+                                                      Radius.circular(5),
+                                                ),
+                                              ),
                                             ),
-                                            TextSpan(
-                                              text: "21 yrs",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "gender: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "Male",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Maritial Status: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "Unmarried",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Education: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "< 5TH",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Religion: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "Hindu",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Working Hours: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "8 hours",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Total Experience: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "3 Years",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                      RichText(
-
-                                          // textAlign: TextAlign.start,
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Language: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "Hindi",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: Colors.black),
-                                              children: [
-                                            TextSpan(
-                                              text: "Expected Salary: ",
-                                              style: GoogleFonts.roboto(),
-                                            ),
-                                            TextSpan(
-                                              text: "Rs 30000",
-                                              style: GoogleFonts.roboto(),
-                                            )
-                                          ])),
-                                    ],
+                                            child: Center(
+                                              child: Text(
+                                                model.jobType!,
+                                                style: GoogleFonts.poppins(
+                                                  color: whiteColor,
+                                                  fontSize: 11,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 5.0, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      width: 174,
-                                      decoration:
-                                          const BoxDecoration(color: blueColor),
-                                      child: const Center(
-                                        child: Row(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.spaceEvenly,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 8.0, left: 8.0),
+                                child: Row(
+                                  children: [
+                                    Image.network(model.image!, height: 45),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // candidate name
+                                        Text(
+                                          model.categoryName!,
+                                          style: GoogleFonts.quicksand(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Row(
                                           children: [
-                                            SizedBox(
-                                              width: 35,
-                                            ),
-                                            Icon(
-                                              Icons.person,
-                                              color: whiteColor,
-                                            ),
-                                            SizedBox(
-                                              width: 15,
-                                            ),
                                             Text(
-                                              "Profile",
-                                              style:
-                                                  TextStyle(color: whiteColor),
+                                              model.serviceLocation == null
+                                                  ? ""
+                                                  : model.serviceLocation!,
+                                              maxLines: 1,
+                                              style: GoogleFonts.quicksand(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400,
+                                              ),
                                             ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            InkWell(
+                                              onTap: () {},
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 15.0),
+                                                child: Image.asset(
+                                                    'assets/images/verified_2x.gif',
+                                                    height: 28),
+                                              ),
+                                            )
                                           ],
                                         ),
-                                      ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0, vertical: 15.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "Age: ",
+                                                style: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12,
+                                                  color: textBlackColor2,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: model.age != null
+                                                    ? "${model.age!} Yrs"
+                                                    : "",
+                                                style: GoogleFonts.poppins(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                  color: textBlackColor2,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Gender: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.gender != null
+                                                      ? model.gender!
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Marital Status: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.maritalStatus !=
+                                                          null
+                                                      ? model.maritalStatus!
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Education: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      model.maximumEducation !=
+                                                              null
+                                                          ? model
+                                                              .maximumEducation!
+                                                          : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Religion: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.religion != null
+                                                      ? model.religion!
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Working Hours: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.workingHours !=
+                                                          null
+                                                      ? "${model.workingHours} Hours"
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Total Experience: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.totalExp != null
+                                                      ? "${model.totalExp!} Years"
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Language: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.language != null
+                                                      ? model.language!
+                                                          .join(",")
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: "Expected Salary: ",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  text: model.expectedSalary !=
+                                                          null
+                                                      ? "Rs. ${model.expectedSalary!}"
+                                                      : "",
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: textBlackColor2,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 10),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  const SizedBox(width: 5),
+                                  SizedBox(
+                                    child: Stack(
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              minimumSize: const Size(0, 35),
+                                              backgroundColor: blueColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5))),
+                                          // onHover: (value) {
+                                          //   setState(() {
+                                          //     profileHover = value;
+                                          //   });
+                                          // },
+                                          onPressed: () {},
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                  "assets/images/person_icon.png",
+                                                  height: 17),
+                                              const SizedBox(width: 15),
+                                              Text(
+                                                'PROFILE',
+                                                textAlign: TextAlign.end,
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: whiteColor),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.05,
-                                      width: 174,
-                                      decoration: const BoxDecoration(
-                                          color: selectionGreenColor),
-                                      child: const Center(
-                                        child: Text(
-                                          "819****043",
-                                          style: TextStyle(color: whiteColor),
+                                  const SizedBox(width: 5),
+                                  SizedBox(
+                                    child: Stack(
+                                      children: [
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color(0xFF0DA931),
+                                              minimumSize: const Size(0, 35),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5))),
+                                          onPressed: () {},
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset(
+                                                  "assets/images/call.png",
+                                                  height: 17),
+                                              const SizedBox(width: 5),
+                                              // SizedBox(
+                                              //   child: Text(
+                                              //     overflow:
+                                              //         TextOverflow.ellipsis,
+                                              //     model.alreadySorted == '1'
+                                              //         ? model.mobileNo!
+                                              //         : GlobalFunctions
+                                              //             .maskPhoneNumber(
+                                              //                 model.mobileNo!),
+                                              //     style: GoogleFonts.poppins(
+                                              //         fontSize: 14,
+                                              //         fontWeight:
+                                              //             FontWeight.w500,
+                                              //         color: whiteColor),
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(width: 5),
                                 ],
                               ),
-                            ),
-                            // Padding(
-                            //   padding:
-                            //       const EdgeInsets.symmetric(horizontal: 5.0),
-                            //   child: ClipRRect(
-                            //     borderRadius: BorderRadius.circular(5),
-                            //     child: Container(
-                            //       height:
-                            //           MediaQuery.of(context).size.height * 0.05,
-                            //       decoration:
-                            //           const BoxDecoration(color: textGreyColor),
-                            //       child: const Center(
-                            //         child: Text(
-                            //           "Select Option",
-                            //           style: TextStyle(color: whiteColor),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // )
-                          ],
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 258.0, top: 248),
-                        child: Icon(
-                          Icons.lock_outline_rounded,
-                          color: whiteColor,
-                        ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 90, top: 248),
-                        child: Icon(
-                          Icons.lock_outline_rounded,
-                          color: whiteColor,
-                        ),
-                      ),
-                    ]),
-                  );
-                },
-              )
-            ],
-          ),
-        ),
+                      );
+                    },
+                    noItemsFoundIndicatorBuilder: (
+                      _,
+                    ) =>
+                        SizedBox.shrink()),
+              );
+            }),
       ),
     );
   }
