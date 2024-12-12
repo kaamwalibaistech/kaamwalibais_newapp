@@ -34,7 +34,7 @@ class _SplashscreenState extends State<Splashscreen> {
               child: Image.asset(
             "lib/assets/images/kaamwalijobs.png",
             height: 80,
-          ))
+          )),
         ],
       ),
     );

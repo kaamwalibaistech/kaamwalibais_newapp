@@ -52,7 +52,7 @@ class MenuScreen extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: 'Login ',
-                              style: GoogleFonts.poltawskiNowy(fontSize: 18),
+                              style: GoogleFonts.roboto(fontSize: 18),
                             ),
                             const TextSpan(
                               text: '/',
@@ -61,7 +61,7 @@ class MenuScreen extends StatelessWidget {
                             ),
                             TextSpan(
                               text: ' Signup',
-                              style: GoogleFonts.poltawskiNowy(fontSize: 18),
+                              style: GoogleFonts.roboto(fontSize: 18),
                             ),
                           ],
                         ),

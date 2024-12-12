@@ -1,11 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/models/empolyer_registerotp_model.dart';
 
-class EmolpyerRegisterOtpscreen extends StatelessWidget {
-  const EmolpyerRegisterOtpscreen({super.key});
+class EmolpyerRegisterOtpscreen extends StatefulWidget {
+  final String fullName;
+  final String phoneNumber;
+  final String password;
+  final String confirmPassword;
+  EmolpyerRegisterOtpscreen(
+      {super.key,
+      required this.fullName,
+      required this.phoneNumber,
+      required this.password,
+      required this.confirmPassword});
+
+  @override
+  State<EmolpyerRegisterOtpscreen> createState() =>
+      _EmolpyerRegisterOtpscreenState();
+}
+
+class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
+  Otp? otpp;
+  @override
+  void initState() {
+    super.initState();
+    _sendOtp();
+  }
+
+  Future _sendOtp() async {
+    final otp = await Repositiory().getEmployerRegisterOtp(widget.phoneNumber);
+    setState(() {
+      otpp = otp;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _otpController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -31,7 +63,10 @@ class EmolpyerRegisterOtpscreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 6.0),
               child: Row(
                 children: [
-                  const Text("816****043"),
+                  Text(
+                    widget.phoneNumber,
+                    style: TextStyle(color: blackColor),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: GestureDetector(
@@ -50,50 +85,11 @@ class EmolpyerRegisterOtpscreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                      height: 64.0,
-                      width: 56.0,
-                      child: Card(
-                          color: Color.fromRGBO(40, 75, 146, 0.698),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            // child: TextEditorForPhoneVerify(this.codeOne)
-                          ))),
-                  SizedBox(
-                      height: 64.0,
-                      width: 56.0,
-                      child: Card(
-                          color: Color.fromRGBO(40, 75, 146, 0.698),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            // child: TextEditorForPhoneVerify(this.codeOne)
-                          ))),
-                  SizedBox(
-                      height: 64.0,
-                      width: 56.0,
-                      child: Card(
-                          color: Color.fromRGBO(40, 75, 146, 0.698),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            // child: TextEditorForPhoneVerify(this.codeOne)
-                          ))),
-                  SizedBox(
-                      height: 64.0,
-                      width: 56.0,
-                      child: Card(
-                          color: Color.fromRGBO(40, 75, 146, 0.698),
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                            // child: TextEditorForPhoneVerify(this.codeOne)
-                          ))),
-                ],
-              ),
-            ),
+            Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: TextFormField(
+                  controller: _otpController,
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Center(

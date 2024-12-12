@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
 
 import 'emolpyer_register_otpscreen.dart';
 
@@ -16,7 +15,9 @@ class _MyWidgetState extends State<EmployerRegister> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  Otp? otp;
+  bool _obsecureText = true;
+  // Otp? otp
+  // ;
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +76,8 @@ class _MyWidgetState extends State<EmployerRegister> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
-                      // controller: _controller,
+                    child: TextField(
+                      controller: fullNameController,
                       decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -97,9 +98,12 @@ class _MyWidgetState extends State<EmployerRegister> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
-                      // controller: _controller,
+                    child: TextField(
+                      maxLength: 10,
+                      controller: phoneNumberController,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
+                        counterText: "",
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Mobile No",
@@ -119,8 +123,19 @@ class _MyWidgetState extends State<EmployerRegister> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
+                    child: TextField(
+                      controller: passwordController,
+                      obscureText: _obsecureText,
                       decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obsecureText = !_obsecureText;
+                              });
+                            },
+                            child: _obsecureText
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility)),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Password",
@@ -140,9 +155,19 @@ class _MyWidgetState extends State<EmployerRegister> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
-                      // controller: _controller,
+                    child: TextField(
+                      obscureText: _obsecureText,
+                      controller: confirmPasswordController,
                       decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _obsecureText = !_obsecureText;
+                              });
+                            },
+                            child: _obsecureText
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility)),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Confirm Password",
@@ -156,11 +181,21 @@ class _MyWidgetState extends State<EmployerRegister> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const EmolpyerRegisterOtpscreen()));
+                      if (passwordController.text ==
+                              confirmPasswordController.text &&
+                          phoneNumberController.text.isNotEmpty &&
+                          fullNameController.text.isNotEmpty) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EmolpyerRegisterOtpscreen(
+                                      fullName: fullNameController.text,
+                                      phoneNumber: phoneNumberController.text,
+                                      password: passwordController.text,
+                                      confirmPassword:
+                                          confirmPasswordController.text,
+                                    )));
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -183,7 +218,9 @@ class _MyWidgetState extends State<EmployerRegister> {
               child: Text("OR"),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
               child: Container(
                 decoration: BoxDecoration(
                     color: blueColor, borderRadius: BorderRadius.circular(10)),
