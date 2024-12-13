@@ -51,16 +51,18 @@ dependencies:
   infinite_scroll_pagination: ^4.1.0
   dio: ^5.7.0
   flutter_rating_bar: ^4.0.1
+  flutter_otp_text_field: ^1.1.0+2
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.14.2"
+  # flutter_launcher_icons: "^0.14.2"
 
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "lib/assets/images/kaamwalijobs.png"
+  # flutter_launcher_icons:
+  #   android: "launcher_icon"
+  #   ios: true
+  #   image_path: "lib/assets/images/kaamwalijobs.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

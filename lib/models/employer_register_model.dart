@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final employerRegisterOtp = employerRegisterOtpFromJson(jsonString);
+//     final employerRegisterModel = employerRegisterModelFromJson(jsonString);
 
 import 'dart:convert';
 
-EmployerRegisterOtp employerRegisterOtpFromJson(String str) =>
-    EmployerRegisterOtp.fromJson(json.decode(str));
+EmployerRegisterModel employerRegisterModelFromJson(String str) =>
+    EmployerRegisterModel.fromJson(json.decode(str));
 
-String employerRegisterOtpToJson(EmployerRegisterOtp data) =>
+String employerRegisterModelToJson(EmployerRegisterModel data) =>
     json.encode(data.toJson());
 
-class EmployerRegisterOtp {
+class EmployerRegisterModel {
   String status;
   String userId;
   String name;
@@ -20,7 +20,7 @@ class EmployerRegisterOtp {
   String token;
   String msg;
 
-  EmployerRegisterOtp({
+  EmployerRegisterModel({
     required this.status,
     required this.userId,
     required this.name,
@@ -31,8 +31,8 @@ class EmployerRegisterOtp {
     required this.msg,
   });
 
-  factory EmployerRegisterOtp.fromJson(Map<String, dynamic> json) =>
-      EmployerRegisterOtp(
+  factory EmployerRegisterModel.fromJson(Map<String, dynamic> json) =>
+      EmployerRegisterModel(
         status: json["status"],
         userId: json["UserId"],
         name: json["Name"],

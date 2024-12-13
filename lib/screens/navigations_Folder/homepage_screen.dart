@@ -144,7 +144,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 },
                                 child: const Text(
                                   "See all",
-                                  style: TextStyle(color: textGreyColor),
+                                  style: TextStyle(color: blackColor),
                                 ))
                           ],
                         ),
@@ -242,7 +242,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 },
                                 child: const Text(
                                   "See all",
-                                  style: TextStyle(color: textGreyColor),
+                                  style: TextStyle(color: blackColor),
                                 ))
                           ],
                         ),

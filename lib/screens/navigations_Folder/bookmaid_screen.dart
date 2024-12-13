@@ -20,7 +20,7 @@ class BookmaidScreen extends StatefulWidget {
 class _BookmaidScreenState extends State<BookmaidScreen> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
-  int _pageSize = 10;
+  final int _pageSize = 10;
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   final PagingController<int, CandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   Future<void> _fetchPage(int pageKey) async {
     candidateRequest.page = pageKey.toString();
@@ -102,7 +102,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                 pagingController: _paginationController,
                 scrollController: _scrollController,
                 builderDelegate: PagedChildBuilderDelegate<CandidateData?>(
-                    noMoreItemsIndicatorBuilder: (_) => Padding(
+                    noMoreItemsIndicatorBuilder: (_) => const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20),
                           child: Center(
                             child: SizedBox(
@@ -110,13 +110,13 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                             ),
                           ),
                         ),
-                    newPageProgressIndicatorBuilder: (_) => SizedBox(
+                    newPageProgressIndicatorBuilder: (_) => const SizedBox(
                           width: 32,
                           height: 32,
                           child: CircularProgressIndicator(),
                         ),
                     firstPageProgressIndicatorBuilder: (_) =>
-                        CircularProgressIndicator(),
+                        const CircularProgressIndicator(),
                     itemBuilder: (context, model, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -225,58 +225,76 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8.0, left: 8.0),
-                                child: Row(
-                                  children: [
+                              ListTile(
+                                leading:
                                     Image.network(model.image!, height: 45),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // candidate name
-                                        Text(
-                                          model.categoryName!,
-                                          style: GoogleFonts.quicksand(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              model.serviceLocation == null
-                                                  ? ""
-                                                  : model.serviceLocation!,
-                                              maxLines: 1,
-                                              style: GoogleFonts.quicksand(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            InkWell(
-                                              onTap: () {},
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 15.0),
-                                                child: Image.asset(
-                                                    'assets/images/verified_2x.gif',
-                                                    height: 28),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                title: Text(
+                                  model.categoryName!,
+                                  style: GoogleFonts.quicksand(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                                subtitle: Text(
+                                  model.serviceLocation == null
+                                      ? ""
+                                      : model.serviceLocation!,
+                                  maxLines: 1,
+                                  style: GoogleFonts.quicksand(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                trailing: Image.asset(
+                                    'lib/assets/images/verified_2x.gif',
+                                    height: 28),
                               ),
+                              // Padding(
+                              //   padding:
+                              //       const EdgeInsets.only(top: 8.0, left: 8.0),
+                              //   child: Row(
+                              //     children: [
+                              //       Image.network(model.image!, height: 45),
+                              //       Column(
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.start,
+                              //         children: [
+                              //           // candidate name
+                              //           Text(
+                              //             model.categoryName!,
+                              //             style: GoogleFonts.quicksand(
+                              //               fontSize: 15,
+                              //               fontWeight: FontWeight.w600,
+                              //             ),
+                              //           ),
+                              //           // const SizedBox(height: 5),
+                              //           Row(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.spaceBetween,
+                              //             children: [
+                              //               Text(
+                              //                 model.serviceLocation == null
+                              //                     ? ""
+                              //                     : model.serviceLocation!,
+                              //                 maxLines: 1,
+                              //                 style: GoogleFonts.quicksand(
+                              //                   fontSize: 13,
+                              //                   fontWeight: FontWeight.w400,
+                              //                 ),
+                              //               ),
+                              //               // const SizedBox(
+                              //               //   width: 10,
+                              //               // ),
+                              //               Image.asset(
+                              //                   'lib/assets/images/verified_2x.gif',
+                              //                   height: 28)
+                              //             ],
+                              //           ),
+                              //         ],
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 15.0),
@@ -311,7 +329,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         SizedBox(
                                           child: Text.rich(
                                             TextSpan(
@@ -340,7 +358,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                         )
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     Row(
@@ -374,7 +392,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         SizedBox(
                                           child: Text.rich(
                                             TextSpan(
@@ -406,7 +424,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -437,7 +455,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         SizedBox(
                                           child: Text.rich(
                                             TextSpan(
@@ -467,7 +485,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -498,7 +516,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         SizedBox(
                                           child: Text.rich(
                                             TextSpan(
@@ -528,7 +546,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -560,7 +578,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                       ],
                                     ),
                                   ],
@@ -570,6 +588,10 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                 children: [
                                   const SizedBox(width: 5),
                                   SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.45,
                                     child: Stack(
                                       children: [
                                         ElevatedButton(
@@ -591,7 +613,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                  "assets/images/person_icon.png",
+                                                  "lib/assets/images/person_icon.png",
                                                   height: 17),
                                               const SizedBox(width: 15),
                                               Text(
@@ -610,6 +632,10 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                   ),
                                   const SizedBox(width: 5),
                                   SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.45,
                                     child: Stack(
                                       children: [
                                         ElevatedButton(
@@ -627,25 +653,19 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Image.asset(
-                                                  "assets/images/call.png",
+                                                  "lib/assets/images/call.png",
                                                   height: 17),
                                               const SizedBox(width: 5),
-                                              // SizedBox(
-                                              //   child: Text(
-                                              //     overflow:
-                                              //         TextOverflow.ellipsis,
-                                              //     model.alreadySorted == '1'
-                                              //         ? model.mobileNo!
-                                              //         : GlobalFunctions
-                                              //             .maskPhoneNumber(
-                                              //                 model.mobileNo!),
-                                              //     style: GoogleFonts.poppins(
-                                              //         fontSize: 14,
-                                              //         fontWeight:
-                                              //             FontWeight.w500,
-                                              //         color: whiteColor),
-                                              //   ),
-                                              // ),
+                                              SizedBox(
+                                                child: Text(
+                                                  model.mobileNo.toString(),
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: whiteColor),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -666,7 +686,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                     noItemsFoundIndicatorBuilder: (
                       _,
                     ) =>
-                        SizedBox.shrink()),
+                        const SizedBox.shrink()),
               );
             }),
       ),

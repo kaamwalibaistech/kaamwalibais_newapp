@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
-import 'emolpyer_register_otpscreen.dart';
+import 'employer_register_otpscreen.dart';
 
 class EmployerRegister extends StatefulWidget {
   const EmployerRegister({super.key});
