@@ -33,9 +33,9 @@ class Repositiory {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url = Uri.parse(
-            "https://test.kaamwalijobs.com/API/Mobile_api/home_content_for_android")
-        .replace(queryParameters: queryParameters);
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendsignupotp")
+            .replace(queryParameters: queryParameters);
 
     final body = {'mobile_no': number};
 
