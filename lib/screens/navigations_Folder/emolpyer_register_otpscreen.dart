@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/models/empolyer_registerotp_model.dart';
+
+import '../../models/empolyer_register_modelotp.dart';
 
 class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String fullName;
   final String phoneNumber;
   final String password;
   final String confirmPassword;
-  EmolpyerRegisterOtpscreen(
+  const EmolpyerRegisterOtpscreen(
       {super.key,
       required this.fullName,
       required this.phoneNumber,
@@ -37,7 +38,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _otpController = TextEditingController();
+    TextEditingController otpController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -65,7 +66,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
                 children: [
                   Text(
                     widget.phoneNumber,
-                    style: TextStyle(color: blackColor),
+                    style: const TextStyle(color: blackColor),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -86,9 +87,9 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: TextFormField(
-                  controller: _otpController,
+                  controller: otpController,
                 )),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),
