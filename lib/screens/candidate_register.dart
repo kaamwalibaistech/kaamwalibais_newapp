@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
 class CandidateRegister extends StatefulWidget {
@@ -22,8 +23,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   final marriageItems = ["Unmarried", "Married", "Divorce"];
   final religionItems = ["Hindu", "muslim", "Christian", "Sikh"];
   String? categoryvalue;
-  String? marriedvalue;
-  String? religionvalue;
+  // String? marriedvalue;
+  // String? religionvalue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,8 +172,11 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       items: categoryItems.map(buildMenuItem).toList(),
                       style: const TextStyle(
                           color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => categoryvalue = value)),
+                      onChanged: (value) {
+                        setState(() {
+                          categoryvalue = value;
+                        });
+                      }),
                 ),
               ),
               // const Padding(
@@ -261,8 +265,24 @@ class _CandidateRegisterState extends State<CandidateRegister> {
               //   ),
               // ),
               const SizedBox(
-                height: 10,
+                height: 30,
               ),
+              Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.50,
+                  decoration: BoxDecoration(
+                      color: blueColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  child: Center(
+                    child: Text(
+                      "Submit",
+                      style: GoogleFonts.poltawskiNowy(
+                          color: whiteColor, fontSize: 18),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),

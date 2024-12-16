@@ -585,97 +585,92 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                   ],
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  const SizedBox(width: 5),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    child: Stack(
-                                      children: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(0, 35),
-                                              backgroundColor: blueColor,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5))),
-                                          // onHover: (value) {
-                                          //   setState(() {
-                                          //     profileHover = value;
-                                          //   });
-                                          // },
-                                          onPressed: () {},
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                  "lib/assets/images/person_icon.png",
-                                                  height: 17),
-                                              const SizedBox(width: 15),
-                                              Text(
-                                                'PROFILE',
-                                                textAlign: TextAlign.end,
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: whiteColor),
-                                              ),
-                                            ],
+                              // const SizedBox(width: 5),
+                              // SizedBox(
+                              //   height: MediaQuery.of(context).size.height *
+                              //       0.07,
+                              //   width: MediaQuery.of(context).size.width *
+                              //       0.45,
+                              //   // child: Stack(
+                              //   //   children: [
+                              //   //     ElevatedButton(
+                              //   //       style: ElevatedButton.styleFrom(
+                              //   //           minimumSize: const Size(0, 35),
+                              //   //           backgroundColor: blueColor,
+                              //   //           shape: RoundedRectangleBorder(
+                              //   //               borderRadius:
+                              //   //                   BorderRadius.circular(
+                              //   //                       5))),
+                              //   //       // onHover: (value) {
+                              //   //       //   setState(() {
+                              //   //       //     profileHover = value;
+                              //   //       //   });
+                              //   //       // },
+                              //   //       onPressed: () {},
+                              //   //       child: Row(
+                              //   //         mainAxisAlignment:
+                              //   //             MainAxisAlignment.center,
+                              //   //         children: [
+                              //   //           Image.asset(
+                              //   //               "lib/assets/images/person_icon.png",
+                              //   //               height: 17),
+                              //   //           const SizedBox(width: 15),
+                              //   //           Text(
+                              //   //             'PROFILE',
+                              //   //             textAlign: TextAlign.end,
+                              //   //             style: GoogleFonts.poppins(
+                              //   //                 fontSize: 14,
+                              //   //                 fontWeight: FontWeight.w500,
+                              //   //                 color: whiteColor),
+                              //   //           ),
+                              //   //         ],
+                              //   //       ),
+                              //   //     ),
+                              //   //   ],
+                              //   // ),
+                              // ),
+                              // const SizedBox(width: 5),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.07,
+                                width: MediaQuery.of(context).size.width * 0.55,
+                                child: Stack(
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF0DA931),
+                                          minimumSize: const Size(0, 35),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5))),
+                                      onPressed: () {},
+                                      child: Row(
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const SizedBox(width: 30),
+                                          Image.asset(
+                                              "lib/assets/images/call.png",
+                                              height: 17),
+                                          const SizedBox(width: 20),
+                                          SizedBox(
+                                            child: Text(
+                                              model.mobileNo!
+                                                  .replaceRange(3, 7, "****"),
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: whiteColor),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.07,
-                                    width: MediaQuery.of(context).size.width *
-                                        0.45,
-                                    child: Stack(
-                                      children: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  const Color(0xFF0DA931),
-                                              minimumSize: const Size(0, 35),
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          5))),
-                                          onPressed: () {},
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                  "lib/assets/images/call.png",
-                                                  height: 17),
-                                              const SizedBox(width: 5),
-                                              SizedBox(
-                                                child: Text(
-                                                  model.mobileNo.toString(),
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: whiteColor),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                ],
+                                  ],
+                                ),
                               ),
+                              const SizedBox(width: 5),
                               const SizedBox(
                                 height: 10,
                               ),

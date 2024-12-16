@@ -126,12 +126,12 @@ class _OnboardingScreenState extends State<OnboardingView> {
         height: MediaQuery.of(context).size.height * 0.07,
         decoration: const BoxDecoration(color: Color(0xff2C557D)),
         child: TextButton(
-            onPressed: () {
+            onPressed: () async {
               // final pres = await SharedPreferences.getInstance();
-              // pres.setBool("onboarding", true);
-              // if(!mounted)return;
+              // pres.setBool("onboarrding", true);
+              // if (!mounted) return;
 
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const Navigationscreen()));

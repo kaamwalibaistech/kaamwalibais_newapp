@@ -16,6 +16,7 @@ class _MyWidgetState extends State<EmployerRegister> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   bool _obsecureText = true;
+  bool _obsecureText2 = true;
   // Otp? otp
   // ;
 
@@ -157,16 +158,16 @@ class _MyWidgetState extends State<EmployerRegister> {
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
                     child: TextField(
-                      obscureText: _obsecureText,
+                      obscureText: _obsecureText2,
                       controller: confirmPasswordController,
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(
                             onTap: () {
                               setState(() {
-                                _obsecureText = !_obsecureText;
+                                _obsecureText2 = !_obsecureText2;
                               });
                             },
-                            child: _obsecureText
+                            child: _obsecureText2
                                 ? const Icon(Icons.visibility_off)
                                 : const Icon(Icons.visibility)),
                         contentPadding: const EdgeInsets.symmetric(
@@ -182,11 +183,13 @@ class _MyWidgetState extends State<EmployerRegister> {
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (passwordController.text ==
                               confirmPasswordController.text &&
                           phoneNumberController.text.isNotEmpty &&
-                          fullNameController.text.isNotEmpty) {
+                          fullNameController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty &&
+                          confirmPasswordController.text.isNotEmpty) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(

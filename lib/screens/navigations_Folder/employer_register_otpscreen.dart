@@ -81,7 +81,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
               child: Row(
                 children: [
                   Text(
-                    widget.phoneNumber,
+                    widget.phoneNumber.replaceRange(3, 7, "****"),
                     style: const TextStyle(color: blackColor),
                   ),
                   Padding(
@@ -108,6 +108,12 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: TextFormField(
+                  maxLength: 4,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                      counterText: "",
+                      hintText: " -     -      -      -      -      -",
+                      hintStyle: TextStyle(color: textGreyColor)),
                   controller: _otpController,
                 )),
             GestureDetector(

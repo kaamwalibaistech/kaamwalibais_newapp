@@ -5,7 +5,9 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/onboarding_view.dart';
 
 class Splashscreen extends StatefulWidget {
-  const Splashscreen({super.key});
+  const Splashscreen({
+    super.key,
+  });
   @override
   State<Splashscreen> createState() => _SplashscreenState();
 }

@@ -6,17 +6,20 @@ import 'package:kaamwalijobs_new/features/auth/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 
-import 'core/local_storage.dart';
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalStoragePref.instance?.initPrefBox();
+  // LocalStoragePref.instance?.initPrefBox();
+  // final pres = await SharedPreferences.getInstance();
+  // final onboarding = pres.getBool("onboarrding") ?? false;
+
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
