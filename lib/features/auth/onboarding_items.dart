@@ -1,4 +1,4 @@
-import 'package:kaamwalijobs_new/screens/onboardingScreen/onboarding_info.dart';
+import 'package:kaamwalijobs_new/features/auth/onboarding_info.dart';
 
 class OnboardingItems {
   List<OnboardingInfo> items = [

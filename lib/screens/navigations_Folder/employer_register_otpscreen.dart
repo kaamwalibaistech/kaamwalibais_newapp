@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/navigationscreen.dart';
@@ -36,9 +37,10 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
   Future _sendOtp() async {
     final otpData =
         await repositiory.getEmployerRegisterOtp(widget.phoneNumber);
-    setState(() {
-      otp = otpData;
-    });
+
+    otp = otpData;
+
+    // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
   }
 
   Future _registerEmployer() async {
@@ -112,6 +114,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
               onTap: () {
                 _registerEmployer();
                 if (otp!.otp == _otpController.text) {
+                  LocalStoragePref.instance?.setIsLogin();
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(otp!.msg)));
                   Navigator.pushReplacement(

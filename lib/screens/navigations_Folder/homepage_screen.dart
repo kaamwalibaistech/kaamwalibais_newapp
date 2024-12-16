@@ -4,12 +4,14 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
+import 'package:kaamwalijobs_new/features/auth/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/alljobsopenings.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
-import 'package:kaamwalijobs_new/screens/onboardingScreen/onboarding_items.dart';
 
+import '../../core/local_storage.dart';
 import '../../models/homepage_model.dart';
+import '../shimmer_effect/homepage_categories.dart';
 import 'allcategories.dart';
+import 'login_popup.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -35,11 +37,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
     //     data = value;
     //   });
     // });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkLoginPopup();
+    });
+  }
+
+  checkLoginPopup() async {
+    String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
+    if (!(bool.tryParse(isLogin) ?? false)) {
       showDialog(
           context: context,
           builder: (context) => const AlertDialog(content: LoginPopup()));
-    });
+    }
   }
 
   fetch() {
@@ -82,9 +92,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
-                            child: Image.asset(
-                              "lib/assets/images/hello.png",
-                              height: 20,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const HomepageCategoriesShimmer()));
+                              },
+                              child: Image.asset(
+                                "lib/assets/images/hello.png",
+                                height: 20,
+                              ),
                             ),
                           ),
                         ],
@@ -287,9 +306,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             );
                           },
                         ),
-                      const SizedBox(
-                        height: 10,
-                      )
                     ],
                   ),
                 ),

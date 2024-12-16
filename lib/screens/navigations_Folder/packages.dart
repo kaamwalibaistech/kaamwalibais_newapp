@@ -64,7 +64,6 @@ class Packages extends StatelessWidget {
                         child: Stack(children: [
                           Image.asset(
                             image[index],
-                            height: 131,
                           ),
                           Center(
                             child: Column(

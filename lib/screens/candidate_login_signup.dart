@@ -133,7 +133,7 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                               builder: (context) => const CandidateRegister()));
                     },
                     child: const Text(
-                      "Click here to Candidate signup form",
+                      "उम्मीदवार साइनअप फॉर्म के लिए यहाँ क्लिक करें",
                       style: TextStyle(
                         color: blueColor,
                         decoration: TextDecoration.underline,

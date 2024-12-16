@@ -78,7 +78,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                         borderRadius: BorderRadius.circular(10)),
                     child: TextField(
                       controller: fullNameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Full Name",
@@ -102,7 +102,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                       maxLength: 10,
                       controller: phoneNumberController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         counterText: "",
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -134,13 +134,14 @@ class _MyWidgetState extends State<EmployerRegister> {
                               });
                             },
                             child: _obsecureText
-                                ? Icon(Icons.visibility_off)
-                                : Icon(Icons.visibility)),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility)),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 2),
                         hintText: "Password",
-                        hintStyle: TextStyle(color: textGreyColor),
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        hintStyle: const TextStyle(color: textGreyColor),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),
@@ -166,13 +167,14 @@ class _MyWidgetState extends State<EmployerRegister> {
                               });
                             },
                             child: _obsecureText
-                                ? Icon(Icons.visibility_off)
-                                : Icon(Icons.visibility)),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility)),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 2),
                         hintText: "Confirm Password",
-                        hintStyle: TextStyle(color: textGreyColor),
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                        hintStyle: const TextStyle(color: textGreyColor),
+                        border: const OutlineInputBorder(
+                            borderSide: BorderSide.none),
                       ),
                     ),
                   ),

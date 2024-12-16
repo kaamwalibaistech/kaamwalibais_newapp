@@ -15,7 +15,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "Cook",
     "Nanny",
     "Elder Care",
-    "Japa Maid"
+    "Japa Maid",
+    "Nurse",
+    "House keepings"
   ];
   final marriageItems = ["Unmarried", "Married", "Divorce"];
   final religionItems = ["Hindu", "muslim", "Christian", "Sikh"];
@@ -173,94 +175,94 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                           setState(() => categoryvalue = value)),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Marital Status (वैवाहिक स्थिति ) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Marital Status"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: marriedvalue,
-                      items: marriageItems.map(buildMarriedItem).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => marriedvalue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5),
-                child: Text(
-                  "Age (आयु) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
-                    // controller: _controller,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Eg.18",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Religion (धर्म) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Religion"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: religionvalue,
-                      items: religionItems.map(buildReligionItem).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => religionvalue = value)),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+              //   child: Text(
+              //     "Marital Status (वैवाहिक स्थिति ) *",
+              //     style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              // Container(
+              //   padding: const EdgeInsets.only(left: 10),
+              //   width: MediaQuery.of(context).size.width * 0.93,
+              //   decoration: BoxDecoration(
+              //       color: whiteColor,
+              //       borderRadius: BorderRadius.circular(10),
+              //       border: Border.all(color: blackColor)),
+              //   child: DropdownButtonHideUnderline(
+              //     child: DropdownButton(
+              //         hint: const Text("Select Marital Status"),
+              //         dropdownColor: whiteColor,
+              //         focusColor: whiteColor,
+              //         isExpanded: true,
+              //         value: marriedvalue,
+              //         items: marriageItems.map(buildMarriedItem).toList(),
+              //         style: const TextStyle(
+              //             color: Colors.black, fontWeight: FontWeight.bold),
+              //         onChanged: (value) =>
+              //             setState(() => marriedvalue = value)),
+              //   ),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 20.0, left: 5),
+              //   child: Text(
+              //     "Age (आयु) *",
+              //     style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 5.0),
+              //   child: Container(
+              //     padding: const EdgeInsets.only(left: 10),
+              //     height: MediaQuery.of(context).size.height * 0.06,
+              //     width: MediaQuery.of(context).size.width * 0.93,
+              //     decoration: BoxDecoration(
+              //         border: Border.all(color: blackColor),
+              //         color: whiteColor,
+              //         borderRadius: BorderRadius.circular(10)),
+              //     child: const TextField(
+              //       // controller: _controller,
+              //       decoration: InputDecoration(
+              //         contentPadding:
+              //             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+              //         hintText: "Eg.18",
+              //         hintStyle: TextStyle(color: textGreyColor),
+              //         border: OutlineInputBorder(borderSide: BorderSide.none),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+              //   child: Text(
+              //     "Religion (धर्म) *",
+              //     style: TextStyle(fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              // Container(
+              //   padding: const EdgeInsets.only(left: 10),
+              //   width: MediaQuery.of(context).size.width * 0.93,
+              //   decoration: BoxDecoration(
+              //       color: whiteColor,
+              //       borderRadius: BorderRadius.circular(10),
+              //       border: Border.all(color: blackColor)),
+              //   child: DropdownButtonHideUnderline(
+              //     child: DropdownButton(
+              //         hint: const Text("Select Religion"),
+              //         dropdownColor: whiteColor,
+              //         focusColor: whiteColor,
+              //         isExpanded: true,
+              //         value: religionvalue,
+              //         items: religionItems.map(buildReligionItem).toList(),
+              //         style: const TextStyle(
+              //             color: Colors.black, fontWeight: FontWeight.bold),
+              //         onChanged: (value) =>
+              //             setState(() => religionvalue = value)),
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
-              )
+              ),
             ],
           ),
         ),

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
+import 'package:kaamwalijobs_new/features/auth/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
-import 'package:kaamwalijobs_new/screens/splashscreen.dart';
+
+import 'core/local_storage.dart';
 
 Future main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalStoragePref.instance?.initPrefBox();
   await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }

@@ -44,7 +44,7 @@ class Repositiory {
           await http.post(url, headers: queryParameters, body: body);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        if (data['status'] == 'success') {
+        if (data['status'] == '200') {
           return Otp.fromJson(data);
         }
       }

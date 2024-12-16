@@ -43,7 +43,8 @@ class ProfileScreen extends StatelessWidget {
               ),
               Text(
                 "Personal Details",
-                style: GoogleFonts.poltawskiNowy(fontWeight: FontWeight.bold),
+                style: GoogleFonts.poltawskiNowy(
+                    fontWeight: FontWeight.bold, fontSize: 20),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.02,
@@ -164,36 +165,6 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              Text(
-                "KYC Details",
-                style: GoogleFonts.poltawskiNowy(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.02,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.30,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: whiteColor,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 200, 197, 197),
-                        spreadRadius: 1,
-                        blurRadius: 7,
-                        offset: Offset(0, 0), // changes position of shadow
-                      ),
-                    ]),
-                child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      children: [],
-                    )),
               ),
             ],
           ),

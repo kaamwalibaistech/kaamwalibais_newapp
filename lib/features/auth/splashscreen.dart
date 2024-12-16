@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/screens/onboardingScreen/onboarding_view.dart';
+import 'package:kaamwalijobs_new/features/auth/onboarding_view.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -19,7 +19,7 @@ class _SplashscreenState extends State<Splashscreen> {
     // final onboarding = prefs.getBool("onboarding")??false;
     Timer(
         const Duration(seconds: 2),
-        () => Navigator.push(context,
+        () => Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const OnboardingView())));
   }
 
