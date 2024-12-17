@@ -10,14 +10,14 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
-class BookmaidScreen extends StatefulWidget {
-  const BookmaidScreen({super.key});
-
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({super.key, required this.categoryId});
+  final String categoryId;
   @override
-  State<BookmaidScreen> createState() => _BookmaidScreenState();
+  State<CategoryPage> createState() => _CategoryPageState();
 }
 
-class _BookmaidScreenState extends State<BookmaidScreen> {
+class _CategoryPageState extends State<CategoryPage> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
   final int _pageSize = 10;
@@ -37,7 +37,8 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
 
   Future<void> _fetchPage(int pageKey) async {
     candidateRequest.page = pageKey.toString();
-    dashboardBloc.add(GetCandidates(candidateRequest: candidateRequest));
+    candidateRequest.categoryId = widget.categoryId;
+    dashboardBloc.add(GetDatabyCategory(candidateRequest: candidateRequest));
   }
 
   @override
@@ -60,7 +61,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
       body: BlocListener<DashboardBloc, DashboardState>(
         bloc: dashboardBloc,
         listener: (context, state) {
-          if (state is CandidateListLoadedState) {
+          if (state is CategoryListLoadedState) {
             try {
               final candidates = state.candidates;
               final isLastPage = candidates.length < _pageSize;
@@ -93,10 +94,11 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                             ),
                           ),
                         ),
-                    newPageProgressIndicatorBuilder: (_) =>
-                        const CircularProgressIndicator(),
+                    newPageProgressIndicatorBuilder: (_) => const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                     firstPageProgressIndicatorBuilder: (_) =>
-                        const CircularProgressIndicator(),
+                        const Center(child: CircularProgressIndicator()),
                     itemBuilder: (context, model, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(

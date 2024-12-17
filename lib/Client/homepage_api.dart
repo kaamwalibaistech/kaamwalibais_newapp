@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
+import 'package:kaamwalijobs_new/models/packages_model.dart';
 
 import '../models/homepage_model.dart';
 
@@ -52,40 +53,23 @@ class Repositiory {
       throw Exception();
     }
 
-    // try {
-    //   var headers = {
-    //     'API-KEY': 'ea3652c8-d890-44c6-9789-48dfc5831998',
-    //   };
-    //   var request = http.MultipartRequest(
-    //       'POST',
-    //       Uri.parse(
-    //           'https://test.kaamwalijobs.com/API/Mobile_api/sendsignupotp'));
-    //   request.fields.addAll({'mobile_no': number});
-
-    //   request.headers.addAll(headers);
-
-    //   http.StreamedResponse response = await request.send();
-
-    //   if (response.statusCode == 200) {
-    //   } else {
-    //     print(response.reasonPhrase);
-    //   }
-    // }
-    // catch (e) {
-    //   throw Exception();
-    // }
     return null;
   }
 
   Future<EmployerRegisterModel?> getEmployerRegister(
-      String name, String number, String password) async {
+      String name, String number, String password, int flag) async {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
     Uri url =
         Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_signup")
             .replace(queryParameters: queryParameters);
-    final body = {'name': name, 'mobile_no': number, 'password': password};
+    final body = {
+      'name': name,
+      'mobile_no': number,
+      'password': password,
+      flag: "flag"
+    };
     try {
       final response =
           await http.post(url, headers: queryParameters, body: body);
@@ -99,5 +83,29 @@ class Repositiory {
       throw Exception();
     }
     return null;
+  }
+
+  Future<PackagesModel> getPackages() async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/packageplan")
+            .replace(queryParameters: queryParameters);
+
+    try {
+      final response = await http.post(
+        url,
+        headers: queryParameters,
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+
+        return PackagesModel.fromJson(data);
+      }
+    } catch (e) {
+      throw Exception();
+    }
+    throw Exception();
   }
 }

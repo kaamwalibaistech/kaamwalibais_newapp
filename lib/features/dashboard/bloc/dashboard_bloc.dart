@@ -10,6 +10,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc({required this.dashboardNetwork})
       : super(DashboardStateInitial()) {
     on<GetCandidates>(_getCandidates);
+    on<GetDatabyCategory>(_getDataByCategory);
   }
 
   Future<void> _getCandidates(
@@ -20,6 +21,19 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           candidateRequest: event.candidateRequest);
 
       emit(CandidateListLoadedState(candidates: successResponse.data ?? []));
+    } catch (e) {
+      emit(CandidateLisFailedState());
+    }
+  }
+
+  Future<void> _getDataByCategory(
+      GetDatabyCategory event, Emitter<DashboardState> emit) async {
+    try {
+      emit(CategoryListLoadingState());
+      CandidateModel successResponse = await dashboardNetwork.fetchCandidates(
+          candidateRequest: event.candidateRequest);
+
+      emit(CategoryListLoadedState(candidates: successResponse.data ?? []));
     } catch (e) {
       emit(CandidateLisFailedState());
     }

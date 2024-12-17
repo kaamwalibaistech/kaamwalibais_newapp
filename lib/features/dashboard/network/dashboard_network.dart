@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
@@ -9,7 +11,8 @@ class DashboardNetwork {
     try {
       Dio dio = Dio();
       String url =
-          'https://test.kaamwalijobs.com/API/Mobile_api/all_candidate_list';
+          'https://test.kaamwalijobs.com/API/Mobile_api/search_candidate_list';
+      log(candidateRequest.toJson().toString());
       var formData = FormData.fromMap(candidateRequest.toJson());
       Response response = await dio.post(
         url,

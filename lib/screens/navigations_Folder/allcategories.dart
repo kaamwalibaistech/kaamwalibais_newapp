@@ -4,6 +4,7 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
 import 'package:kaamwalijobs_new/models/homepage_model.dart';
+import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 class Allcategories extends StatefulWidget {
   const Allcategories({super.key});
@@ -54,7 +55,14 @@ class _AllcategoriesState extends State<Allcategories> {
                           state.homepagemodel.categorylist;
 
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CategoryPage(
+                                      categoryId:
+                                          categories[index].categoryId)));
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                               boxShadow: const [

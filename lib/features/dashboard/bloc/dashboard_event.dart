@@ -13,3 +13,10 @@ class GetCandidates extends DashboardEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetDatabyCategory extends DashboardEvent {
+  GetDatabyCategory({required this.candidateRequest});
+  final CandidateRequest candidateRequest;
+  @override
+  List<Object> get props => [];
+}
