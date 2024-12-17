@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/navigationscreen.dart';
@@ -11,12 +10,14 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String phoneNumber;
   final String password;
   final String confirmPassword;
+  final int flag;
   const EmolpyerRegisterOtpscreen(
       {super.key,
       required this.fullName,
       required this.phoneNumber,
       required this.password,
-      required this.confirmPassword});
+      required this.confirmPassword,
+      required this.flag});
 
   @override
   State<EmolpyerRegisterOtpscreen> createState() =>
@@ -45,7 +46,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
 
   Future _registerEmployer() async {
     final registerEmployer = await repositiory.getEmployerRegister(
-        widget.fullName, widget.phoneNumber, widget.password);
+        widget.fullName, widget.phoneNumber, widget.password, widget.flag);
     setState(() {
       employerRegisterData = registerEmployer;
     });
@@ -120,7 +121,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
               onTap: () {
                 _registerEmployer();
                 if (otp!.otp == _otpController.text) {
-                  LocalStoragePref.instance?.setIsLogin();
+                  // LocalStoragePref.instance?.setIsLogin();
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(otp!.msg)));
                   Navigator.pushReplacement(

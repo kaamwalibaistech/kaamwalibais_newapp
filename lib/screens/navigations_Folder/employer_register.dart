@@ -17,6 +17,7 @@ class _MyWidgetState extends State<EmployerRegister> {
   TextEditingController confirmPasswordController = TextEditingController();
   bool _obsecureText = true;
   bool _obsecureText2 = true;
+  late int flag;
   // Otp? otp
   // ;
 
@@ -184,6 +185,9 @@ class _MyWidgetState extends State<EmployerRegister> {
                   ),
                   GestureDetector(
                     onTap: () async {
+                      setState(() {
+                        flag = 0;
+                      });
                       if (passwordController.text ==
                               confirmPasswordController.text &&
                           phoneNumberController.text.isNotEmpty &&
@@ -199,6 +203,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                                       password: passwordController.text,
                                       confirmPassword:
                                           confirmPasswordController.text,
+                                      flag: flag,
                                     )));
                       }
                     },

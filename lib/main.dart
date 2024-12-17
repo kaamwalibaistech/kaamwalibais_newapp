@@ -6,6 +6,8 @@ import 'package:kaamwalijobs_new/features/auth/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 
+import 'bloc/packages_bloc.dart';
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // LocalStoragePref.instance?.initPrefBox();
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<HomepageBloc>(create: (context) => HomepageBloc()),
         BlocProvider<DashboardBloc>(
             create: (context) =>
-                DashboardBloc(dashboardNetwork: DashboardNetwork()))
+                DashboardBloc(dashboardNetwork: DashboardNetwork())),
+        BlocProvider<PackagesBloc>(create: (context) => PackagesBloc()),
       ],
       child: const MaterialApp(
           debugShowCheckedModeBanner: false,

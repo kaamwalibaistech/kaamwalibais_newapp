@@ -52,31 +52,10 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
       backgroundColor: scaffoldColor,
       appBar: AppBar(
         backgroundColor: scaffoldColor,
-
         title: Image.asset(
           "lib/assets/images/kaamwalijobs.png",
           height: 40,
         ),
-        // Container(
-        //   padding: const EdgeInsets.only(left: 10),
-        //   height: MediaQuery.of(context).size.height * 0.06,
-        //   width: MediaQuery.of(context).size.width,
-        //   decoration: BoxDecoration(
-        //       border:
-        //           Border.all(color: const Color.fromARGB(255, 222, 219, 219)),
-        //       color: whiteColor,
-        //       borderRadius: BorderRadius.circular(10)),
-        //   child: const TextField(
-        //     // controller: _controller,
-        //     decoration: InputDecoration(
-        //       contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-        //       hintText: "Search",
-        //       hintStyle: TextStyle(color: textGreyColor),
-        //       border: OutlineInputBorder(borderSide: BorderSide.none),
-        //     ),
-        //   ),
-        // ),
-        // centerTitle: true,
       ),
       body: BlocListener<DashboardBloc, DashboardState>(
         bloc: dashboardBloc,
