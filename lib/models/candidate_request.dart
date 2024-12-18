@@ -60,25 +60,25 @@ class CandidateRequest {
   }
 
   Map<String, String> toJson() {
-    final Map<String, String> data = Map<String, String>();
-    data['UserId'] = this.userId ?? '';
-    data['latitude'] = this.latitude ?? '';
-    data['longitude'] = this.longitude ?? '';
-    data['page'] = this.page ?? '';
-    data['km'] = this.km ?? '';
-    data['CategoryId'] = this.categoryId ?? '';
-    data['min_salry'] = this.minSalry ?? '';
-    data['max_salary'] = this.maxSalary ?? '';
-    data['passport'] = this.passport ?? '';
-    data['min_age'] = this.minAge ?? '';
-    data['max_age'] = this.maxAge ?? '';
-    data['min_exp'] = this.minExp ?? '';
-    data['max_exp'] = this.maxExp ?? '';
-    data['gender'] = this.gender ?? '';
-    data['working_hours'] = this.workingHours ?? '';
-    data['religon'] = this.religon ?? '';
-    data['language'] = this.language ?? '';
-    data['sort_by'] = this.sortBy ?? '';
+    final Map<String, String> data = <String, String>{};
+    data['UserId'] = userId ?? '';
+    data['latitude'] = latitude ?? '';
+    data['longitude'] = longitude ?? '';
+    data['page'] = page ?? '';
+    data['km'] = km ?? '';
+    data['CategoryId'] = categoryId ?? '';
+    data['min_salry'] = minSalry ?? '';
+    data['max_salary'] = maxSalary ?? '';
+    data['passport'] = passport ?? '';
+    data['min_age'] = minAge ?? '';
+    data['max_age'] = maxAge ?? '';
+    data['min_exp'] = minExp ?? '';
+    data['max_exp'] = maxExp ?? '';
+    data['gender'] = gender ?? '';
+    data['working_hours'] = workingHours ?? '';
+    data['religon'] = religon ?? '';
+    data['language'] = language ?? '';
+    data['sort_by'] = sortBy ?? '';
     return data;
   }
 }

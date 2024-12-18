@@ -9,14 +9,14 @@ class CandidateModel {
     if (json['data'] != null) {
       data = <CandidateData>[];
       json['data'].forEach((v) {
-        data!.add(new CandidateData.fromJson(v));
+        data!.add(CandidateData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -95,28 +95,28 @@ class CandidateData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['candidate_id'] = this.candidateId;
-    data['CategoryName'] = this.categoryName;
-    data['MobileNo'] = this.mobileNo;
-    data['job_type'] = this.jobType;
-    data['ServiceLocation'] = this.serviceLocation;
-    data['rating'] = this.rating;
-    data['AadharCard'] = this.aadharCard;
-    data['OtherDocuments'] = this.otherDocuments;
-    data['passposrt'] = this.passposrt;
-    data['Age'] = this.age;
-    data['MaritalStatus'] = this.maritalStatus;
-    data['Religion'] = this.religion;
-    data['TotalExp'] = this.totalExp;
-    data['ExpectedSalary'] = this.expectedSalary;
-    data['Gender'] = this.gender;
-    data['MaximumEducation'] = this.maximumEducation;
-    data['WorkingHours'] = this.workingHours;
-    data['Language'] = this.language;
-    data['image'] = this.image;
-    data['already_sorted'] = this.alreadySorted;
-    data['rating_count'] = this.ratingCount;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['candidate_id'] = candidateId;
+    data['CategoryName'] = categoryName;
+    data['MobileNo'] = mobileNo;
+    data['job_type'] = jobType;
+    data['ServiceLocation'] = serviceLocation;
+    data['rating'] = rating;
+    data['AadharCard'] = aadharCard;
+    data['OtherDocuments'] = otherDocuments;
+    data['passposrt'] = passposrt;
+    data['Age'] = age;
+    data['MaritalStatus'] = maritalStatus;
+    data['Religion'] = religion;
+    data['TotalExp'] = totalExp;
+    data['ExpectedSalary'] = expectedSalary;
+    data['Gender'] = gender;
+    data['MaximumEducation'] = maximumEducation;
+    data['WorkingHours'] = workingHours;
+    data['Language'] = language;
+    data['image'] = image;
+    data['already_sorted'] = alreadySorted;
+    data['rating_count'] = ratingCount;
     return data;
   }
 }

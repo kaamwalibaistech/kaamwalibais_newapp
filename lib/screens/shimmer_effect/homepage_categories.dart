@@ -7,22 +7,23 @@ class HomepageCategoriesShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: scaffoldColor,
-      body: Padding(
+    return SingleChildScrollView(
+      // backgroundColor: scaffoldColor,
+      child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GridView.builder(
+          padding: EdgeInsets.zero,
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
+          itemCount: 6,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisSpacing: 20, crossAxisCount: 3, crossAxisSpacing: 20),
-          itemCount: 6,
           itemBuilder: (BuildContext context, int index) {
             return Container(
-              decoration: const BoxDecoration(),
+              decoration: const BoxDecoration(color: whiteColor),
               child: Shimmer.fromColors(
-                baseColor: Colors.grey.shade300,
-                highlightColor: Colors.grey.shade400,
+                baseColor: const Color.fromARGB(255, 213, 210, 210),
+                highlightColor: const Color.fromARGB(255, 241, 241, 241),
                 child: Container(
                     decoration: BoxDecoration(
                         color: Colors.grey.shade300,

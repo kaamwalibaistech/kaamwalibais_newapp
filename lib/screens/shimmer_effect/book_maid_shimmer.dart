@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BookMaidShimmer extends StatelessWidget {
@@ -7,9 +6,8 @@ class BookMaidShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: scaffoldColor,
-      body: ListView.builder(
+    return SingleChildScrollView(
+      child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: 10,

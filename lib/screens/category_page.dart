@@ -9,6 +9,7 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
+import 'package:kaamwalijobs_new/screens/shimmer_effect/book_maid_shimmer.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, required this.categoryId});
@@ -95,10 +96,10 @@ class _CategoryPageState extends State<CategoryPage> {
                           ),
                         ),
                     newPageProgressIndicatorBuilder: (_) => const Center(
-                          child: CircularProgressIndicator(),
+                          child: BookMaidShimmer(),
                         ),
                     firstPageProgressIndicatorBuilder: (_) =>
-                        const Center(child: CircularProgressIndicator()),
+                        const Center(child: BookMaidShimmer()),
                     itemBuilder: (context, model, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
@@ -397,7 +398,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: "Working Hours: ",
+                                                  text: "Language: ",
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 12,
@@ -405,9 +406,11 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: model.workingHours !=
-                                                          null
-                                                      ? "${model.workingHours} Hours"
+                                                  spellOut: true,
+                                                  text: model.language != null
+                                                      ? model.language!
+                                                          .join(",")
+                                                      // .join(",")
                                                       : "",
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w500,
@@ -458,7 +461,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: "Language: ",
+                                                  text: "Working Hours: ",
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w400,
                                                     fontSize: 12,
@@ -466,9 +469,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   ),
                                                 ),
                                                 TextSpan(
-                                                  text: model.language != null
-                                                      ? model.language!
-                                                          .join(",")
+                                                  text: model.workingHours !=
+                                                          null
+                                                      ? "${model.workingHours} Hours"
                                                       : "",
                                                   style: GoogleFonts.poppins(
                                                     fontWeight: FontWeight.w500,

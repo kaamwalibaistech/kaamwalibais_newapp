@@ -9,6 +9,7 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
+import 'package:kaamwalijobs_new/screens/shimmer_effect/book_maid_shimmer.dart';
 
 class BookmaidScreen extends StatefulWidget {
   const BookmaidScreen({super.key});
@@ -94,9 +95,9 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                           ),
                         ),
                     newPageProgressIndicatorBuilder: (_) =>
-                        const CircularProgressIndicator(),
+                        const Center(child: BookMaidShimmer()),
                     firstPageProgressIndicatorBuilder: (_) =>
-                        const CircularProgressIndicator(),
+                        const Center(child: BookMaidShimmer()),
                     itemBuilder: (context, model, index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
