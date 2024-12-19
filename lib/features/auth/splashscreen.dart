@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/onboarding_view.dart';
+import 'package:kaamwalijobs_new/models/employer_register_model.dart';
+
+import '../../screens/navigations_Folder/navigationscreen.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({
@@ -19,10 +23,17 @@ class _SplashscreenState extends State<Splashscreen> {
 
     // final prefs =await SharedPreferences.getInstance();
     // final onboarding = prefs.getBool("onboarding")??false;
-    Timer(
-        const Duration(seconds: 2),
-        () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const OnboardingView())));
+    Timer(const Duration(seconds: 1), () {
+      EmployerRegisterModel? employerRegisterModel =
+          LocalStoragePref.instance?.getUserProfile();
+      if (employerRegisterModel != null) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Navigationscreen()));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const OnboardingView()));
+      }
+    });
   }
 
   @override

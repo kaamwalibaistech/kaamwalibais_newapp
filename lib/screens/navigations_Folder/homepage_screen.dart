@@ -4,10 +4,12 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/alljobsopenings.dart';
 
+import '../../models/employer_register_model.dart';
 import '../../models/homepage_model.dart';
 import '../shimmer_effect/homepage_categories.dart';
 import 'allcategories.dart';
@@ -39,7 +41,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
     // });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      checkLoginPopup();
+      EmployerRegisterModel? userProfileData =
+          LocalStoragePref.instance?.getUserProfile();
+      if (userProfileData == null) checkLoginPopup();
     });
   }
 
@@ -58,6 +62,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    EmployerRegisterModel? employerRegisterModel =
+        LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
         backgroundColor: scaffoldColor,
         body: BlocBuilder<HomepageBloc, HomepageState>(
@@ -85,9 +91,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   ),
                   Row(
                     children: [
-                      const Text(
-                        "Ritesh Dixit",
-                        style: TextStyle(
+                      Text(
+                        employerRegisterModel?.name ?? "",
+                        style: const TextStyle(
                             fontSize: 22, fontWeight: FontWeight.bold),
                       ),
                       Padding(

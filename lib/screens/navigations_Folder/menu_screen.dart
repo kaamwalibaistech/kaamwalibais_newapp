@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
+import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/packages.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
   @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  @override
   Widget build(BuildContext context) {
+    EmployerRegisterModel? employerRegisterModel =
+        LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: Padding(
@@ -21,61 +30,70 @@ class MenuScreen extends StatelessWidget {
             //   "lib/assets/images/kaamwalijobs.png",
             //   height: 50,
             // ),
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Row(
-                children: [
-                  Container(
-                      height: MediaQuery.of(context).size.height * 0.06,
-                      width: MediaQuery.of(context).size.width * 0.13,
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: const Icon(
-                        Icons.person_3_outlined,
-                        size: 28,
-                        color: scaffoldColor,
-                      )),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) =>
-                                const AlertDialog(content: LoginPopup()
-                                    // actions: const [],
-                                    ));
-                      },
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Login ',
-                              style: GoogleFonts.roboto(fontSize: 18),
-                            ),
-                            const TextSpan(
-                              text: '/',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            TextSpan(
-                              text: ' Signup',
-                              style: GoogleFonts.roboto(fontSize: 18),
-                            ),
-                          ],
+            if (employerRegisterModel != null)
+              const SizedBox(
+                height: 60.0,
+              )
+            else ...[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Row(
+                  children: [
+                    Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.13,
+                        decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(50)),
+                        child: const Icon(
+                          Icons.person_3_outlined,
+                          size: 28,
+                          color: scaffoldColor,
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  const AlertDialog(content: LoginPopup()
+                                      // actions: const [],
+                                      ));
+                        },
+                        child: Text.rich(
+                          TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Login ',
+                                style: GoogleFonts.roboto(fontSize: 18),
+                              ),
+                              const TextSpan(
+                                text: '/',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              TextSpan(
+                                text: ' Signup',
+                                style: GoogleFonts.roboto(fontSize: 18),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10.0, bottom: 10),
-              child: Divider(
-                thickness: 2,
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                child: Divider(
+                  thickness: 2,
+                ),
               ),
+            ],
+            const SizedBox(
+              height: 10,
             ),
 
             Text(
@@ -120,28 +138,35 @@ class MenuScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "lib/assets/images/become_an_agent.png",
-                          color: Colors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          duration: Duration(seconds: 2),
+                          content: Text("This Feature is Coming soon")));
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: MediaQuery.of(context).size.height * 0.08,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                              color: whiteColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Image.asset(
+                            "lib/assets/images/become_an_agent.png",
+                            color: Colors.grey,
+                          ),
                         ),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          "Becaome\n an agent",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0),
+                          child: Text(
+                            "Becaome\n an agent",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
@@ -329,20 +354,24 @@ class MenuScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Container(
-                  height: MediaQuery.of(context).size.height * 0.05,
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  decoration: const BoxDecoration(color: blueColor),
-                  child: TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Post job",
-                        style: TextStyle(color: whiteColor),
-                      ))),
-            )
+            if (employerRegisterModel != null)
+              Padding(
+                  padding: const EdgeInsets.only(top: 40.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      LocalStoragePref.instance!.clearAllPref();
+                    },
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        decoration: const BoxDecoration(color: blueColor),
+                        child: const Center(
+                          child: Text(
+                            "Log Out",
+                            style: TextStyle(color: whiteColor),
+                          ),
+                        )),
+                  )),
           ],
         ),
       ),

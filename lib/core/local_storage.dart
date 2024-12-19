@@ -1,32 +1,41 @@
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
-// class LocalStoragePref {
-//   static LocalStoragePref? _instance;
-//   static FlutterSecureStorage? storage;
+import 'package:kaamwalijobs_new/models/employer_register_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-//   static LocalStoragePref? get instance {
-//     _instance ??= LocalStoragePref();
+class LocalStoragePref {
+  static LocalStoragePref? _instance;
+  static SharedPreferences? storage;
 
-//     return _instance;
-//   }
+  static LocalStoragePref? get instance {
+    _instance ??= LocalStoragePref();
 
-//   Future initPrefBox() async {
-//     storage ??= const FlutterSecureStorage();
-//   }
+    return _instance;
+  }
 
-//   Future<void>? setIsLogin() {
-//     return storage?.write(key: LocalStorageKeys.isLogin, value: 'true');
-//   }
+  Future initPrefBox() async {
+    storage ??= await SharedPreferences.getInstance();
+  }
 
-//   Future<String> isLogin() async {
-//     return await storage?.read(key: LocalStorageKeys.isLogin) ?? 'false';
-//   }
+  void storeUserProfile(String userProfileData) async {
+    await storage!.setString(LocalStorageKeys.userProfile, userProfileData);
+  }
 
-//   Future clearAllPref() async {
-//     await storage?.deleteAll();
-//   }
-// }
+  EmployerRegisterModel? getUserProfile() {
+    String? response = storage?.getString(LocalStorageKeys.userProfile);
+    if (response != null) {
+      EmployerRegisterModel employerRegisterModel =
+          EmployerRegisterModel.fromJson(jsonDecode(response));
+      return employerRegisterModel;
+    }
+    return null;
+  }
 
-// class LocalStorageKeys {
-//   static String isLogin = 'is_login';
-// }
+  Future clearAllPref() async {
+    await storage?.clear();
+  }
+}
+
+class LocalStorageKeys {
+  static String userProfile = 'user_profile';
+}

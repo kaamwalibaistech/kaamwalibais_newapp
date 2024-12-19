@@ -10,14 +10,14 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String phoneNumber;
   final String password;
   final String confirmPassword;
-  final int flag;
-  const EmolpyerRegisterOtpscreen(
-      {super.key,
-      required this.fullName,
-      required this.phoneNumber,
-      required this.password,
-      required this.confirmPassword,
-      required this.flag});
+
+  const EmolpyerRegisterOtpscreen({
+    super.key,
+    required this.fullName,
+    required this.phoneNumber,
+    required this.password,
+    required this.confirmPassword,
+  });
 
   @override
   State<EmolpyerRegisterOtpscreen> createState() =>
@@ -46,7 +46,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
 
   Future _registerEmployer() async {
     final registerEmployer = await repositiory.getEmployerRegister(
-        widget.fullName, widget.phoneNumber, widget.password, widget.flag);
+        widget.fullName, widget.phoneNumber, widget.password);
     setState(() {
       employerRegisterData = registerEmployer;
     });
@@ -118,10 +118,9 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
                   controller: _otpController,
                 )),
             GestureDetector(
-              onTap: () {
-                _registerEmployer();
+              onTap: () async {
+                await _registerEmployer();
                 if (otp!.otp == _otpController.text) {
-                  // LocalStoragePref.instance?.setIsLogin();
                   ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(otp!.msg)));
                   Navigator.pushReplacement(
