@@ -21,6 +21,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _mobileNoController = TextEditingController();
   final formkey = GlobalKey<FormState>();
+  bool _obsecureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +83,8 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                           color: whiteColor,
                           borderRadius: BorderRadius.circular(10)),
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
                         controller: _mobileNoController,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -91,6 +94,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                           }
                         },
                         decoration: const InputDecoration(
+                          counterText: "",
                           contentPadding:
                               EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                           hintText: "Mobile No.",
@@ -112,18 +116,28 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                           color: whiteColor,
                           borderRadius: BorderRadius.circular(10)),
                       child: TextFormField(
+                        obscureText: _obsecureText,
                         controller: _passwordController,
                         validator: (value) {
                           if (value!.isNotEmpty) return null;
                           return "please enter password!";
                         },
-                        decoration: const InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                        decoration: InputDecoration(
+                          suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _obsecureText = !_obsecureText;
+                                });
+                              },
+                              child: _obsecureText
+                                  ? const Icon(Icons.visibility_off)
+                                  : const Icon(Icons.visibility)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 2),
                           hintText: "Password",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border:
-                              OutlineInputBorder(borderSide: BorderSide.none),
+                          hintStyle: const TextStyle(color: textGreyColor),
+                          border: const OutlineInputBorder(
+                              borderSide: BorderSide.none),
                         ),
                       ),
                     ),

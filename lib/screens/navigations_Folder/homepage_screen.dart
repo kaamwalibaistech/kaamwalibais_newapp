@@ -85,35 +85,47 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.08,
                   ),
-                  const Text(
-                    "Welcome Back!",
-                    style: TextStyle(color: textGreyColor, fontSize: 16),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        employerRegisterModel?.name ?? "",
-                        style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const HomepageCategoriesShimmer()));
-                          },
-                          child: Image.asset(
-                            "lib/assets/images/hello.png",
-                            height: 20,
-                          ),
+                  employerRegisterModel != null
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Welcome Back!",
+                              style:
+                                  TextStyle(color: textGreyColor, fontSize: 16),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  employerRegisterModel.name,
+                                  style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const HomepageCategoriesShimmer()));
+                                    },
+                                    child: Image.asset(
+                                      "lib/assets/images/hello.png",
+                                      height: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )
+                      : Image.asset(
+                          "lib/assets/images/kaamwalijobs.png",
+                          height: 40,
                         ),
-                      ),
-                    ],
-                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Row(

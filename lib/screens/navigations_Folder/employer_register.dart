@@ -15,6 +15,7 @@ class _MyWidgetState extends State<EmployerRegister> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   bool _obsecureText = true;
   bool _obsecureText2 = true;
 
@@ -57,7 +58,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                       offset: Offset(0, 0), // changes position of shadow
                     ),
                   ]),
-              height: MediaQuery.of(context).size.height * 0.48,
+              height: MediaQuery.of(context).size.height * 0.55,
               width: MediaQuery.of(context).size.width * 0.85,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,6 +110,28 @@ class _MyWidgetState extends State<EmployerRegister> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Mobile No",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(borderSide: BorderSide.none),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 10),
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: blackColor),
+                        color: whiteColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: TextField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                        hintText: "Enter Email",
                         hintStyle: TextStyle(color: textGreyColor),
                         border: OutlineInputBorder(borderSide: BorderSide.none),
                       ),
@@ -190,7 +213,8 @@ class _MyWidgetState extends State<EmployerRegister> {
                           phoneNumberController.text.isNotEmpty &&
                           fullNameController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
-                          confirmPasswordController.text.isNotEmpty) {
+                          confirmPasswordController.text.isNotEmpty &&
+                          emailController.text.isNotEmpty) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -200,6 +224,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                                       password: passwordController.text,
                                       confirmPassword:
                                           confirmPasswordController.text,
+                                      email: emailController.text,
                                     )));
                       }
                     },

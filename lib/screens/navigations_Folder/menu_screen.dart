@@ -359,7 +359,9 @@ class _MenuScreenState extends State<MenuScreen> {
                   padding: const EdgeInsets.only(top: 40.0),
                   child: GestureDetector(
                     onTap: () {
-                      LocalStoragePref.instance!.clearAllPref();
+                      setState(() {
+                        LocalStoragePref.instance!.clearAllPref();
+                      });
                     },
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.05,

@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
-import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
 import 'package:kaamwalijobs_new/models/packages_model.dart';
 
+import '../models/empolyer_registerotp_model.dart';
 import '../models/homepage_model.dart';
 
 enum USER { employer, candidates }
@@ -59,7 +59,7 @@ class Repositiory {
   }
 
   Future<EmployerRegisterModel?> getEmployerRegister(
-      String name, String number, String password) async {
+      String name, String number, String email, String password) async {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
@@ -69,6 +69,7 @@ class Repositiory {
     final body = {
       'name': name,
       'mobile_no': number,
+      'emaild': email,
       'password': password,
     };
     try {

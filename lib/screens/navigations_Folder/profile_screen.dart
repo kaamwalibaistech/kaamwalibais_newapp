@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../assets/colors.dart';
+import '../../core/local_storage.dart';
+import '../../models/employer_register_model.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
   Widget build(BuildContext context) {
+    EmployerRegisterModel? employerRegisterModel =
+        LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
@@ -16,22 +25,22 @@ class ProfileScreen extends StatelessWidget {
           "lib/assets/images/kaamwalijobs.png",
           cacheHeight: 40,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Container(
-                height: MediaQuery.of(context).size.height * 0.05,
-                width: MediaQuery.of(context).size.width * 0.25,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10), color: blueColor),
-                child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Post job",
-                      style: GoogleFonts.poltawskiNowy(color: whiteColor),
-                    ))),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 10.0),
+        //     child: Container(
+        //         height: MediaQuery.of(context).size.height * 0.05,
+        //         width: MediaQuery.of(context).size.width * 0.25,
+        //         decoration: BoxDecoration(
+        //             borderRadius: BorderRadius.circular(10), color: blueColor),
+        //         child: TextButton(
+        //             onPressed: () {},
+        //             child: Text(
+        //               "Post job",
+        //               style: GoogleFonts.poltawskiNowy(color: whiteColor),
+        //             ))),
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -67,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -76,14 +85,14 @@ class ProfileScreen extends StatelessWidget {
                               style: GoogleFonts.poltawskiNowy(),
                             ),
                             Text(
-                              "Ritesh Dixit",
+                              employerRegisterModel?.name ?? "----",
                               style: GoogleFonts.poltawskiNowy(),
                             )
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -92,51 +101,19 @@ class ProfileScreen extends StatelessWidget {
                               style: GoogleFonts.poltawskiNowy(),
                             ),
                             Text(
-                              "8169669043",
+                              employerRegisterModel?.mobileNo ?? "----",
                               style: GoogleFonts.poltawskiNowy(),
                             )
                           ],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
+                        padding: const EdgeInsets.only(top: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "Location",
-                              style: GoogleFonts.poltawskiNowy(),
-                            ),
-                            Text(
-                              "Mumbai",
-                              style: GoogleFonts.poltawskiNowy(),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Email",
-                              style: GoogleFonts.poltawskiNowy(),
-                            ),
-                            Text(
-                              "ritesh.dixit@gmail.com",
-                              style: GoogleFonts.poltawskiNowy(),
-                            )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "GST No.",
                               style: GoogleFonts.poltawskiNowy(),
                             ),
                             Text(
@@ -146,8 +123,40 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Email",
+                              style: GoogleFonts.poltawskiNowy(),
+                            ),
+                            Text(
+                              employerRegisterModel?.emailId ?? "",
+                              style: GoogleFonts.poltawskiNowy(),
+                            )
+                          ],
+                        ),
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 15.0),
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //     children: [
+                      //       Text(
+                      //         "GST No.",
+                      //         style: GoogleFonts.poltawskiNowy(),
+                      //       ),
+                      //       Text(
+                      //         "----",
+                      //         style: GoogleFonts.poltawskiNowy(),
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.04,
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.042,

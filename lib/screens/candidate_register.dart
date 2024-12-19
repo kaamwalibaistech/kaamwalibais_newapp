@@ -101,6 +101,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   String? workingHrsValue;
   String? expectedSalaryValue;
   String? totalExperienceValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -659,6 +660,90 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                           setState(() => totalExperienceValue = value)),
                 ),
               ),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     const Padding(
+              //       padding: EdgeInsets.only(left: 20.0, top: 15.0),
+              //       child: Text(
+              //         "Upload Image (तस्वीर डालिये) *",
+              //         style: TextStyle(
+              //           fontFamily: "Arial",
+              //           fontSize: 13,
+              //           color: blackColor,
+              //         ),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.only(
+              //           left: 14.0, right: 14.0, top: 8.0),
+              //       child: Row(
+              //         children: [
+              //           Expanded(
+              //             child: Container(
+              //               width: double.infinity,
+              //               decoration: BoxDecoration(
+              //                 color: whiteColor,
+              //                 borderRadius:
+              //                     const BorderRadius.all(Radius.circular(10.0)),
+              //                 border: Border.all(
+              //                   color: Colors.grey,
+              //                   width: 0.80,
+              //                 ),
+              //               ),
+              //               child: InkWell(
+              //                 onTap: () {
+              //                   setState(() {
+              //                     imageStatus = 3;
+              //                   });
+              //                   selectImageDialog(context);
+              //                 },
+              //                 child: Row(
+              //                   mainAxisAlignment:
+              //                       MainAxisAlignment.spaceBetween,
+              //                   children: [
+              //                     Expanded(
+              //                       child: Padding(
+              //                         padding: const EdgeInsets.only(left: 8.0),
+              //                         child: Text(
+              //                           otherDoc != null
+              //                               ? otherDoc!
+              //                               : "No file found",
+              //                         ),
+              //                       ),
+              //                     ),
+              //                     Container(
+              //                       width: 70,
+              //                       height: 48,
+              //                       decoration: const BoxDecoration(
+              //                         color: Color(0xFF006DCF),
+              //                         borderRadius: BorderRadius.only(
+              //                           topRight: Radius.circular(8.0),
+              //                           bottomRight: Radius.circular(8.0),
+              //                         ),
+              //                       ),
+              //                       child: const Center(
+              //                         child: Text(
+              //                           'Browse',
+              //                           style: TextStyle(
+              //                             fontWeight: FontWeight.normal,
+              //                             fontFamily: "Arial",
+              //                             fontSize: 13,
+              //                             color: whiteColor,
+              //                           ),
+              //                         ),
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
               const SizedBox(
                 height: 20,
               ),
@@ -684,6 +769,161 @@ class _CandidateRegisterState extends State<CandidateRegister> {
       ),
     );
   }
+
+  // void selectImageDialog(BuildContext context) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return SimpleDialog(
+  //           backgroundColor: Colors.white,
+  //           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+  //           titlePadding:
+  //               const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+  //           title: const Column(
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: <Widget>[
+  //               Text(
+  //                 'Select Image',
+  //                 style: TextStyle(
+  //                     color: blueColor,
+  //                     fontWeight: FontWeight.w500,
+  //                     fontSize: 15),
+  //               ),
+  //               Divider(
+  //                 thickness: 1,
+  //                 color: Colors.black26,
+  //               ),
+  //             ],
+  //           ),
+  //           children: <Widget>[
+  //             Padding(
+  //               padding: const EdgeInsets.only(bottom: 20.0),
+  //               child: InkWell(
+  //                 onTap: () async {
+  //                   pickImageCamera();
+  //                   Navigator.pop(context);
+  //                 },
+  //                 child: const Row(
+  //                   children: [
+  //                     Icon(
+  //                       Icons.camera_alt,
+  //                       size: 25,
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.only(left: 8.0),
+  //                       child: Text(
+  //                         'Camera',
+  //                         style: TextStyle(
+  //                             color: blueColor,
+  //                             fontWeight: FontWeight.w500,
+  //                             fontSize: 15),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             Padding(
+  //               padding: const EdgeInsets.only(bottom: 20.0),
+  //               child: InkWell(
+  //                 onTap: () async {
+  //                   pickImage();
+  //                   Navigator.pop(context);
+  //                 },
+  //                 child: const Row(
+  //                   children: [
+  //                     Icon(
+  //                       Icons.image,
+  //                       size: 25,
+  //                     ),
+  //                     Padding(
+  //                       padding: EdgeInsets.only(left: 8.0),
+  //                       child: Text(
+  //                         'Pick image from gallery',
+  //                         style: TextStyle(
+  //                             color: blueColor,
+  //                             fontWeight: FontWeight.w500,
+  //                             fontSize: 15),
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
+
+  // void pickImageCamera() async {
+  //   _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //     sourcePath: _pickedFile!.path,
+  //     aspectRatioPresets: [
+  //       CropAspectRatioPreset.square,
+  //     ],
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //           toolbarTitle: 'Cropper',
+  //           toolbarColor: primaryColor,
+  //           toolbarWidgetColor: Colors.white,
+  //           hideBottomControls: true,
+  //           // initAspectRatio: CropAspectRatioPreset.original,
+  //           lockAspectRatio: true),
+  //       IOSUiSettings(
+  //         title: 'Cropper',
+  //       ),
+  //     ],
+  //     compressQuality: 60,
+  //   );
+
+  //   _pickedFile = XFile(croppedFile!.path);
+
+  //   if (imageStatus == 2) {
+  //     aadhaar = _pickedFile!.name;
+  //     aadharFile = _pickedFile;
+  //   } else if (imageStatus == 3) {
+  //     otherDoc = _pickedFile!.name;
+  //     Image = _pickedFile;
+  //   }
+
+  //   setState(() {});
+  // }
+
+  // void pickImage() async {
+  //   _pickedFile = (await ImagePicker().pickImage(source: ImageSource.gallery))!;
+
+  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
+  //     sourcePath: _pickedFile!.path,
+  //     aspectRatioPresets: [
+  //       CropAspectRatioPreset.square,
+  //     ],
+  //     uiSettings: [
+  //       AndroidUiSettings(
+  //           toolbarTitle: 'Cropper',
+  //           toolbarColor: primaryColor,
+  //           toolbarWidgetColor: Colors.white,
+  //           hideBottomControls: true,
+  //           // initAspectRatio: CropAspectRatioPreset.original,
+  //           lockAspectRatio: true),
+  //       IOSUiSettings(
+  //         title: 'Cropper',
+  //       ),
+  //     ],
+  //     compressQuality: 80,
+  //   );
+  //   _pickedFile = XFile(croppedFile!.path);
+
+  //   if (imageStatus == 2) {
+  //     aadhaar = _pickedFile!.name;
+  //     aadharFile = _pickedFile;
+  //   } else if (imageStatus == 3) {
+  //     otherDoc = _pickedFile!.name;
+  //     Image = _pickedFile;
+  //   }
+  //   setState(() {});
+  // }
 
   DropdownMenuItem<String> buildMenuItem(String items) =>
       DropdownMenuItem(value: items, child: Text(items));

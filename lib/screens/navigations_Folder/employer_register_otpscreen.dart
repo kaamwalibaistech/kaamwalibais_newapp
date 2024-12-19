@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
-import 'package:kaamwalijobs_new/models/empolyer_register_modelotp.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/navigationscreen.dart';
+
+import '../../models/empolyer_registerotp_model.dart';
 
 class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String fullName;
   final String phoneNumber;
+  final String email;
   final String password;
   final String confirmPassword;
 
@@ -15,6 +16,7 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
     super.key,
     required this.fullName,
     required this.phoneNumber,
+    required this.email,
     required this.password,
     required this.confirmPassword,
   });
@@ -46,7 +48,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
 
   Future _registerEmployer() async {
     final registerEmployer = await repositiory.getEmployerRegister(
-        widget.fullName, widget.phoneNumber, widget.password);
+        widget.fullName, widget.phoneNumber, widget.email, widget.password);
     setState(() {
       employerRegisterData = registerEmployer;
     });
@@ -121,12 +123,10 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
               onTap: () async {
                 await _registerEmployer();
                 if (otp!.otp == _otpController.text) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(otp!.msg)));
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Navigationscreen()));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Register Successfully")));
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Invalid OTP")));

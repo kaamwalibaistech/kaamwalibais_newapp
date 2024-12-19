@@ -5,6 +5,7 @@ import 'package:kaamwalijobs_new/screens/navigations_Folder/homepage_screen.dart
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 import '../../assets/colors.dart';
+import 'login_popup.dart';
 import 'menu_screen.dart';
 import 'profile_screen.dart';
 
@@ -107,5 +108,14 @@ class _NavigationscreenState extends State<Navigationscreen> {
         backgroundColor: blueColor,
       ),
     );
+  }
+
+  checkLoginPopup() async {
+    // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
+    // if (!(bool.tryParse(isLogin) ?? false)) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(content: LoginPopup()));
+    // }
   }
 }
