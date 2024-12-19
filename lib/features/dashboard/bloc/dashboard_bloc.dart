@@ -30,7 +30,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       GetDatabyCategory event, Emitter<DashboardState> emit) async {
     try {
       emit(CategoryListLoadingState());
-      CandidateModel successResponse = await dashboardNetwork.fetchCandidates(
+      CandidateModel successResponse = await dashboardNetwork.fetchCategoryById(
           candidateRequest: event.candidateRequest);
 
       emit(CategoryListLoadedState(candidates: successResponse.data ?? []));

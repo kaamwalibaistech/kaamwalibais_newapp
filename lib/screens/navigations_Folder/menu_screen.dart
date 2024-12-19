@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/core/local_storage.dart';
-import 'package:kaamwalijobs_new/models/employer_register_model.dart';
+import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/packages.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
+
+import '../../Client/homepage_api.dart';
+import '../../core/local_storage.dart';
+import '../../features/auth/bloc/auth_event.dart';
+import '../../features/auth/bloc/auth_state.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -15,10 +20,15 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  late AuthBloc _authBloc;
+  @override
+  void initState() {
+    super.initState();
+    _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    EmployerRegisterModel? employerRegisterModel =
-        LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: Padding(
@@ -30,68 +40,87 @@ class _MenuScreenState extends State<MenuScreen> {
             //   "lib/assets/images/kaamwalijobs.png",
             //   height: 50,
             // ),
-            if (employerRegisterModel != null)
-              const SizedBox(
-                height: 60.0,
-              )
-            else ...[
-              Padding(
-                padding: const EdgeInsets.only(top: 60.0),
-                child: Row(
-                  children: [
-                    Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(50)),
-                        child: const Icon(
-                          Icons.person_3_outlined,
-                          size: 28,
-                          color: scaffoldColor,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const AlertDialog(content: LoginPopup()
-                                      // actions: const [],
-                                      ));
-                        },
-                        child: Text.rich(
-                          TextSpan(
+            BlocBuilder(
+              bloc: _authBloc,
+              buildWhen: (previous, current) =>
+                  current is AuthLoadedState ||
+                  current is AuthLoadFailedState ||
+                  current is AuthLoadingState,
+              builder: (context, state) {
+                if (state is AuthLoadedState) {
+                  return const SizedBox(
+                    height: 60.0,
+                  );
+                } else
+                  return Column(
+                    children: [
+                      ...[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 60.0),
+                          child: Row(
                             children: [
-                              TextSpan(
-                                text: 'Login ',
-                                style: GoogleFonts.roboto(fontSize: 18),
-                              ),
-                              const TextSpan(
-                                text: '/',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              TextSpan(
-                                text: ' Signup',
-                                style: GoogleFonts.roboto(fontSize: 18),
-                              ),
+                              Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.13,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: const Icon(
+                                    Icons.person_3_outlined,
+                                    size: 28,
+                                    color: scaffoldColor,
+                                  )),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => const AlertDialog(
+                                            content: LoginPopup()
+                                            // actions: const [],
+                                            ));
+                                  },
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Login ',
+                                          style:
+                                              GoogleFonts.roboto(fontSize: 18),
+                                        ),
+                                        const TextSpan(
+                                          text: '/',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        TextSpan(
+                                          text: ' Signup',
+                                          style:
+                                              GoogleFonts.roboto(fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10),
-                child: Divider(
-                  thickness: 2,
-                ),
-              ),
-            ],
+                        const Padding(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                          child: Divider(
+                            thickness: 2,
+                          ),
+                        ),
+                      ],
+                    ],
+                  );
+              },
+            ),
             const SizedBox(
               height: 10,
             ),
@@ -354,26 +383,39 @@ class _MenuScreenState extends State<MenuScreen> {
                 ],
               ),
             ),
-            if (employerRegisterModel != null)
-              Padding(
-                  padding: const EdgeInsets.only(top: 40.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        LocalStoragePref.instance!.clearAllPref();
-                      });
-                    },
-                    child: Container(
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: const BoxDecoration(color: blueColor),
-                        child: const Center(
-                          child: Text(
-                            "Log Out",
-                            style: TextStyle(color: whiteColor),
-                          ),
-                        )),
-                  )),
+            BlocBuilder(
+                bloc: _authBloc,
+                buildWhen: (previous, current) =>
+                    current is AuthLoadedState ||
+                    current is AuthLoadFailedState ||
+                    current is AuthLoadingState,
+                builder: (context, state) {
+                  if (state is AuthLoadedState) {
+                    return Padding(
+                        padding: const EdgeInsets.only(top: 40.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await LocalStoragePref.instance!.clearAllPref();
+                            BlocProvider.of<AuthBloc>(context, listen: false)
+                                .add(AuthenticationEvent(
+                                    phoneNumber: '',
+                                    password: '',
+                                    userType: USER.employer));
+                          },
+                          child: Container(
+                              height: MediaQuery.of(context).size.height * 0.05,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              decoration: const BoxDecoration(color: blueColor),
+                              child: const Center(
+                                child: Text(
+                                  "Log Out",
+                                  style: TextStyle(color: whiteColor),
+                                ),
+                              )),
+                        ));
+                  }
+                  return SizedBox();
+                })
           ],
         ),
       ),

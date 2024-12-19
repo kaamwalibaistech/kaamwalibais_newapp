@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
-import 'package:kaamwalijobs_new/features/auth/onboarding_view.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_view.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
-import '../../screens/navigations_Folder/navigationscreen.dart';
+import '../../../screens/navigations_Folder/navigationscreen.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({

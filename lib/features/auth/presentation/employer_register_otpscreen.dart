@@ -3,7 +3,7 @@ import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
-import '../../models/empolyer_registerotp_model.dart';
+import '../../../models/empolyer_registerotp_model.dart';
 
 class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String fullName;

@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
-import 'package:kaamwalijobs_new/features/auth/splashscreen.dart';
+import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<HomepageBloc>(create: (context) => HomepageBloc()),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
         BlocProvider<DashboardBloc>(
             create: (context) =>
                 DashboardBloc(dashboardNetwork: DashboardNetwork())),

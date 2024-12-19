@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_login_signup.dart';
 
-import 'employer_login_signup.dart';
+import '../../features/auth/presentation/employer_login_signup.dart';
 
 class LoginPopup extends StatelessWidget {
   const LoginPopup({super.key});
