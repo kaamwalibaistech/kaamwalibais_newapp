@@ -1,12 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_view.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
+import '../../../Client/homepage_api.dart';
 import '../../../screens/navigations_Folder/navigationscreen.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({
@@ -27,6 +31,11 @@ class _SplashscreenState extends State<Splashscreen> {
       EmployerRegisterModel? employerRegisterModel =
           LocalStoragePref.instance?.getUserProfile();
       if (employerRegisterModel != null) {
+        BlocProvider.of<AuthBloc>(context, listen: false).add(
+            AuthenticationEvent(
+                password: '',
+                phoneNumber: employerRegisterModel.mobileNo,
+                userType: USER.employer));
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const Navigationscreen()));
       } else {

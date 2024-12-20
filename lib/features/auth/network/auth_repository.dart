@@ -62,14 +62,16 @@ class AuthRepository {
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
     Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/apply_jobform")
-            .replace(queryParameters: queryParameters);
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/apply_jobform");
+
     final body = {
       'Name': name,
       'MobileNo': number,
       'password': password,
       'Category': category,
       'MaritalStatus': maritalStatus,
+      'EmailId': 'abhi@gmail.com',
+      'language': language,
       'Age': age,
       'Religion': religion,
       'Gender': gender,
@@ -89,6 +91,16 @@ class AuthRepository {
       final request = http.MultipartRequest("POST", url);
       request.fields.addAll(body);
       request.headers.addAll(queryParameters);
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        var res = await http.Response.fromStream(response);
+        final result = jsonDecode(res.body) as Map<String, dynamic>;
+        // EmployerRegisterModel employerRegisterModel =
+        //     EmployerRegisterModel.fromJson(result);
+      } else {
+        throw Exception();
+      }
       // final response =
       //     await http.post(url, headers: queryParameters, body: body);
       // if (response.statusCode == 200) {
@@ -100,6 +112,5 @@ class AuthRepository {
     } catch (e) {
       throw Exception();
     }
-    return null;
   }
 }

@@ -99,18 +99,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const HomepageCategoriesShimmer()));
-                                    },
-                                    child: Image.asset(
-                                      "lib/assets/images/hello.png",
-                                      height: 20,
-                                    ),
+                                  child: Image.asset(
+                                    "lib/assets/images/hello.png",
+                                    height: 20,
                                   ),
                                 ),
                               ],

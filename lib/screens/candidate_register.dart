@@ -19,13 +19,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   String? passport = "";
   String? language = "";
   final categoryItems = [
-    "Maid",
-    "BabySitter",
-    "Cook",
-    "Nanny",
-    "Elder Care",
-    "Japa Maid",
-    "Nurse",
+    "Maid", // category
+    "BabySitter", "Cook", "Nanny", "Elder Care", "Japa Maid", "Nurse",
     "House keepings"
   ];
 
@@ -35,26 +30,14 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   final genderItems = ["Male", "Female", "Not prefer to say"];
   final educationItem = ["<5th", ">5th", ">10"];
   final timingItem = [
-    "Morning Shift",
-    "Afternoon Shift",
-    "Evening Shift",
-    "Night Shift",
+    "Morning Shift", //
+    "Afternoon Shift", "Evening Shift", "Night Shift",
   ];
 
   final workingItem = [
-    "1 Hours",
-    "2 Hours",
-    "3 Hours",
-    "4 Hours",
-    "5 Hours",
-    "6 Hours",
-    "7 Hours",
-    "8 Hours",
-    "9 Hours",
-    "10 Hours",
-    "11 Hours",
-    "12 Hours",
-    "24 Hours"
+    "1 Hours", // hours
+    "2 Hours", "3 Hours", "4 Hours", "5 Hours", "6 Hours", "7 Hours", "8 Hours",
+    "9 Hours", "10 Hours", "11 Hours", "12 Hours", "24 Hours"
   ];
   final expectedSalaryItem = [
     "1000",
@@ -873,12 +856,12 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                                     name: nameController.text,
                                     mobileNo: numberController.text,
                                     password: passwordController.text,
-                                    Category: categoryvalue,
+                                    category: categoryvalue,
                                     maritalStatus: marriedvalue,
                                     age: ageController.text,
                                     religion: religionvalue,
                                     gender: genderValue,
-                                    Passport: passport.toString(),
+                                    passport: passport.toString(),
                                     education: educationValue,
                                     timing: timingValue,
                                     workingHrs: workingHrsValue,
@@ -891,6 +874,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                     }
                   },
                   child: Container(
+                    margin: EdgeInsets.only(bottom: 20),
                     width: MediaQuery.of(context).size.width * 0.50,
                     decoration: BoxDecoration(
                         color: blueColor,

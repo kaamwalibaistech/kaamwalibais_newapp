@@ -7,15 +7,15 @@ import '../../../models/empolyer_registerotp_model.dart';
 import '../network/auth_repository.dart';
 
 class CandidateRegisterOtpScreen extends StatefulWidget {
-  final name;
+  final String name;
   final mobileNo;
   final password;
-  final Category;
+  final category;
   final maritalStatus;
   final age;
   final religion;
   final gender;
-  final Passport;
+  final passport;
   final education;
   final timing;
   final workingHrs;
@@ -29,12 +29,12 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       required this.name,
       required this.mobileNo,
       required this.password,
-      required this.Category,
+      required this.category,
       required this.maritalStatus,
       required this.age,
       required this.religion,
       required this.gender,
-      required this.Passport,
+      required this.passport,
       required this.education,
       required this.timing,
       required this.workingHrs,
@@ -75,12 +75,12 @@ class _CandidateRegisterOtpScreenState
         widget.name,
         widget.mobileNo,
         widget.password,
-        widget.Category,
+        widget.category,
         widget.maritalStatus,
         widget.age,
         widget.religion,
         widget.gender,
-        widget.Passport.toString(),
+        widget.passport.toString(),
         widget.education,
         widget.timing,
         widget.workingHrs,
