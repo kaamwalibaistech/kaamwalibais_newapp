@@ -39,4 +39,67 @@ class AuthRepository {
       throw Exception();
     }
   }
+
+  Future postCandidateFormData(
+      String name,
+      String number,
+      String password,
+      String category,
+      String maritalStatus,
+      String age,
+      String religion,
+      String gender,
+      String passport,
+      String education,
+      String timing,
+      String workingHrs,
+      String address,
+      String location,
+      String expectedSalary,
+      String totalExperience,
+      String language) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/apply_jobform")
+            .replace(queryParameters: queryParameters);
+    final body = {
+      'Name': name,
+      'MobileNo': number,
+      'password': password,
+      'Category': category,
+      'MaritalStatus': maritalStatus,
+      'Age': age,
+      'Religion': religion,
+      'Gender': gender,
+      'Passport': passport,
+      'MaximumEducation': education,
+      'shift': timing,
+      'WorkingHours': workingHrs,
+      'ContactAddress': address,
+      'ServiceLocation': location,
+      'ExpectedSalary': expectedSalary,
+      'TotalExp': totalExperience,
+    };
+
+    // final response = await request.send();
+
+    try {
+      final request = http.MultipartRequest("POST", url);
+      request.fields.addAll(body);
+      request.headers.addAll(queryParameters);
+      // final response =
+      //     await http.post(url, headers: queryParameters, body: body);
+      // if (response.statusCode == 200) {
+      //   final Map<String, dynamic> data = jsonDecode(response.body);
+      //   if (data['status'] == '200') {
+      //     // return EmployerRegisterModel.fromJson(data);
+      //   }
+      // }
+    } catch (e) {
+      throw Exception();
+    }
+    return null;
+  }
 }

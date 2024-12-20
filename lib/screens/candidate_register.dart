@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
+import '../features/auth/presentation/candidate_register_otpscreen.dart';
+
 class CandidateRegister extends StatefulWidget {
   const CandidateRegister({super.key});
 
@@ -11,11 +13,11 @@ class CandidateRegister extends StatefulWidget {
 
 enum Passport { Yes, No }
 
+enum Language { English, Hindi, Marathi }
+
 class _CandidateRegisterState extends State<CandidateRegister> {
-  TextEditingController addressController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
-  Passport? _passportSelected;
   String? passport = "";
+  String? language = "";
   final categoryItems = [
     "Maid",
     "BabySitter",
@@ -92,16 +94,25 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "10 Years",
     "10 >"
   ];
+
   String? categoryvalue;
   String? marriedvalue;
   String? religionvalue;
   String? genderValue;
+  Passport? passportSelected;
+  Language? languageSelected;
   String? educationValue;
   String? timingValue;
   String? workingHrsValue;
   String? expectedSalaryValue;
   String? totalExperienceValue;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
+  TextEditingController locationController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,8 +166,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       border: Border.all(color: blackColor),
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
-                    // controller: _controller,
+                  child: TextField(
+                    controller: nameController,
                     decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -184,9 +195,11 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       border: Border.all(color: blackColor),
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
-                    // controller: _controller,
+                  child: TextField(
+                    controller: numberController,
+                    maxLength: 10,
                     decoration: InputDecoration(
+                      counterText: "",
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                       hintText: "Enter Mobile no.",
@@ -213,8 +226,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       border: Border.all(color: blackColor),
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
-                    // controller: _controller,
+                  child: TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -301,8 +314,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       border: Border.all(color: blackColor),
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
-                    // controller: _controller,
+                  child: TextField(
+                    controller: ageController,
                     decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 2),
@@ -385,10 +398,10 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       Radio(
                         activeColor: selectionGreenColor,
                         value: Passport.Yes,
-                        groupValue: _passportSelected,
+                        groupValue: passportSelected,
                         onChanged: (value) {
                           setState(() {
-                            _passportSelected = value;
+                            passportSelected = value;
                             passport = value!.name;
                           });
                         },
@@ -408,10 +421,10 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       Radio(
                         activeColor: selectionGreenColor,
                         value: Passport.No,
-                        groupValue: _passportSelected,
+                        groupValue: passportSelected,
                         onChanged: (value) {
                           setState(() {
-                            _passportSelected = value;
+                            passportSelected = value;
                             passport = value!.name;
                           });
                         },
@@ -515,7 +528,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
               const Padding(
                 padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                 child: Text(
-                  "Working Hrs (कार्य घंटे) *",
+                  "Address (पता) *",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -660,6 +673,92 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                           setState(() => totalExperienceValue = value)),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.only(top: 15.0),
+                child: Text(
+                  "Which languages do you know? (तुम कौन सी भाषा जानते हो) *",
+                  style: TextStyle(
+                    fontFamily: "Arial",
+                    fontSize: 14,
+                    color: blackColor,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                        activeColor: selectionGreenColor,
+                        value: Language.English,
+                        groupValue: languageSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            languageSelected = value;
+                            language = value!.name;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'English',
+                        style: TextStyle(
+                            fontFamily: "Arial",
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                            color: Color(0xFF2F2F2F)),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        activeColor: selectionGreenColor,
+                        value: Language.Hindi,
+                        groupValue: languageSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            languageSelected = value;
+                            language = value!.name;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Hindi',
+                        style: TextStyle(
+                            fontFamily: "Arial",
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                            color: Color(0xFF2F2F2F)),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        activeColor: selectionGreenColor,
+                        value: Language.Marathi,
+                        groupValue: languageSelected,
+                        onChanged: (value) {
+                          setState(() {
+                            languageSelected = value;
+                            language = value!.name;
+                          });
+                        },
+                      ),
+                      const Text(
+                        'Marathi',
+                        style: TextStyle(
+                            fontFamily: "Arial",
+                            fontSize: 13,
+                            fontWeight: FontWeight.normal,
+                            color: Color(0xFF2F2F2F)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               // Column(
               //   crossAxisAlignment: CrossAxisAlignment.start,
               //   children: [
@@ -748,17 +847,61 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                 height: 20,
               ),
               Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.50,
-                  decoration: BoxDecoration(
-                      color: blueColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  child: Center(
-                    child: Text(
-                      "Submit",
-                      style: GoogleFonts.poltawskiNowy(
-                          color: whiteColor, fontSize: 18),
+                child: GestureDetector(
+                  onTap: () {
+                    if (nameController.text.isNotEmpty &&
+                        numberController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty &&
+                        categoryvalue!.isNotEmpty &&
+                        marriedvalue!.isNotEmpty &&
+                        religionvalue!.isNotEmpty &&
+                        genderValue!.isNotEmpty &&
+                        passportSelected!.name.isNotEmpty &&
+                        educationValue!.isNotEmpty &&
+                        timingValue!.isNotEmpty &&
+                        workingHrsValue!.isNotEmpty &&
+                        ageController.text.isNotEmpty &&
+                        addressController.text.isNotEmpty &&
+                        locationController.text.isNotEmpty &&
+                        expectedSalaryValue!.isNotEmpty &&
+                        totalExperienceValue!.isNotEmpty &&
+                        languageSelected!.name.isNotEmpty) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CandidateRegisterOtpScreen(
+                                    name: nameController.text,
+                                    mobileNo: numberController.text,
+                                    password: passwordController.text,
+                                    Category: categoryvalue,
+                                    maritalStatus: marriedvalue,
+                                    age: ageController.text,
+                                    religion: religionvalue,
+                                    gender: genderValue,
+                                    Passport: passport.toString(),
+                                    education: educationValue,
+                                    timing: timingValue,
+                                    workingHrs: workingHrsValue,
+                                    address: addressController.text,
+                                    location: locationController.text,
+                                    expectedSalary: expectedSalaryValue,
+                                    totalExperience: totalExperienceValue,
+                                    launguage: language.toString(),
+                                  )));
+                    }
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.50,
+                    decoration: BoxDecoration(
+                        color: blueColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: Center(
+                      child: Text(
+                        "Submit",
+                        style: GoogleFonts.poltawskiNowy(
+                            color: whiteColor, fontSize: 18),
+                      ),
                     ),
                   ),
                 ),

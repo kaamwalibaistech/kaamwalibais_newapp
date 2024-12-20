@@ -62,8 +62,11 @@ class ForgotPassword extends StatelessWidget {
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
                     child: const TextField(
+                      keyboardType: TextInputType.number,
+                      maxLength: 10,
                       // controller: _controller,
                       decoration: InputDecoration(
+                        counterText: "",
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Mobile No.",

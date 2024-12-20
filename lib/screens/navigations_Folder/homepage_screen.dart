@@ -6,15 +6,14 @@ import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
-import 'package:kaamwalijobs_new/features/auth/bloc/auth_event.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 import 'package:kaamwalijobs_new/screens/navigations_Folder/alljobsopenings.dart';
 
-import '../../Client/homepage_api.dart';
 import '../../models/employer_register_model.dart';
 import '../../models/homepage_model.dart';
+import '../candidate_register.dart';
 import '../shimmer_effect/homepage_categories.dart';
 import 'allcategories.dart';
 import 'login_popup.dart';
@@ -47,10 +46,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
         checkLoginPopup();
       });
     } else {
-      _authBloc.add(AuthenticationEvent(
-          password: '',
-          phoneNumber: userProfileData.mobileNo,
-          userType: USER.employer));
+      // _authBloc.add(AuthenticationEvent(
+      //     password: '',
+      //     phoneNumber: userProfileData.mobileNo,
+      //     userType: USER.employer));
     }
   }
 
@@ -125,38 +124,39 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         );
                       }
                     }),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 10),
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.82,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                          controller: _controller,
-                          decoration: const InputDecoration(
-                            hintText: "Search a job or position",
-                            hintStyle: TextStyle(color: textGreyColor),
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                          ),
-                        ),
-                      ),
-                      Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          width: MediaQuery.of(context).size.width * 0.10,
-                          decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const Icon(Icons.tune))
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 15.0),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Container(
+                //         padding: const EdgeInsets.only(left: 10),
+                //         height: MediaQuery.of(context).size.height * 0.06,
+                //         width: MediaQuery.of(context).size.width * 0.82,
+                //         decoration: BoxDecoration(
+                //             color: whiteColor,
+                //             borderRadius: BorderRadius.circular(10)),
+                //         child: TextField(
+                //           controller: _controller,
+                //           decoration: const InputDecoration(
+                //             hintText: "Search a job or position",
+                //             hintStyle: TextStyle(color: textGreyColor),
+                //             border:
+                //                 OutlineInputBorder(borderSide: BorderSide.none),
+                //           ),
+                //         ),
+                //       ),
+                //       Container(
+                //           height: MediaQuery.of(context).size.height * 0.06,
+                //           width: MediaQuery.of(context).size.width * 0.10,
+                //           decoration: BoxDecoration(
+                //               color: whiteColor,
+                //               borderRadius: BorderRadius.circular(10)),
+                //           child: const Icon(Icons.tune))
+                //     ],
+                //   ),
+                // ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Row(
@@ -265,13 +265,21 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.170,
-                    decoration: const BoxDecoration(color: Colors.grey),
-                    child: Image.asset(
-                      "lib/assets/images/apply_job_banner.jpg",
-                      fit: BoxFit.fill,
-                      width: MediaQuery.of(context).size.width,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CandidateRegister()));
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.170,
+                      decoration: const BoxDecoration(color: Colors.grey),
+                      child: Image.asset(
+                        "lib/assets/images/apply_job_banner.jpg",
+                        fit: BoxFit.fill,
+                        width: MediaQuery.of(context).size.width,
+                      ),
                     ),
                   ),
                 ),

@@ -5,6 +5,7 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
+import 'package:kaamwalijobs_new/screens/shimmer_effect/packages_shimmer.dart';
 import 'package:kaamwalijobs_new/screens/widgets/packages_image.dart';
 
 class Packages extends StatefulWidget {
@@ -196,24 +197,36 @@ class _PackagesState extends State<Packages> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                              color: blackColor),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.30,
-                                          child: Center(
-                                            child: Text(
-                                              "Buy Now",
-                                              style: GoogleFonts.roboto(
-                                                  color: whiteColor),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  backgroundColor: blueColor,
+                                                  content: Text(
+                                                      "you will able to purchase this app soon")));
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                                color: blackColor),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.06,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.30,
+                                            child: Center(
+                                              child: Text(
+                                                "Buy Now",
+                                                style: GoogleFonts.roboto(
+                                                    color: whiteColor),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -226,7 +239,9 @@ class _PackagesState extends State<Packages> {
                           ),
                         );
                       }),
-                ),
+                )
+              else
+                const PackageLoader(),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: Center(
@@ -363,24 +378,36 @@ class _PackagesState extends State<Packages> {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8),
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                              color: blackColor),
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.06,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.30,
-                                          child: Center(
-                                            child: Text(
-                                              "Buy Now",
-                                              style: GoogleFonts.roboto(
-                                                  color: whiteColor),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  backgroundColor: blueColor,
+                                                  content: Text(
+                                                      "you will able to purchase this app soon")));
+                                        },
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                                color: blackColor),
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.06,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.30,
+                                            child: Center(
+                                              child: Text(
+                                                "Buy Now",
+                                                style: GoogleFonts.roboto(
+                                                    color: whiteColor),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -393,7 +420,9 @@ class _PackagesState extends State<Packages> {
                           ),
                         );
                       }),
-                ),
+                )
+              else
+                const PackageLoader(),
             ],
           ),
         );

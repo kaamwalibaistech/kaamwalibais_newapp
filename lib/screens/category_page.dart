@@ -10,7 +10,6 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 import 'package:kaamwalijobs_new/screens/shimmer_effect/book_maid_shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../core/local_storage.dart';
 import '../models/employer_register_model.dart';
@@ -536,98 +535,94 @@ class _CategoryPageState extends State<CategoryPage> {
                                 width: MediaQuery.of(context).size.width * 0.55,
                                 child: Stack(
                                   children: [
-                                    employerRegisterModel != null
-                                        ? ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color(0xFF0DA931),
-                                                minimumSize: const Size(0, 35),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5))),
-                                            onPressed: () {},
-                                            child: Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                const SizedBox(width: 30),
-                                                Image.asset(
-                                                    "lib/assets/images/call.png",
-                                                    height: 17),
-                                                const SizedBox(width: 20),
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    final url = Uri(
-                                                        scheme: 'tel',
-                                                        path: model.mobileNo!
-                                                            .toString());
+                                    // employerRegisterModel != null
+                                    // ?
+                                    // ElevatedButton(
+                                    //     style: ElevatedButton.styleFrom(
+                                    //         backgroundColor:
+                                    //             const Color(0xFF0DA931),
+                                    //         minimumSize: const Size(0, 35),
+                                    //         shape: RoundedRectangleBorder(
+                                    //             borderRadius:
+                                    //                 BorderRadius.circular(
+                                    //                     5))),
+                                    //     onPressed: () {},
+                                    //     child: Row(
+                                    //       // mainAxisAlignment:
+                                    //       //     MainAxisAlignment.spaceEvenly,
+                                    //       children: [
+                                    //         const SizedBox(width: 30),
+                                    //         Image.asset(
+                                    //             "lib/assets/images/call.png",
+                                    //             height: 17),
+                                    //         const SizedBox(width: 20),
+                                    //         GestureDetector(
+                                    //           onTap: () {
+                                    //             final url = Uri(
+                                    //                 scheme: 'tel',
+                                    //                 path: model.mobileNo!
+                                    //                     .toString());
 
-                                                    launchUrl(url);
-                                                  },
-                                                  child: SizedBox(
-                                                    child: Text(
-                                                      model.mobileNo!,
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  whiteColor),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color(0xFF0DA931),
-                                                minimumSize: const Size(0, 35),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5))),
-                                            onPressed: () {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      backgroundColor:
-                                                          blueColor,
-                                                      content: Text(
-                                                          "Purchasing a Package!")));
-                                            },
-                                            child: Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                const SizedBox(width: 30),
-                                                Image.asset(
-                                                    "lib/assets/images/call.png",
-                                                    height: 17),
-                                                const SizedBox(width: 20),
-                                                GestureDetector(
-                                                  child: SizedBox(
-                                                    child: Text(
-                                                      model.mobileNo!
-                                                          .replaceRange(
-                                                              3, 7, "****"),
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  whiteColor),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
+                                    //             launchUrl(url);
+                                    //           },
+                                    //           child: SizedBox(
+                                    //             child: Text(
+                                    //               model.mobileNo!,
+                                    //               style:
+                                    //                   GoogleFonts.poppins(
+                                    //                       fontSize: 14,
+                                    //                       fontWeight:
+                                    //                           FontWeight
+                                    //                               .w500,
+                                    //                       color:
+                                    //                           whiteColor),
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   )
+                                    // :
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF0DA931),
+                                          minimumSize: const Size(0, 35),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5))),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                duration: Duration(seconds: 1),
+                                                backgroundColor: blueColor,
+                                                content: Text(
+                                                    "Purchasing a Package Plan!")));
+                                      },
+                                      child: Row(
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const SizedBox(width: 30),
+                                          Image.asset(
+                                              "lib/assets/images/call.png",
+                                              height: 17),
+                                          const SizedBox(width: 20),
+                                          GestureDetector(
+                                            child: SizedBox(
+                                              child: Text(
+                                                model.mobileNo!
+                                                    .replaceRange(3, 7, "****"),
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: whiteColor),
+                                              ),
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

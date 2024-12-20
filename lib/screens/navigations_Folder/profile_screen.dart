@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../assets/colors.dart';
 import '../../features/auth/bloc/auth_bloc.dart';
 import '../../features/auth/bloc/auth_state.dart';
+import 'login_popup.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -146,18 +147,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.04,
                               ),
-                              Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.042,
-                                width: MediaQuery.of(context).size.width * 0.28,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: blueColor)),
-                                child: Center(
-                                  child: Text(
-                                    "Edit profile",
-                                    style: GoogleFonts.poltawskiNowy(
-                                        color: blueColor),
+                              GestureDetector(
+                                onTap: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          duration: Duration(seconds: 1),
+                                          backgroundColor: blueColor,
+                                          content: Text(
+                                              "you can access this soon")));
+                                },
+                                child: Container(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.042,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.28,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: blueColor)),
+                                  child: Center(
+                                    child: Text(
+                                      "Edit profile",
+                                      style: GoogleFonts.poltawskiNowy(
+                                          color: blueColor),
+                                    ),
                                   ),
                                 ),
                               )
@@ -168,10 +180,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   );
                 }
-                return SizedBox.shrink();
+                return Center(
+                    child: Padding(
+                  padding: const EdgeInsets.only(top: 300.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      checkLoginPopup();
+                    },
+                    child: Text(
+                      "Please LogIn First !",
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.w600, fontSize: 16),
+                    ),
+                  ),
+                ));
               }),
         ),
       ),
     );
+  }
+
+  checkLoginPopup() async {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 }

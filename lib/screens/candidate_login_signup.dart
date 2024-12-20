@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_register.dart';
 
+import 'navigations_Folder/forgot_password.dart';
+
 class CandidateLoginSignup extends StatefulWidget {
   const CandidateLoginSignup({super.key});
 
@@ -100,11 +102,19 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                       ),
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 180.0, top: 5),
-                    child: Text(
-                      "Forgot Password?",
-                      style: TextStyle(color: blueColor),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ForgotPassword()));
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(color: blueColor),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -115,7 +125,7 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                         color: blueColor,
                         borderRadius: BorderRadius.circular(10)),
                     height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.80,
+                    width: MediaQuery.of(context).size.width * 0.75,
                     child: const Center(
                         child: Text(
                       "Login",

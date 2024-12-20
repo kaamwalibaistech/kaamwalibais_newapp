@@ -533,7 +533,14 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(5))),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                duration: Duration(seconds: 1),
+                                                backgroundColor: blueColor,
+                                                content: Text(
+                                                    "Purchasing a Package Plan!")));
+                                      },
                                       child: Row(
                                         // mainAxisAlignment:
                                         //     MainAxisAlignment.spaceEvenly,
