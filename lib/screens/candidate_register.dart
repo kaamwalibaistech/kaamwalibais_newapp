@@ -40,9 +40,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "9 Hours", "10 Hours", "11 Hours", "12 Hours", "24 Hours"
   ];
   final expectedSalaryItem = [
-    "1000",
-    "2000",
-    "3000",
+    "1000", //
+    "2000", "3000", "4000", "5000", "6000", "7000", "8000",
+
     "4000",
     "5000",
     "6000",
@@ -91,6 +91,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   String? totalExperienceValue;
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -186,6 +187,37 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                       hintText: "Enter Mobile no.",
+                      hintStyle: TextStyle(color: textGreyColor),
+                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 20.0, left: 5),
+                child: Text(
+                  "Email. (ईमेल) *",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  height: MediaQuery.of(context).size.height * 0.06,
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: blackColor),
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextField(
+                    controller: emailController,
+                    maxLength: 10,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                      hintText: "Enter Email.",
                       hintStyle: TextStyle(color: textGreyColor),
                       border: OutlineInputBorder(borderSide: BorderSide.none),
                     ),
@@ -834,6 +866,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   onTap: () {
                     if (nameController.text.isNotEmpty &&
                         numberController.text.isNotEmpty &&
+                        emailController.text.isNotEmpty &&
                         passwordController.text.isNotEmpty &&
                         categoryvalue!.isNotEmpty &&
                         marriedvalue!.isNotEmpty &&
@@ -856,6 +889,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                                     name: nameController.text,
                                     mobileNo: numberController.text,
                                     password: passwordController.text,
+                                    email: emailController.text,
                                     category: categoryvalue,
                                     maritalStatus: marriedvalue,
                                     age: ageController.text,
@@ -1052,8 +1086,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   //   setState(() {});
   // }
 
-  DropdownMenuItem<String> buildMenuItem(String items) =>
-      DropdownMenuItem(value: items, child: Text(items));
+  DropdownMenuItem<String> buildMenuItem(String categoryItems) =>
+      DropdownMenuItem(value: categoryItems, child: Text(categoryItems));
 
   DropdownMenuItem<String> buildMarriedItem(String marriageItems) =>
       DropdownMenuItem(value: marriageItems, child: Text(marriageItems));

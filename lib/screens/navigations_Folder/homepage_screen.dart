@@ -26,7 +26,7 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  final TextEditingController _controller = TextEditingController();
+  // final TextEditingController _controller = TextEditingController();
   final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
 

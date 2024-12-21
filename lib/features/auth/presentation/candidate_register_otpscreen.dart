@@ -9,6 +9,7 @@ import '../network/auth_repository.dart';
 class CandidateRegisterOtpScreen extends StatefulWidget {
   final String name;
   final mobileNo;
+  final email;
   final password;
   final category;
   final maritalStatus;
@@ -28,6 +29,7 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       {super.key,
       required this.name,
       required this.mobileNo,
+      required this.email,
       required this.password,
       required this.category,
       required this.maritalStatus,
@@ -74,6 +76,7 @@ class _CandidateRegisterOtpScreenState
     final postCandidateData = await authRepository.postCandidateFormData(
         widget.name,
         widget.mobileNo,
+        widget.email,
         widget.password,
         widget.category,
         widget.maritalStatus,
