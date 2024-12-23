@@ -99,6 +99,7 @@ class AuthRepository {
         final result = jsonDecode(res.body) as Map<String, dynamic>;
         // EmployerRegisterModel employerRegisterModel =
         //     EmployerRegisterModel.fromJson(result);
+        return result;
       } else {
         throw Exception();
       }

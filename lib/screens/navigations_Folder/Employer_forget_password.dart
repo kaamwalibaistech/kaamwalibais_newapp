@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 
-class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({super.key});
+class EmployerForgetPassword extends StatefulWidget {
+  const EmployerForgetPassword({super.key});
 
   @override
-  State<ForgetPassword> createState() => _ForgetPasswordState();
+  State<EmployerForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
+class _ForgetPasswordState extends State<EmployerForgetPassword> {
+  TextEditingController _phoneNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +44,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     offset: Offset(0, 0), // changes position of shadow
                   ),
                 ]),
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.35,
             width: MediaQuery.of(context).size.width * 0.85,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,10 +64,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       border: Border.all(color: blackColor),
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(10)),
-                  child: const TextField(
+                  child: TextField(
                     keyboardType: TextInputType.phone,
                     maxLength: 10,
-                    // controller: _controller,
+                    controller: _phoneNumberController,
                     decoration: InputDecoration(
                       counterText: "",
                       contentPadding:
@@ -76,20 +78,48 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                ),
+                sizedBoxH15,
                 Container(
-                  decoration: BoxDecoration(
-                      color: blueColor,
-                      borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.only(left: 10),
                   height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.78,
-                  child: const Center(
-                      child: Text(
-                    "Send OTP",
-                    style: TextStyle(color: whiteColor, fontSize: 16),
-                  )),
+                  width: MediaQuery.of(context).size.width * 0.75,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: blackColor),
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const TextField(
+                    keyboardType: TextInputType.phone,
+                    maxLength: 10,
+                    // controller: _controller,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
+                      hintText: "Confirm OTP",
+                      hintStyle: TextStyle(color: textGreyColor),
+                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.025,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_phoneNumberController.text.isNotEmpty) {}
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: blueColor,
+                        borderRadius: BorderRadius.circular(10)),
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    width: MediaQuery.of(context).size.width * 0.76,
+                    child: const Center(
+                        child: Text(
+                      "Send OTP",
+                      style: TextStyle(color: whiteColor, fontSize: 16),
+                    )),
+                  ),
                 )
               ],
             ),

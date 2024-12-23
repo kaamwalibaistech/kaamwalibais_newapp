@@ -7,6 +7,7 @@ import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
 import 'package:kaamwalijobs_new/screens/shimmer_effect/packages_shimmer.dart';
 import 'package:kaamwalijobs_new/screens/widgets/packages_image.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Packages extends StatefulWidget {
   const Packages({super.key});
@@ -17,19 +18,54 @@ class Packages extends StatefulWidget {
 
 class _PackagesState extends State<Packages> {
   late PackagesBloc _packageBloc;
+  late Razorpay _razorpay;
 
   @override
   void initState() {
     super.initState();
+    _razorpay = Razorpay();
+
     _packageBloc = BlocProvider.of<PackagesBloc>(context);
     fetch();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
+  void openCheckOut(String price, String packagename) async {
+    var options = {
+      'key': 'rzp_test_VxVJVypVqPDQ7e',
+      'amount': int.parse(price) * 100,
+      'name': 'KaamWaliJobs',
+      'description': packagename,
+      'prefill': {'contact': '', 'email': ''}
+    };
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print('erroe $e');
+    }
+  }
+
   fetch() {
     _packageBloc.add(GetPackagesEvent());
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("Payment Successfull")));
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {}
+  void _handleExternalWallet(ExternalWalletResponse response) {}
 
   @override
   Widget build(BuildContext context) {
@@ -199,13 +235,22 @@ class _PackagesState extends State<Packages> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: GestureDetector(
                                         onTap: () {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  backgroundColor: blueColor,
-                                                  content: Text(
-                                                      "you will able to purchase this app soon")));
+                                          openCheckOut(
+                                              state
+                                                  .candidatePackagesModel
+                                                  .candidatePackage[index]
+                                                  .price,
+                                              state
+                                                  .candidatePackagesModel
+                                                  .candidatePackage[index]
+                                                  .packageName);
+                                          // ScaffoldMessenger.of(context)
+                                          //     .showSnackBar(SnackBar(
+                                          //         duration:
+                                          //             Duration(seconds: 1),
+                                          //         backgroundColor: blueColor,
+                                          //         content: Text(
+                                          //             "you will able to purchase this app soon")));
                                         },
                                         child: ClipRRect(
                                           borderRadius:
