@@ -43,6 +43,7 @@ class AuthRepository {
   Future postCandidateFormData(
       String name,
       String number,
+      String email,
       String password,
       String category,
       String maritalStatus,
@@ -70,7 +71,7 @@ class AuthRepository {
       'password': password,
       'Category': category,
       'MaritalStatus': maritalStatus,
-      'EmailId': 'abhi@gmail.com',
+      'EmailId': email,
       'language': language,
       'Age': age,
       'Religion': religion,
@@ -98,6 +99,7 @@ class AuthRepository {
         final result = jsonDecode(res.body) as Map<String, dynamic>;
         // EmployerRegisterModel employerRegisterModel =
         //     EmployerRegisterModel.fromJson(result);
+        return result;
       } else {
         throw Exception();
       }

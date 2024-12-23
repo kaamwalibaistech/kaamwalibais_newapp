@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      state.userData.name ?? "----",
+                                      state.userData.name,
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],
@@ -103,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      state.userData.mobileNo ?? "----",
+                                      state.userData.mobileNo,
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],
@@ -137,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      state.userData.emailId ?? "",
+                                      state.userData.emailId,
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],

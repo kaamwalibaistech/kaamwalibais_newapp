@@ -11,9 +11,6 @@ import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 import 'package:kaamwalijobs_new/screens/shimmer_effect/book_maid_shimmer.dart';
 
-import '../core/local_storage.dart';
-import '../models/employer_register_model.dart';
-
 class CategoryPage extends StatefulWidget {
   const CategoryPage({super.key, required this.categoryId});
   final String categoryId;
@@ -54,8 +51,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    EmployerRegisterModel? employerRegisterModel =
-        LocalStoragePref.instance?.getUserProfile();
+    // EmployerRegisterModel? employerRegisterModel =
+    //     LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(

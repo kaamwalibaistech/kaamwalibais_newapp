@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({super.key});
+class CandidateForgotPassword extends StatelessWidget {
+  const CandidateForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,17 +78,20 @@ class ForgotPassword extends StatelessWidget {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.03,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: blueColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.76,
-                    child: const Center(
-                        child: Text(
-                      "Send OTP",
-                      style: TextStyle(color: whiteColor, fontSize: 16),
-                    )),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: blueColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.76,
+                      child: const Center(
+                          child: Text(
+                        "Send OTP",
+                        style: TextStyle(color: whiteColor, fontSize: 16),
+                      )),
+                    ),
                   )
                 ],
               ),

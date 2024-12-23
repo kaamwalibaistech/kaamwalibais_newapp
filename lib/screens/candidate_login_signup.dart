@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/screens/candidate_register.dart';
 
-import 'navigations_Folder/forgot_password.dart';
+import 'navigations_Folder/candidate_forgot_password.dart';
 
 class CandidateLoginSignup extends StatefulWidget {
   const CandidateLoginSignup({super.key});
@@ -109,7 +109,8 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ForgotPassword()));
+                                builder: (context) =>
+                                    const CandidateForgotPassword()));
                       },
                       child: Text(
                         "Forgot Password?",
