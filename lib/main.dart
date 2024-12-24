@@ -7,8 +7,10 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
+import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
 
 import 'bloc/packages_bloc.dart';
+import 'features/jobs/network/job_repository.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<DashboardBloc>(
             create: (context) =>
                 DashboardBloc(dashboardNetwork: DashboardNetwork())),
+        BlocProvider<JobBloc>(create: (context) => JobBloc(JobRepository())),
         BlocProvider<PackagesBloc>(create: (context) => PackagesBloc()),
       ],
       child: const MaterialApp(

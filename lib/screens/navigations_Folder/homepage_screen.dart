@@ -8,8 +8,8 @@ import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_items.dart';
+import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/alljobsopenings.dart';
 
 import '../../models/employer_register_model.dart';
 import '../../models/homepage_model.dart';
