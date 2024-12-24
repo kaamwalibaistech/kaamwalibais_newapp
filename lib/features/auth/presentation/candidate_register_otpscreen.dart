@@ -65,7 +65,8 @@ class _CandidateRegisterOtpScreenState
   }
 
   Future _sendOtp() async {
-    final otpData = await repositiory.getEmployerRegisterOtp(widget.mobileNo);
+    final otpData =
+        await authRepository.getEmployerRegisterOtp(widget.mobileNo);
 
     otp = otpData;
 

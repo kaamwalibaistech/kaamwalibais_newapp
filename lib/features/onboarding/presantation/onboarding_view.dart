@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_items.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/navigationscreen.dart';
+import 'package:kaamwalijobs_new/features/navigation/presentation/navigationscreen.dart';
+import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatefulWidget {

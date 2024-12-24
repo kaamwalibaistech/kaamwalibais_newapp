@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
 import '../../../models/empolyer_registerotp_model.dart';
+import '../network/auth_repository.dart';
 
 class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String fullName;
@@ -28,7 +28,7 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
 
 class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
   Otp? otp;
-  Repositiory repositiory = Repositiory();
+  AuthRepository authRepositiory = AuthRepository();
   EmployerRegisterModel? employerRegisterData;
 
   @override
@@ -39,7 +39,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
 
   Future _sendOtp() async {
     final otpData =
-        await repositiory.getEmployerRegisterOtp(widget.phoneNumber);
+        await authRepositiory.getEmployerRegisterOtp(widget.phoneNumber);
 
     otp = otpData;
 
@@ -47,7 +47,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
   }
 
   Future _registerEmployer() async {
-    final registerEmployer = await repositiory.getEmployerRegister(
+    final registerEmployer = await authRepositiory.getEmployerRegister(
         widget.fullName, widget.phoneNumber, widget.email, widget.password);
     setState(() {
       employerRegisterData = registerEmployer;

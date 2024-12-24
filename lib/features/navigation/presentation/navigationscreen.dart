@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/bookmaid_screen.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/homepage_screen.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/bookmaid_screen.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import '../../assets/colors.dart';
-import 'login_popup.dart';
-import 'menu_screen.dart';
-import 'profile_screen.dart';
+import '../../../assets/colors.dart';
+import '../../auth/presentation/login_popup.dart';
+import '../../dashboard/presentation/menu_screen.dart';
+import '../../dashboard/presentation/profile_screen.dart';
 
 class Navigationscreen extends StatefulWidget {
   const Navigationscreen({super.key});

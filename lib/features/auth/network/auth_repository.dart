@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Client/homepage_api.dart';
+import '../../../models/employer_forget_password_model.dart';
 import '../../../models/employer_register_model.dart';
+import '../../../models/empolyer_registerotp_model.dart';
 
 class AuthRepository {
   Future<EmployerRegisterModel?> userLogin(
@@ -114,5 +116,114 @@ class AuthRepository {
     } catch (e) {
       throw Exception();
     }
+  }
+
+  Future<Otp?> getEmployerRegisterOtp(String number) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendsignupotp")
+            .replace(queryParameters: queryParameters);
+
+    final body = {'mobile_no': number};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return Otp.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<EmployerRegisterModel?> getEmployerRegister(
+      String name, String number, String email, String password) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_signup")
+            .replace(queryParameters: queryParameters);
+    final body = {
+      'name': name,
+      'mobile_no': number,
+      'emaild': email,
+      'password': password,
+    };
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return EmployerRegisterModel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+    return null;
+  }
+
+  Future<EmployerforgetpasswordModel?> getEmployerRegisterForgetPasswordOtp(
+      String number) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendforgototp")
+            .replace(queryParameters: queryParameters);
+
+    final body = {'mobile_no': number};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return EmployerforgetpasswordModel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<void> getEmployerRegisterNewPassword(
+      String number, String newPassword) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/restpassword")
+            .replace(queryParameters: queryParameters);
+
+    final body = {'mobile_no': number, 'new_password': newPassword};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return data['msg'];
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
   }
 }

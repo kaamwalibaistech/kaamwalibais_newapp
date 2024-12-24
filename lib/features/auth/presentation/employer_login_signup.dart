@@ -4,11 +4,11 @@ import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/employer_register.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/employer_register.dart';
 
-import '../../../screens/navigations_Folder/Employer_forget_password.dart';
-import '../../../screens/navigations_Folder/navigationscreen.dart';
+import '../../navigation/presentation/navigationscreen.dart';
 import '../bloc/auth_event.dart';
+import 'Employer_forget_password.dart';
 
 class EmployerLoginSignup extends StatefulWidget {
   const EmployerLoginSignup({super.key});

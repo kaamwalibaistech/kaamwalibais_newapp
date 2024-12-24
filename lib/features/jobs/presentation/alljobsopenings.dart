@@ -8,7 +8,7 @@ import 'package:kaamwalijobs_new/features/jobs/bloc/job_event.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_state.dart';
 import 'package:kaamwalijobs_new/models/job_listing.dart';
 
-import '../../../screens/shimmer_effect/book_maid_shimmer.dart';
+import '../../../assets/shimmer_effect/book_maid_shimmer.dart';
 
 class Alljobsopenings extends StatefulWidget {
   const Alljobsopenings({super.key});
@@ -115,7 +115,7 @@ class JobCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.35,
+        height: MediaQuery.of(context).size.height * 0.36,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: Column(

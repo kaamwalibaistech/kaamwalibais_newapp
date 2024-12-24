@@ -4,10 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
-import 'package:kaamwalijobs_new/features/auth/presentation/splashscreen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
+import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.dart';
 
 import 'bloc/packages_bloc.dart';
 import 'features/jobs/network/job_repository.dart';

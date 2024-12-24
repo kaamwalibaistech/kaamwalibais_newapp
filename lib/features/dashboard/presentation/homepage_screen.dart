@@ -7,16 +7,16 @@ import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
-import 'package:kaamwalijobs_new/features/auth/presentation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
+import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
-import '../../models/employer_register_model.dart';
-import '../../models/homepage_model.dart';
-import '../candidate_register.dart';
-import '../shimmer_effect/homepage_categories.dart';
-import 'allcategories.dart';
-import 'login_popup.dart';
+import '../../../assets/shimmer_effect/homepage_categories.dart';
+import '../../../models/employer_register_model.dart';
+import '../../../models/homepage_model.dart';
+import '../../auth/presentation/candidate_register.dart';
+import '../../auth/presentation/login_popup.dart';
+import '../../navigation/presentation/allcategories.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -332,8 +332,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                         onTap: () {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  backgroundColor: blueColor,
                                                   content: Text(
-                                                      "Applied Successfully")));
+                                                      "you can apply soon for job openings")));
                                         },
                                         child: const Text(
                                           "Apply Now",

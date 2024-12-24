@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/screens/candidate_register.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/candidate_register.dart';
 
-import 'navigations_Folder/candidate_forgot_password.dart';
+import 'candidate_forgot_password.dart';
 
 class CandidateLoginSignup extends StatefulWidget {
   const CandidateLoginSignup({super.key});

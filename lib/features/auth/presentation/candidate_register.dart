@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 
-import '../features/auth/presentation/candidate_register_otpscreen.dart';
+import 'candidate_register_otpscreen.dart';
 
 class CandidateRegister extends StatefulWidget {
   const CandidateRegister({super.key});

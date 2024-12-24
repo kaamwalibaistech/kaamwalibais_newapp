@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/assets/shimmer_effect/packages_shimmer.dart';
+import 'package:kaamwalijobs_new/assets/widgets/packages_image.dart';
 import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
-import 'package:kaamwalijobs_new/screens/shimmer_effect/packages_shimmer.dart';
-import 'package:kaamwalijobs_new/screens/widgets/packages_image.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Packages extends StatefulWidget {
@@ -425,13 +425,20 @@ class _PackagesState extends State<Packages> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: GestureDetector(
                                         onTap: () {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  backgroundColor: blueColor,
-                                                  content: Text(
-                                                      "you will able to purchase this app soon")));
+                                          openCheckOut(
+                                              state.candidatePackagesModel
+                                                  .jobPackage[index].price,
+                                              state
+                                                  .candidatePackagesModel
+                                                  .jobPackage[index]
+                                                  .packageName);
+                                          // ScaffoldMessenger.of(context)
+                                          //     .showSnackBar(SnackBar(
+                                          //         duration:
+                                          //             Duration(seconds: 1),
+                                          //         backgroundColor: blueColor,
+                                          //         content: Text(
+                                          //             "you will able to purchase this app soon")));
                                         },
                                         child: ClipRRect(
                                           borderRadius:

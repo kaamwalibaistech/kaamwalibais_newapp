@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/login_popup.dart';
-import 'package:kaamwalijobs_new/screens/navigations_Folder/packages.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
+import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
 
-import '../../Client/homepage_api.dart';
-import '../../core/local_storage.dart';
-import '../../features/auth/bloc/auth_event.dart';
-import '../../features/auth/bloc/auth_state.dart';
+import '../../../Client/homepage_api.dart';
+import '../../../core/local_storage.dart';
+import '../../auth/bloc/auth_event.dart';
+import '../../auth/bloc/auth_state.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
