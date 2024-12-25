@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/employer_register.dart';
@@ -77,7 +78,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                             offset: Offset(0, 0), // changes position of shadow
                           ),
                         ]),
-                    height: MediaQuery.of(context).size.height * 0.37,
+                    // height: MediaQuery.of(context).size.height * 0.37,
                     width: MediaQuery.of(context).size.width * 0.85,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,14 +91,8 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          height: MediaQuery.of(context).size.height * 0.06,
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.75,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: blackColor),
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             keyboardType: TextInputType.number,
                             maxLength: 10,
@@ -110,27 +105,20 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                               }
                             },
                             decoration: const InputDecoration(
-                              counterText: "",
+                              border: const OutlineInputBorder(),
                               contentPadding: EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 2),
+                                  vertical: 12, horizontal: 10),
+                              counterText: "",
                               hintText: "Mobile No.",
                               hintStyle: TextStyle(color: textGreyColor),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide.none),
                             ),
                           ),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          height: MediaQuery.of(context).size.height * 0.06,
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.75,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: blackColor),
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(10)),
                           child: TextFormField(
                             obscureText: _obsecureText,
                             controller: _passwordController,
@@ -139,6 +127,9 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                               return "please enter password!";
                             },
                             decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12, horizontal: 10),
                               suffixIcon: GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -148,12 +139,8 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                                   child: _obsecureText
                                       ? const Icon(Icons.visibility_off)
                                       : const Icon(Icons.visibility)),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 2),
                               hintText: "Password",
                               hintStyle: const TextStyle(color: textGreyColor),
-                              border: const OutlineInputBorder(
-                                  borderSide: BorderSide.none),
                             ),
                           ),
                         ),
@@ -198,7 +185,8 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                               style: TextStyle(color: whiteColor, fontSize: 16),
                             )),
                           ),
-                        )
+                        ),
+                        sizedBoxH15
                       ],
                     ),
                   ),
