@@ -212,7 +212,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       borderRadius: BorderRadius.circular(10)),
                   child: TextField(
                     controller: emailController,
-                    maxLength: 10,
+                    // maxLength: 10,
                     decoration: InputDecoration(
                       counterText: "",
                       contentPadding:

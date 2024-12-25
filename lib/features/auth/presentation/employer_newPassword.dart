@@ -77,7 +77,7 @@ class _ForgetPasswordState extends State<EmployerNewPassword> {
                         borderRadius: BorderRadius.circular(10)),
                     child: TextFormField(
                       obscureText: _obsecureText,
-                      keyboardType: TextInputType.phone,
+                      // keyboardType: TextInputType.phone,
                       controller: newPasswordController,
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(
@@ -109,7 +109,7 @@ class _ForgetPasswordState extends State<EmployerNewPassword> {
                         borderRadius: BorderRadius.circular(10)),
                     child: TextField(
                       obscureText: _obsecureText2,
-                      keyboardType: TextInputType.phone,
+                      // keyboardType: TextInputType.phone,
                       controller: confirmPasswordController,
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(

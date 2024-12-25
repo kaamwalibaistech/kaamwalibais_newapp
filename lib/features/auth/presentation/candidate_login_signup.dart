@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/candidate_register.dart';
 
-import 'candidate_forgot_password.dart';
-
 class CandidateLoginSignup extends StatefulWidget {
   const CandidateLoginSignup({super.key});
 
@@ -12,6 +10,9 @@ class CandidateLoginSignup extends StatefulWidget {
 }
 
 class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,9 +70,12 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
-                      // controller: _controller,
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      maxLength: 10,
+                      controller: phoneNumberController,
                       decoration: InputDecoration(
+                        counterText: "",
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Mobile No.",
@@ -91,9 +95,19 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                         border: Border.all(color: blackColor),
                         color: whiteColor,
                         borderRadius: BorderRadius.circular(10)),
-                    child: const TextField(
-                      // controller: _controller,
+                    child: TextField(
+                      obscureText: obscureText,
+                      controller: passwordController,
                       decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                obscureText = !obscureText;
+                              });
+                            },
+                            child: obscureText
+                                ? const Icon(Icons.visibility_off)
+                                : const Icon(Icons.visibility)),
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 2),
                         hintText: "Password",
@@ -102,22 +116,22 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 180.0, top: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CandidateForgotPassword()));
-                      },
-                      child: Text(
-                        "Forgot Password?",
-                        style: TextStyle(color: blueColor),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.only(left: 180.0, top: 5),
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) =>
+                  //                   const CandidateForgotPassword()));
+                  //     },
+                  //     child: Text(
+                  //       "Forgot Password?",
+                  //       style: TextStyle(color: blueColor),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),

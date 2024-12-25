@@ -65,21 +65,21 @@ flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
   image_path: "lib/assets/images/kaamwalijobs.png"
-  adaptive_icon_foreground: "lib/assets/images/kaamwalijobs.png"
+  adaptive_icon_foreground: "lib/assets/images/kaamwalijobs2.png.png"
   adaptive_icon_background: "#ffffff"
   min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "lib/assets/images/kaamwalijobs.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
-  windows:
-    generate: true
-    image_path: "lib/assets/images/kaamwalijobs.png"
-    icon_size: 48 # min:48, max:256, default: 48
-  macos:
-    generate: true
-    image_path: "lib/assets/images/kaamwalijobs.png"
+  # web:
+  #   generate: true
+  #   image_path: "lib/assets/images/kaamwalijobs.png"
+  #   background_color: "#hexcode"
+  #   theme_color: "#hexcode"
+  # windows:
+  #   generate: true
+  #   image_path: "lib/assets/images/kaamwalijobs.png"
+  #   icon_size: 48 # min:48, max:256, default: 48
+  # macos:
+  #   generate: true
+  #   image_path: "lib/assets/images/kaamwalijobs.png"
 
   # flutter_launcher_icons: "^0.14.2"
 
