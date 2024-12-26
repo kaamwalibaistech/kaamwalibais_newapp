@@ -16,6 +16,7 @@ enum Passport { Yes, No }
 enum Language { English, Hindi, Marathi }
 
 class _CandidateRegisterState extends State<CandidateRegister> {
+  final _formKey = GlobalKey<FormState>();
   String? passport = "";
   String? language = "";
   final categoryItems = [
@@ -42,7 +43,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   final expectedSalaryItem = [
     "1000", //
     "2000", "3000", "4000", "5000", "6000", "7000", "8000",
-
     "4000",
     "5000",
     "6000",
@@ -114,817 +114,844 @@ class _CandidateRegisterState extends State<CandidateRegister> {
           horizontal: 10,
         ),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                    child: Text(
+                  "APPLY FOR A JOB",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                )),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10.0),
                   child: Text(
-                "APPLY FOR A JOB",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              )),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Text(
-                  textAlign: TextAlign.center,
-                  "ध्यान दें: नौकरी के लिए आवेदन करने के बाद प्रतीक्षा करें। कामवाली जॉब्स के अधिकारी यथाशीघ्र आपसे संपर्क करेंगे.",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, left: 5),
-                child: Text(
-                  "Full Name (नाम) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Enter Full Name.",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                    textAlign: TextAlign.center,
+                    "ध्यान दें: नौकरी के लिए आवेदन करने के बाद प्रतीक्षा करें। कामवाली जॉब्स के अधिकारी यथाशीघ्र आपसे संपर्क करेंगे.",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: primaryColor,
                     ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5),
-                child: Text(
-                  "Mobile No. (मोबाइल नंबर) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10.0, left: 5),
+                  child: Text(
+                    "Full Name (नाम) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: numberController,
-                    maxLength: 10,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Enter Mobile no.",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter Full Name";
+                        }
+                        return null;
+                      },
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        hintText: "Enter Full Name.",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5),
-                child: Text(
-                  "Email. (ईमेल) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5),
+                  child: Text(
+                    "Mobile No. (मोबाइल नंबर) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: emailController,
-                    // maxLength: 10,
-                    decoration: InputDecoration(
-                      counterText: "",
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Enter Email.",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Phone number should be 10 in digits";
+                        }
+                        return null;
+                      },
+                      controller: numberController,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                        counterText: "",
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        hintText: "Enter Mobile no.",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5),
-                child: Text(
-                  "Password *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5),
+                  child: Text(
+                    "Email. (ईमेल) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Enter Password",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter a valid Email";
+                        }
+                        return null;
+                      },
+                      controller: emailController,
+                      // maxLength: 10,
+                      decoration: InputDecoration(
+                        counterText: "",
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        hintText: "Enter Email.",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Category (वर्ग)*",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5),
+                  child: Text(
+                    "Password *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Category"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: categoryvalue,
-                      items: categoryItems.map(buildMenuItem).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) {
-                        setState(() {
-                          categoryvalue = value;
-                        });
-                      }),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Marital Status (वैवाहिक स्थिति ) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Marital Status"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: marriedvalue,
-                      items: marriageItems.map(buildMarriedItem).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => marriedvalue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5),
-                child: Text(
-                  "Age (आयु) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10),
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.93,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: blackColor),
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: ageController,
-                    decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 2),
-                      hintText: "Eg.18",
-                      hintStyle: TextStyle(color: textGreyColor),
-                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter Password";
+                        }
+                        return null;
+                      },
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        hintText: "Enter Password",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Religion (धर्म) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Category (वर्ग)*",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Religion"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: religionvalue,
-                      items: religionItems.map(buildReligionItem).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => religionvalue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Gender (लिंग) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Gender"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: genderValue,
-                      items: genderItems.map(buildGenderItems).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => genderValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Passport (पारपत्र ) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: selectionGreenColor,
-                        value: Passport.Yes,
-                        groupValue: passportSelected,
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Category"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: categoryvalue,
+                        items: categoryItems.map(buildMenuItem).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
                         onChanged: (value) {
                           setState(() {
-                            passportSelected = value;
-                            passport = value!.name;
+                            categoryvalue = value;
                           });
-                        },
-                      ),
-                      const Text(
-                        'Yes',
-                        style: TextStyle(
-                            fontFamily: "Arial",
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF2F2F2F)),
-                      ),
-                    ],
+                        }),
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: selectionGreenColor,
-                        value: Passport.No,
-                        groupValue: passportSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            passportSelected = value;
-                            passport = value!.name;
-                          });
-                        },
-                      ),
-                      const Text(
-                        'No',
-                        style: TextStyle(
-                            fontFamily: "Arial",
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF2F2F2F)),
-                      ),
-                    ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Marital Status (वैवाहिक स्थिति ) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 10.0, left: 5, bottom: 5),
-                child: Text(
-                  "Education (शिक्षा) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Education"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: educationValue,
-                      items: educationItem.map(buildEducationItems).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => educationValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Timing (समय) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Timing"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: timingValue,
-                      items: timingItem.map(buildTimingItems).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => timingValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Working Hrs (कार्य घंटे) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Working Hours"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: workingHrsValue,
-                      items: workingItem.map(buildWorkingHrsItems).toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => workingHrsValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Address (पता) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              TextFormField(
-                controller: addressController,
-                cursorColor: Colors.black,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: whiteColor,
-                  border: InputBorder.none,
-                  hintText: 'Home Address',
-                  hintStyle: const TextStyle(
-                    color: textGreyColor4,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    fontFamily: "Arial",
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Marital Status"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: marriedvalue,
+                        items: marriageItems.map(buildMarriedItem).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => marriedvalue = value)),
                   ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5),
+                  child: Text(
+                    "Age (आयु) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter Age";
+                        }
+                        return null;
+                      },
+                      controller: ageController,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                        hintText: "Eg.18",
+                        hintStyle: TextStyle(color: textGreyColor),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Religion (धर्म) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Religion"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: religionvalue,
+                        items: religionItems.map(buildReligionItem).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => religionvalue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Gender (लिंग) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Gender"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: genderValue,
+                        items: genderItems.map(buildGenderItems).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => genderValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Passport (पारपत्र ) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: Passport.Yes,
+                          groupValue: passportSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              passportSelected = value;
+                              passport = value!.name;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Yes',
+                          style: TextStyle(
+                              fontFamily: "Arial",
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF2F2F2F)),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: Passport.No,
+                          groupValue: passportSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              passportSelected = value;
+                              passport = value!.name;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'No',
+                          style: TextStyle(
+                              fontFamily: "Arial",
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF2F2F2F)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 10.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Education (शिक्षा) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Education"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: educationValue,
+                        items: educationItem.map(buildEducationItems).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => educationValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Timing (समय) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Timing"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: timingValue,
+                        items: timingItem.map(buildTimingItems).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => timingValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Working Hrs (कार्य घंटे) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Working Hours"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: workingHrsValue,
+                        items: workingItem.map(buildWorkingHrsItems).toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => workingHrsValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Address (पता) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter Address";
+                      }
+                      return null;
+                    },
+                    controller: addressController,
+                    cursorColor: Colors.black,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: whiteColor,
+                      border: OutlineInputBorder(),
+                      hintText: 'Home Address',
+                      hintStyle: const TextStyle(
+                        color: textGreyColor4,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontFamily: "Arial",
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 0),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: blackColor,
+                          width: 0.80,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: blackColor,
+                          width: 0.80,
+                        ),
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    maxLines: 3,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Work Location (कार्यस्थल) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Enter Work Location";
+                      }
+                      return null;
+                    },
+                    controller: locationController,
+                    cursorColor: Colors.black,
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: whiteColor,
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter Work Location',
+                      hintStyle: const TextStyle(
+                        color: textGreyColor4,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        fontFamily: "Arial",
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 10),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: blackColor,
+                          width: 0.80,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: blackColor,
+                          width: 0.80,
+                        ),
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                    // maxLines: 2,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Expected Salary (अपेक्षित वेतन) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Expected Salary"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: expectedSalaryValue,
+                        items: expectedSalaryItem
+                            .map(buildExpectedSalaryItems)
+                            .toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => expectedSalaryValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  child: Text(
+                    "Total Experience (कुल अनुभव) *",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  width: MediaQuery.of(context).size.width * 0.93,
+                  decoration: BoxDecoration(
+                      color: whiteColor,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: blackColor)),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        hint: const Text("Select Experience"),
+                        dropdownColor: whiteColor,
+                        focusColor: whiteColor,
+                        isExpanded: true,
+                        value: totalExperienceValue,
+                        items: totalExperienceItem
+                            .map(buildTotalExperienceItems)
+                            .toList(),
+                        style: const TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.bold),
+                        onChanged: (value) =>
+                            setState(() => totalExperienceValue = value)),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 15.0),
+                  child: Text(
+                    "Which languages do you know? (तुम कौन सी भाषा जानते हो) *",
+                    style: TextStyle(
+                      fontFamily: "Arial",
+                      fontSize: 14,
                       color: blackColor,
-                      width: 0.80,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: blackColor,
-                      width: 0.80,
                     ),
                   ),
                 ),
-                keyboardType: TextInputType.text,
-                maxLines: 4,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Work Location (कार्यस्थल) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              TextFormField(
-                controller: locationController,
-                cursorColor: Colors.black,
-                style: const TextStyle(
-                  fontSize: 14,
-                ),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: whiteColor,
-                  border: InputBorder.none,
-                  hintText: 'Enter Work Location',
-                  hintStyle: const TextStyle(
-                    color: textGreyColor4,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    fontFamily: "Arial",
-                  ),
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: blackColor,
-                      width: 0.80,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: Language.English,
+                          groupValue: languageSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              languageSelected = value;
+                              language = value!.name;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'English',
+                          style: TextStyle(
+                              fontFamily: "Arial",
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF2F2F2F)),
+                        ),
+                      ],
                     ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      color: blackColor,
-                      width: 0.80,
+                    Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: Language.Hindi,
+                          groupValue: languageSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              languageSelected = value;
+                              language = value!.name;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Hindi',
+                          style: TextStyle(
+                              fontFamily: "Arial",
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF2F2F2F)),
+                        ),
+                      ],
                     ),
-                  ),
+                    Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: Language.Marathi,
+                          groupValue: languageSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              languageSelected = value;
+                              language = value!.name;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Marathi',
+                          style: TextStyle(
+                              fontFamily: "Arial",
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xFF2F2F2F)),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                keyboardType: TextInputType.text,
-                // maxLines: 2,
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Expected Salary (अपेक्षित वेतन) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     const Padding(
+                //       padding: EdgeInsets.only(left: 20.0, top: 15.0),
+                //       child: Text(
+                //         "Upload Image (तस्वीर डालिये) *",
+                //         style: TextStyle(
+                //           fontFamily: "Arial",
+                //           fontSize: 13,
+                //           color: blackColor,
+                //         ),
+                //       ),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.only(
+                //           left: 14.0, right: 14.0, top: 8.0),
+                //       child: Row(
+                //         children: [
+                //           Expanded(
+                //             child: Container(
+                //               width: double.infinity,
+                //               decoration: BoxDecoration(
+                //                 color: whiteColor,
+                //                 borderRadius:
+                //                     const BorderRadius.all(Radius.circular(10.0)),
+                //                 border: Border.all(
+                //                   color: Colors.grey,
+                //                   width: 0.80,
+                //                 ),
+                //               ),
+                //               child: InkWell(
+                //                 onTap: () {
+                //                   setState(() {
+                //                     imageStatus = 3;
+                //                   });
+                //                   selectImageDialog(context);
+                //                 },
+                //                 child: Row(
+                //                   mainAxisAlignment:
+                //                       MainAxisAlignment.spaceBetween,
+                //                   children: [
+                //                     Expanded(
+                //                       child: Padding(
+                //                         padding: const EdgeInsets.only(left: 8.0),
+                //                         child: Text(
+                //                           otherDoc != null
+                //                               ? otherDoc!
+                //                               : "No file found",
+                //                         ),
+                //                       ),
+                //                     ),
+                //                     Container(
+                //                       width: 70,
+                //                       height: 48,
+                //                       decoration: const BoxDecoration(
+                //                         color: Color(0xFF006DCF),
+                //                         borderRadius: BorderRadius.only(
+                //                           topRight: Radius.circular(8.0),
+                //                           bottomRight: Radius.circular(8.0),
+                //                         ),
+                //                       ),
+                //                       child: const Center(
+                //                         child: Text(
+                //                           'Browse',
+                //                           style: TextStyle(
+                //                             fontWeight: FontWeight.normal,
+                //                             fontFamily: "Arial",
+                //                             fontSize: 13,
+                //                             color: whiteColor,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                const SizedBox(
+                  height: 20,
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Expected Salary"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: expectedSalaryValue,
-                      items: expectedSalaryItem
-                          .map(buildExpectedSalaryItems)
-                          .toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => expectedSalaryValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                child: Text(
-                  "Total Experience (कुल अनुभव) *",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: MediaQuery.of(context).size.width * 0.93,
-                decoration: BoxDecoration(
-                    color: whiteColor,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: blackColor)),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      hint: const Text("Select Experience"),
-                      dropdownColor: whiteColor,
-                      focusColor: whiteColor,
-                      isExpanded: true,
-                      value: totalExperienceValue,
-                      items: totalExperienceItem
-                          .map(buildTotalExperienceItems)
-                          .toList(),
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
-                      onChanged: (value) =>
-                          setState(() => totalExperienceValue = value)),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 15.0),
-                child: Text(
-                  "Which languages do you know? (तुम कौन सी भाषा जानते हो) *",
-                  style: TextStyle(
-                    fontFamily: "Arial",
-                    fontSize: 14,
-                    color: blackColor,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: selectionGreenColor,
-                        value: Language.English,
-                        groupValue: languageSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            languageSelected = value;
-                            language = value!.name;
-                          });
-                        },
-                      ),
-                      const Text(
-                        'English',
-                        style: TextStyle(
-                            fontFamily: "Arial",
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF2F2F2F)),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: selectionGreenColor,
-                        value: Language.Hindi,
-                        groupValue: languageSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            languageSelected = value;
-                            language = value!.name;
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Hindi',
-                        style: TextStyle(
-                            fontFamily: "Arial",
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF2F2F2F)),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: selectionGreenColor,
-                        value: Language.Marathi,
-                        groupValue: languageSelected,
-                        onChanged: (value) {
-                          setState(() {
-                            languageSelected = value;
-                            language = value!.name;
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Marathi',
-                        style: TextStyle(
-                            fontFamily: "Arial",
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xFF2F2F2F)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     const Padding(
-              //       padding: EdgeInsets.only(left: 20.0, top: 15.0),
-              //       child: Text(
-              //         "Upload Image (तस्वीर डालिये) *",
-              //         style: TextStyle(
-              //           fontFamily: "Arial",
-              //           fontSize: 13,
-              //           color: blackColor,
-              //         ),
-              //       ),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.only(
-              //           left: 14.0, right: 14.0, top: 8.0),
-              //       child: Row(
-              //         children: [
-              //           Expanded(
-              //             child: Container(
-              //               width: double.infinity,
-              //               decoration: BoxDecoration(
-              //                 color: whiteColor,
-              //                 borderRadius:
-              //                     const BorderRadius.all(Radius.circular(10.0)),
-              //                 border: Border.all(
-              //                   color: Colors.grey,
-              //                   width: 0.80,
-              //                 ),
-              //               ),
-              //               child: InkWell(
-              //                 onTap: () {
-              //                   setState(() {
-              //                     imageStatus = 3;
-              //                   });
-              //                   selectImageDialog(context);
-              //                 },
-              //                 child: Row(
-              //                   mainAxisAlignment:
-              //                       MainAxisAlignment.spaceBetween,
-              //                   children: [
-              //                     Expanded(
-              //                       child: Padding(
-              //                         padding: const EdgeInsets.only(left: 8.0),
-              //                         child: Text(
-              //                           otherDoc != null
-              //                               ? otherDoc!
-              //                               : "No file found",
-              //                         ),
-              //                       ),
-              //                     ),
-              //                     Container(
-              //                       width: 70,
-              //                       height: 48,
-              //                       decoration: const BoxDecoration(
-              //                         color: Color(0xFF006DCF),
-              //                         borderRadius: BorderRadius.only(
-              //                           topRight: Radius.circular(8.0),
-              //                           bottomRight: Radius.circular(8.0),
-              //                         ),
-              //                       ),
-              //                       child: const Center(
-              //                         child: Text(
-              //                           'Browse',
-              //                           style: TextStyle(
-              //                             fontWeight: FontWeight.normal,
-              //                             fontFamily: "Arial",
-              //                             fontSize: 13,
-              //                             color: whiteColor,
-              //                           ),
-              //                         ),
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              const SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    if (nameController.text.isNotEmpty &&
-                        numberController.text.isNotEmpty &&
-                        emailController.text.isNotEmpty &&
-                        passwordController.text.isNotEmpty &&
-                        categoryvalue!.isNotEmpty &&
-                        marriedvalue!.isNotEmpty &&
-                        religionvalue!.isNotEmpty &&
-                        genderValue!.isNotEmpty &&
-                        passportSelected!.name.isNotEmpty &&
-                        educationValue!.isNotEmpty &&
-                        timingValue!.isNotEmpty &&
-                        workingHrsValue!.isNotEmpty &&
-                        ageController.text.isNotEmpty &&
-                        addressController.text.isNotEmpty &&
-                        locationController.text.isNotEmpty &&
-                        expectedSalaryValue!.isNotEmpty &&
-                        totalExperienceValue!.isNotEmpty &&
-                        languageSelected!.name.isNotEmpty) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CandidateRegisterOtpScreen(
-                                    name: nameController.text,
-                                    mobileNo: numberController.text,
-                                    password: passwordController.text,
-                                    email: emailController.text,
-                                    category: categoryvalue,
-                                    maritalStatus: marriedvalue,
-                                    age: ageController.text,
-                                    religion: religionvalue,
-                                    gender: genderValue,
-                                    passport: passport.toString(),
-                                    education: educationValue,
-                                    timing: timingValue,
-                                    workingHrs: workingHrsValue,
-                                    address: addressController.text,
-                                    location: locationController.text,
-                                    expectedSalary: expectedSalaryValue,
-                                    totalExperience: totalExperienceValue,
-                                    launguage: language.toString(),
-                                  )));
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    width: MediaQuery.of(context).size.width * 0.50,
-                    decoration: BoxDecoration(
-                        color: blueColor,
-                        borderRadius: BorderRadius.circular(10)),
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    child: Center(
-                      child: Text(
-                        "Submit",
-                        style: GoogleFonts.poltawskiNowy(
-                            color: whiteColor, fontSize: 18),
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      if (nameController.text.isNotEmpty &&
+                          numberController.text.isNotEmpty &&
+                          emailController.text.isNotEmpty &&
+                          passwordController.text.isNotEmpty &&
+                          categoryvalue!.isNotEmpty &&
+                          marriedvalue!.isNotEmpty &&
+                          religionvalue!.isNotEmpty &&
+                          genderValue!.isNotEmpty &&
+                          passportSelected!.name.isNotEmpty &&
+                          educationValue!.isNotEmpty &&
+                          timingValue!.isNotEmpty &&
+                          workingHrsValue!.isNotEmpty &&
+                          ageController.text.isNotEmpty &&
+                          addressController.text.isNotEmpty &&
+                          locationController.text.isNotEmpty &&
+                          expectedSalaryValue!.isNotEmpty &&
+                          totalExperienceValue!.isNotEmpty &&
+                          languageSelected!.name.isNotEmpty) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CandidateRegisterOtpScreen(
+                                      name: nameController.text,
+                                      mobileNo: numberController.text,
+                                      password: passwordController.text,
+                                      email: emailController.text,
+                                      category: categoryvalue,
+                                      maritalStatus: marriedvalue,
+                                      age: ageController.text,
+                                      religion: religionvalue,
+                                      gender: genderValue,
+                                      passport: passport.toString(),
+                                      education: educationValue,
+                                      timing: timingValue,
+                                      workingHrs: workingHrsValue,
+                                      address: addressController.text,
+                                      location: locationController.text,
+                                      expectedSalary: expectedSalaryValue,
+                                      totalExperience: totalExperienceValue,
+                                      launguage: language.toString(),
+                                    )));
+                      }
+                    },
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_formKey.currentState!.validate()) {}
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        width: MediaQuery.of(context).size.width * 0.50,
+                        decoration: BoxDecoration(
+                            color: blueColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: Center(
+                          child: Text(
+                            "Submit",
+                            style: GoogleFonts.poltawskiNowy(
+                                color: whiteColor, fontSize: 18),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),

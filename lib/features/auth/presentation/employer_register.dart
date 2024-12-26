@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/features/auth/network/auth_repository.dart';
 
+import '../../../models/empolyer_registerotp_model.dart';
 import 'employer_register_otpscreen.dart';
 
 class EmployerRegister extends StatefulWidget {
@@ -219,18 +221,29 @@ class _MyWidgetState extends State<EmployerRegister> {
                             passwordController.text.isNotEmpty &&
                             confirmPasswordController.text.isNotEmpty &&
                             emailController.text.isNotEmpty) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      EmolpyerRegisterOtpscreen(
-                                        fullName: fullNameController.text,
-                                        phoneNumber: phoneNumberController.text,
-                                        password: passwordController.text,
-                                        confirmPassword:
-                                            confirmPasswordController.text,
-                                        email: emailController.text,
-                                      )));
+                          Otp? otp = await AuthRepository()
+                              .getEmployerRegisterOtp(
+                                  phoneNumberController.text);
+
+                          if (otp != null && otp.status == '200') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EmolpyerRegisterOtpscreen(
+                                          fullName: fullNameController.text,
+                                          phoneNumber:
+                                              phoneNumberController.text,
+                                          password: passwordController.text,
+                                          confirmPassword:
+                                              confirmPasswordController.text,
+                                          email: emailController.text,
+                                          otp: otp,
+                                        )));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('Already Registered')));
+                          }
                         }
                       },
                       child: Container(

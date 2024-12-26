@@ -11,15 +11,16 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String email;
   final String password;
   final String confirmPassword;
+  final Otp? otp;
 
-  const EmolpyerRegisterOtpscreen({
-    super.key,
-    required this.fullName,
-    required this.phoneNumber,
-    required this.email,
-    required this.password,
-    required this.confirmPassword,
-  });
+  const EmolpyerRegisterOtpscreen(
+      {super.key,
+      required this.fullName,
+      required this.phoneNumber,
+      required this.email,
+      required this.password,
+      required this.confirmPassword,
+      required this.otp});
 
   @override
   State<EmolpyerRegisterOtpscreen> createState() =>
@@ -27,8 +28,6 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
 }
 
 class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
-  Otp? otp;
-  AuthRepository authRepositiory = AuthRepository();
   EmployerRegisterModel? employerRegisterData;
 
   @override
@@ -38,16 +37,11 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
   }
 
   Future _sendOtp() async {
-    final otpData =
-        await authRepositiory.getEmployerRegisterOtp(widget.phoneNumber);
-
-    otp = otpData;
-
     // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
   }
 
   Future _registerEmployer() async {
-    final registerEmployer = await authRepositiory.getEmployerRegister(
+    final registerEmployer = await AuthRepository().getEmployerRegister(
         widget.fullName, widget.phoneNumber, widget.email, widget.password);
     setState(() {
       employerRegisterData = registerEmployer;
@@ -122,7 +116,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
             GestureDetector(
               onTap: () async {
                 await _registerEmployer();
-                if (otp!.otp == _otpController.text) {
+                if (widget.otp!.otp == _otpController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Register Successfully")));
                   Navigator.pop(context);

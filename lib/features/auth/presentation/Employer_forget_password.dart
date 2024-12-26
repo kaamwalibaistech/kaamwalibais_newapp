@@ -20,7 +20,7 @@ class _ForgetPasswordState extends State<EmployerForgetPassword> {
 
   bool isVisible = true;
   bool isVisible2 = false;
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _ForgetPasswordState extends State<EmployerForgetPassword> {
         backgroundColor: scaffoldColor,
       ),
       body: Form(
-        key: _formKey,
+        // key: _formKey,
         child: Column(
           children: [
             SizedBox(
@@ -89,7 +89,7 @@ class _ForgetPasswordState extends State<EmployerForgetPassword> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: TextFormField(
-                        key: _formKey,
+                        // key: _formKey,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "phone number should be 10 digits!";
@@ -116,7 +116,8 @@ class _ForgetPasswordState extends State<EmployerForgetPassword> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (_formKey.currentState!.validate() &&
+                        if (
+                            // _formKey.currentState!.validate() &&
                             phoneNumberController.text.isNotEmpty) {
                           _sendOtp();
                           ScaffoldMessenger.of(context).showSnackBar(
