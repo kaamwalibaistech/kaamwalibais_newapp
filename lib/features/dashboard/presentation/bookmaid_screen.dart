@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/book_maid_shimmer.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/purchase_package_popup.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
@@ -45,6 +46,13 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   void dispose() {
     _paginationController.dispose();
     super.dispose();
+  }
+
+  checkPackagesPopup() async {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            const AlertDialog(content: PackagesPurchasePopup()));
   }
 
   @override
@@ -517,12 +525,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                                         borderRadius:
                                             BorderRadius.circular(5))),
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          backgroundColor: blueColor,
-                                          content: Text(
-                                              "Purchasing a Package Plan!")));
+                                  checkPackagesPopup();
                                 },
                                 child: Row(
                                   // mainAxisAlignment:

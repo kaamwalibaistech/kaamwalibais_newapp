@@ -26,6 +26,13 @@ class _MyWidgetState extends State<EmployerRegister> {
   // Otp? otp
   // ;
 
+  String? validateEmail(String? email) {
+    RegExp emailRegEx = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
+    final isEmailValid = emailRegEx.hasMatch(email ?? "");
+    if (!isEmailValid) return "please  Enter a valid email";
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,12 +136,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                       width: MediaQuery.of(context).size.width * 0.75,
                       child: TextFormField(
                         controller: emailController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter valid Email";
-                          }
-                          return null;
-                        },
+                        validator: validateEmail,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12, horizontal: 10),

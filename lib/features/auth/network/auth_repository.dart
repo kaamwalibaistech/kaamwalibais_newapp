@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:kaamwalijobs_new/models/categorylist.dart';
 
 import '../../../Client/homepage_api.dart';
 import '../../../models/employer_forget_password_model.dart';
@@ -225,5 +226,33 @@ class AuthRepository {
     }
 
     return null;
+  }
+
+  Future<Categorylistmodel> getcategorynameid() async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/categorylist1")
+            .replace(queryParameters: queryParameters);
+
+    // final body = {'mobile_no': number, 'new_password': newPassword};
+
+    try {
+      final response = await http.get(
+        url,
+        headers: queryParameters,
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == 'success') {
+          return Categorylistmodel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return throw Exception();
   }
 }

@@ -25,6 +25,7 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
   final expectedSalary;
   final totalExperience;
   final launguage;
+  final Otp? otp;
   CandidateRegisterOtpScreen(
       {super.key,
       required this.name,
@@ -44,7 +45,8 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       required this.location,
       required this.expectedSalary,
       required this.totalExperience,
-      required this.launguage});
+      required this.launguage,
+      this.otp});
 
   @override
   State<CandidateRegisterOtpScreen> createState() =>
@@ -61,17 +63,17 @@ class _CandidateRegisterOtpScreenState
   @override
   void initState() {
     super.initState();
-    _sendOtp();
+    // _sendOtp();
   }
 
-  Future _sendOtp() async {
-    final otpData =
-        await authRepository.getEmployerRegisterOtp(widget.mobileNo);
+  // Future _sendOtp() async {
+  //   final otpData =
+  //       await authRepository.getEmployerRegisterOtp(widget.mobileNo);
 
-    otp = otpData;
+  //   otp = otpData;
 
-    // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
-  }
+  //   // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
+  // }
 
   Future _registerCandidate() async {
     final postCandidateData = await authRepository.postCandidateFormData(
@@ -90,8 +92,8 @@ class _CandidateRegisterOtpScreenState
         widget.workingHrs,
         widget.address,
         widget.location,
-        widget.totalExperience,
         widget.expectedSalary,
+        widget.totalExperience,
         widget.launguage.toString());
     setState(() {
       candidateRegisterData = postCandidateData;
@@ -164,10 +166,9 @@ class _CandidateRegisterOtpScreenState
                   controller: _otpController,
                 )),
             GestureDetector(
-              onTap: () async {
-                await _registerCandidate();
-
-                if (otp!.otp == _otpController.text) {
+              onTap: () {
+                if (widget.otp!.otp == _otpController.text) {
+                  _registerCandidate();
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Register Successfully")));
                   Navigator.pop(context);

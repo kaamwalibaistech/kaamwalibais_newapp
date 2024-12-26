@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/models/categorylist.dart';
 
+import '../../../models/empolyer_registerotp_model.dart';
+import '../network/auth_repository.dart';
 import 'candidate_register_otpscreen.dart';
 
 class CandidateRegister extends StatefulWidget {
@@ -19,11 +22,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   final _formKey = GlobalKey<FormState>();
   String? passport = "";
   String? language = "";
-  final categoryItems = [
-    "Maid", // category
-    "BabySitter", "Cook", "Nanny", "Elder Care", "Japa Maid", "Nurse",
-    "House keepings"
-  ];
+  Categorylistmodel? categoryitemModel;
 
   final marriageItems = ["Unmarried", "Married", "Divorce"];
   final religionItems = ["Hindu", "muslim", "Christian", "Sikh"];
@@ -35,14 +34,28 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "Afternoon Shift", "Evening Shift", "Night Shift",
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    loadCategoryUpload();
+  }
+
+  Future<void> loadCategoryUpload() async {
+    final categorydata = await AuthRepository().getcategorynameid();
+    setState(() {
+      categoryitemModel = categorydata;
+    });
+  }
+
   final workingItem = [
     "1 Hours", // hours
     "2 Hours", "3 Hours", "4 Hours", "5 Hours", "6 Hours", "7 Hours", "8 Hours",
     "9 Hours", "10 Hours", "11 Hours", "12 Hours", "24 Hours"
   ];
   final expectedSalaryItem = [
-    "1000", //
-    "2000", "3000", "4000", "5000", "6000", "7000", "8000",
+    "1000",
+    "2000",
+    "3000",
     "4000",
     "5000",
     "6000",
@@ -207,6 +220,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.93,
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter a valid Email";
@@ -276,7 +290,11 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                         focusColor: whiteColor,
                         isExpanded: true,
                         value: categoryvalue,
-                        items: categoryItems.map(buildMenuItem).toList(),
+                        items: categoryitemModel?.data.map((data) {
+                          return DropdownMenuItem(
+                              value: data.categoryId,
+                              child: Text(data.categoryName));
+                        }).toList(),
                         style: const TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                         onChanged: (value) {
@@ -326,6 +344,8 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width * 0.93,
                     child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      maxLength: 2,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter Age";
@@ -334,6 +354,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                       controller: ageController,
                       decoration: InputDecoration(
+                        counterText: "",
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                         hintText: "Eg.18",
@@ -575,7 +596,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                         fontFamily: "Arial",
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 0),
+                          vertical: 12, horizontal: 10),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide: const BorderSide(
@@ -883,8 +904,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                 ),
                 Center(
                   child: GestureDetector(
-                    onTap: () {
-                      if (nameController.text.isNotEmpty &&
+                    onTap: () async {
+                      if (_formKey.currentState!.validate() &&
+                          nameController.text.isNotEmpty &&
                           numberController.text.isNotEmpty &&
                           emailController.text.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
@@ -902,49 +924,51 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                           expectedSalaryValue!.isNotEmpty &&
                           totalExperienceValue!.isNotEmpty &&
                           languageSelected!.name.isNotEmpty) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CandidateRegisterOtpScreen(
-                                      name: nameController.text,
-                                      mobileNo: numberController.text,
-                                      password: passwordController.text,
-                                      email: emailController.text,
-                                      category: categoryvalue,
-                                      maritalStatus: marriedvalue,
-                                      age: ageController.text,
-                                      religion: religionvalue,
-                                      gender: genderValue,
-                                      passport: passport.toString(),
-                                      education: educationValue,
-                                      timing: timingValue,
-                                      workingHrs: workingHrsValue,
-                                      address: addressController.text,
-                                      location: locationController.text,
-                                      expectedSalary: expectedSalaryValue,
-                                      totalExperience: totalExperienceValue,
-                                      launguage: language.toString(),
-                                    )));
+                        Otp? otp = await AuthRepository()
+                            .getEmployerRegisterOtp(numberController.text);
+                        if (otp != null && otp.status == '200') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CandidateRegisterOtpScreen(
+                                          name: nameController.text,
+                                          mobileNo: numberController.text,
+                                          password: passwordController.text,
+                                          email: emailController.text,
+                                          category: categoryvalue,
+                                          maritalStatus: marriedvalue,
+                                          age: ageController.text,
+                                          religion: religionvalue,
+                                          gender: genderValue,
+                                          passport: passport.toString(),
+                                          education: educationValue,
+                                          timing: timingValue,
+                                          workingHrs: workingHrsValue,
+                                          address: addressController.text,
+                                          location: locationController.text,
+                                          expectedSalary: expectedSalaryValue,
+                                          totalExperience: totalExperienceValue,
+                                          launguage: language.toString(),
+                                          otp: otp)));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Already Registered')));
+                        }
                       }
                     },
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {}
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        width: MediaQuery.of(context).size.width * 0.50,
-                        decoration: BoxDecoration(
-                            color: blueColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        child: Center(
-                          child: Text(
-                            "Submit",
-                            style: GoogleFonts.poltawskiNowy(
-                                color: whiteColor, fontSize: 18),
-                          ),
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      width: MediaQuery.of(context).size.width * 0.50,
+                      decoration: BoxDecoration(
+                          color: blueColor,
+                          borderRadius: BorderRadius.circular(10)),
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      child: Center(
+                        child: Text(
+                          "Submit",
+                          style: GoogleFonts.poltawskiNowy(
+                              color: whiteColor, fontSize: 18),
                         ),
                       ),
                     ),
@@ -1112,9 +1136,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   //   }
   //   setState(() {});
   // }
-
-  DropdownMenuItem<String> buildMenuItem(String categoryItems) =>
-      DropdownMenuItem(value: categoryItems, child: Text(categoryItems));
 
   DropdownMenuItem<String> buildMarriedItem(String marriageItems) =>
       DropdownMenuItem(value: marriageItems, child: Text(marriageItems));
