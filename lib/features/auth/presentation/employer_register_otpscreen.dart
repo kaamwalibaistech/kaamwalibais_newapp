@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
 import '../../../models/empolyer_registerotp_model.dart';
@@ -11,7 +14,7 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
   final String email;
   final String password;
   final String confirmPassword;
-  final Otp? otp;
+  final Otp otp;
 
   const EmolpyerRegisterOtpscreen(
       {super.key,
@@ -30,15 +33,15 @@ class EmolpyerRegisterOtpscreen extends StatefulWidget {
 class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
   EmployerRegisterModel? employerRegisterData;
 
-  @override
-  void initState() {
-    super.initState();
-    _sendOtp();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _sendOtp();
+  // }
 
-  Future _sendOtp() async {
-    // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
-  }
+  // Future _sendOtp() async {
+  //   // _otpController.value = TextEditingValue(text: otpData?.otp ?? '');
+  // }
 
   Future _registerEmployer() async {
     final registerEmployer = await AuthRepository().getEmployerRegister(
@@ -48,82 +51,101 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
     });
   }
 
-  final TextEditingController _otpController = TextEditingController();
+  // TextEditingController _otpController = TextEditingController();
+  String otpcontroller = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
+        backgroundColor: whiteColor,
         leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
             child: const Icon(Icons.arrow_back)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              "Verification code",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            const Text(
-              "We have send the Verification code to",
-              style: TextStyle(fontSize: 13, color: textGreyColor),
+            Image.asset(
+              "lib/assets/images/mobile_otp.png",
+              height: 200,
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 6.0),
-              child: Row(
-                children: [
-                  Text(
-                    widget.phoneNumber.replaceRange(3, 7, "****"),
-                    style: const TextStyle(color: blackColor),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        "Change Phone number?",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            decorationColor: blueColor,
-                            color: blueColor),
-                      ),
-                    ),
-                  )
-                ],
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Text(
+                "Verification",
+                style: GoogleFonts.roboto(
+                    fontWeight: FontWeight.bold, fontSize: 20),
               ),
             ),
+            const Text(
+              "Enter 4 digit number sent to your registered number",
+              style: TextStyle(
+                fontSize: 12,
+              ),
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 6.0),
+            //   child: Row(
+            //     children: [
+            //       Text(
+            //         widget.phoneNumber.replaceRange(3, 7, "****"),
+            //         style: const TextStyle(color: blackColor),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(left: 8.0),
+            //         child: GestureDetector(
+            //           onTap: () {
+            //             Navigator.pop(context);
+            //           },
+            //           child: const Text(
+            //             "Change Phone number?",
+            //             style: TextStyle(
+            //                 decoration: TextDecoration.underline,
+            //                 decorationColor: blueColor,
+            //                 color: blueColor),
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.03,
             ),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: TextFormField(
-                  maxLength: 4,
-                  textAlign: TextAlign.center,
-                  decoration: const InputDecoration(
-                      counterText: "",
-                      hintText: " -     -      -      -      -      -",
-                      hintStyle: TextStyle(color: textGreyColor)),
-                  controller: _otpController,
-                )),
+            OtpTextField(
+              fieldHeight: 40,
+              numberOfFields: 4,
+              showCursor: true,
+              keyboardType: TextInputType.number,
+              cursorColor: blueColor,
+              onSubmit: (value) {
+                setState(() {
+                  otpcontroller = value;
+                });
+              },
+              // onCodeChanged: (String value) {
+
+              // },
+            ),
+
+            sizedBoxH20,
             GestureDetector(
               onTap: () async {
-                await _registerEmployer();
-                if (widget.otp!.otp == _otpController.text) {
+                if (widget.otp.otp == otpcontroller) {
+                  await _registerEmployer();
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text("Register Successfully")));
                   Navigator.pop(context);
                   Navigator.pop(context);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Invalid OTP")));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: blueColor,
+                      content: Text("Invalid OTP")));
                 }
               },
               child: Padding(
@@ -131,7 +153,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
                 child: Center(
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.05,
-                    width: MediaQuery.of(context).size.width * 0.50,
+                    width: MediaQuery.of(context).size.width * 0.80,
                     decoration: BoxDecoration(
                         color: blueColor,
                         borderRadius: BorderRadius.circular(5)),

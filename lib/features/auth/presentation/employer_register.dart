@@ -223,11 +223,11 @@ class _MyWidgetState extends State<EmployerRegister> {
                             passwordController.text.isNotEmpty &&
                             confirmPasswordController.text.isNotEmpty &&
                             emailController.text.isNotEmpty) {
-                          Otp? otp = await AuthRepository()
+                          Otp? otpp = await AuthRepository()
                               .getEmployerRegisterOtp(
                                   phoneNumberController.text);
 
-                          if (otp != null && otp.status == '200') {
+                          if (otpp != null && otpp.status == '200') {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -240,11 +240,11 @@ class _MyWidgetState extends State<EmployerRegister> {
                                           confirmPassword:
                                               confirmPasswordController.text,
                                           email: emailController.text,
-                                          otp: otp,
+                                          otp: otpp,
                                         )));
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Already Registered')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Mobile Number is Registered')));
                           }
                         }
                       },

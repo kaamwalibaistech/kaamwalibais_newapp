@@ -952,8 +952,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                                           launguage: language.toString(),
                                           otp: otp)));
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Already Registered')));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content:
+                                  Text('Mobile Number is Already Registered')));
                         }
                       }
                     },

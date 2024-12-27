@@ -24,7 +24,7 @@ class _CategoryPageState extends State<CategoryPage> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
   final int _pageSize = 10;
-  String phone = "";
+  // String phone = "";
   @override
   void initState() {
     super.initState();
