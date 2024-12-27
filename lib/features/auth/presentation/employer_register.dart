@@ -244,7 +244,8 @@ class _MyWidgetState extends State<EmployerRegister> {
                                         )));
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('Mobile Number is Registered')));
+                                content: Text(
+                                    'Mobile Number is Already Registered')));
                           }
                         }
                       },
