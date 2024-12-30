@@ -137,6 +137,7 @@ class _MyWidgetState extends State<EmployerRegister> {
                       child: TextFormField(
                         controller: emailController,
                         validator: validateEmail,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12, horizontal: 10),
@@ -222,7 +223,9 @@ class _MyWidgetState extends State<EmployerRegister> {
                             fullNameController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty &&
                             confirmPasswordController.text.isNotEmpty &&
-                            emailController.text.isNotEmpty) {
+                            emailController.text.isNotEmpty &&
+                            passwordController.text ==
+                                confirmPasswordController.text) {
                           Otp? otpp = await AuthRepository()
                               .getEmployerRegisterOtp(
                                   phoneNumberController.text);
@@ -247,6 +250,10 @@ class _MyWidgetState extends State<EmployerRegister> {
                                 content: Text(
                                     'Mobile Number is Already Registered')));
                           }
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: blueColor,
+                              content: Text('Password must be same')));
                         }
                       },
                       child: Container(

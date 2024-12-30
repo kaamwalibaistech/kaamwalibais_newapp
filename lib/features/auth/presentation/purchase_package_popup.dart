@@ -67,9 +67,9 @@ class PackagesPurchasePopup extends StatelessWidget {
             //     ),
             //   ],
             // )
-            Text("You Do not have any active plan!"),
+            Text("You do not have any active plan!"),
             Padding(
-              padding: const EdgeInsets.only(top: 20.0, left: 120),
+              padding: const EdgeInsets.only(top: 20.0, left: 90),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -79,7 +79,8 @@ class PackagesPurchasePopup extends StatelessWidget {
                     },
                     child: Text(
                       "Cancel ",
-                      style: GoogleFonts.poltawskiNowy(color: blueColor),
+                      style: GoogleFonts.poltawskiNowy(
+                          color: Colors.red, fontSize: 16),
                     ),
                   ),
                   GestureDetector(
@@ -89,7 +90,8 @@ class PackagesPurchasePopup extends StatelessWidget {
                     },
                     child: Text(
                       "Buy Now",
-                      style: GoogleFonts.poltawskiNowy(color: blueColor),
+                      style: GoogleFonts.poltawskiNowy(
+                          color: blueColor, fontSize: 16),
                     ),
                   )
                 ],

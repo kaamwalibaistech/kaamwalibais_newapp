@@ -1,4 +1,4 @@
-package com.example.kaamwalijobs_new
+package com.kaamwalijobs.kaamwalijob
 
 import io.flutter.embedding.android.FlutterActivity
 
