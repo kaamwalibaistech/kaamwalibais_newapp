@@ -19,6 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
   }
 

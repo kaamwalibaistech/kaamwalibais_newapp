@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
@@ -35,6 +36,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
+    getCurrentLocation();
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
@@ -57,6 +59,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
     showDialog(
         context: context,
         builder: (context) => const AlertDialog(content: LoginPopup()));
+  }
+
+  getCurrentLocation() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Location Denied")));
+      LocationPermission ask = await Geolocator.requestPermission();
+    } else {
+      Position currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    }
   }
 
   @override
