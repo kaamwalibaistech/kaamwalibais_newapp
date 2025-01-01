@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
@@ -236,8 +237,7 @@ class JobCard extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Working for this feature")));
+                        Fluttertoast.showToast(msg: "Working for this feature");
                       },
                       child: Container(
                         decoration: BoxDecoration(

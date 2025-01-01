@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
@@ -13,6 +15,7 @@ import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_ite
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
+import '../../../assets/shimmer_effect/jobs_opening_shimmer.dart';
 import '../../../models/employer_register_model.dart';
 import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
@@ -36,7 +39,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
+    // getCurrentLocation();
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
@@ -61,17 +64,54 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
-  getCurrentLocation() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied ||
-        permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Location Denied")));
-      LocationPermission ask = await Geolocator.requestPermission();
-    } else {
-      Position currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+  String coordinates = "";
+  String address = "";
+  bool scanning = false;
+
+  checkPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    print(serviceEnabled);
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return;
     }
+    permission = await Geolocator.checkPermission();
+    print(permission);
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      Fluttertoast.showToast(msg: "Request Denied !");
+      return;
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      Fluttertoast.showToast(msg: "Denied Forever");
+    }
+    getLocation();
+  }
+
+  getLocation() async {
+    setState(() {
+      scanning = true;
+    });
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      coordinates =
+          'Latitude ${position.latitude} \n Longitude ${position.longitude}';
+      List<Placemark> result =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      if (result.isNotEmpty) {
+        address =
+            '${result[0].name},${result[0].locality},${result[0].administrativeArea}';
+      }
+    } catch (e) {}
+    setState(() {
+      scanning = false;
+    });
   }
 
   @override
@@ -168,12 +208,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Our Categories",
-                        style: TextStyle(
-                            color: blackColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                      GestureDetector(
+                        onTap: () {
+                          checkPermission();
+                        },
+                        child: const Text(
+                          "Our Categories",
+                          style: TextStyle(
+                              color: blackColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
                       ),
                       GestureDetector(
                           onTap: () {
@@ -345,13 +390,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     decoration: const BoxDecoration(),
                                     child: GestureDetector(
                                         onTap: () {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  backgroundColor: blueColor,
-                                                  content: Text(
-                                                      "you can apply soon for job openings")));
+                                          Fluttertoast.showToast(
+                                              msg: "Working for this feature");
                                         },
                                         child: const Text(
                                           "Apply Now",
@@ -364,7 +404,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           },
                         );
                       else
-                        return SizedBox.shrink();
+                        return JobsOpeningShimmer();
                     })
               ],
             ),
