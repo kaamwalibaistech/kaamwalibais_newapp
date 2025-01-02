@@ -108,7 +108,9 @@ class _CandidateRegisterOtpScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       appBar: AppBar(
+        backgroundColor: whiteColor,
         leading: GestureDetector(
             onTap: () {
               Navigator.pop(context);
@@ -122,7 +124,6 @@ class _CandidateRegisterOtpScreenState
           children: [
             Image.asset(
               "lib/assets/images/mobile_otp.png",
-              height: 200,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),

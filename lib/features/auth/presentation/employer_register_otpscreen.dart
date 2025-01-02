@@ -71,8 +71,9 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
+              fit: BoxFit.fitHeight,
               "lib/assets/images/mobile_otp.png",
-              height: 200,
+              cacheHeight: 220,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20.0),

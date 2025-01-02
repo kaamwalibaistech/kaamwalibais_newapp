@@ -39,6 +39,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
+    checkPermission();
     // getCurrentLocation();
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
@@ -208,17 +209,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          checkPermission();
-                        },
-                        child: const Text(
-                          "Our Categories",
-                          style: TextStyle(
-                              color: blackColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
+                      const Text(
+                        "Our Categories",
+                        style: TextStyle(
+                            color: blackColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
                       ),
                       GestureDetector(
                           onTap: () {

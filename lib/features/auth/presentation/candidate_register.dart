@@ -255,7 +255,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       width: MediaQuery.of(context).size.width * 0.93,
                       child: TextFormField(
                         validator: (value) {
-                          if (value!.isEmpty) {
+                          if (value!.isEmpty && value.split("").length < 6) {
                             return "Enter Password";
                           }
                           return null;
@@ -801,7 +801,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   const Padding(
                     padding: EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "Which languages do you know? (तुम कौन सी भाषा जानते हो) *",
+                      "Which languages do you know? (तुम कौन सी भाषा जानते हो) ",
                       style: TextStyle(
                         fontFamily: "Arial",
                         fontSize: 14,
