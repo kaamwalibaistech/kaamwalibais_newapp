@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:kaamwalijobs_new/models/categorylist.dart';
 
 import '../../../Client/homepage_api.dart';
+import '../../../models/employer_edit_profile.dart';
 import '../../../models/employer_forget_password_model.dart';
 import '../../../models/employer_register_model.dart';
 import '../../../models/empolyer_registerotp_model.dart';
@@ -247,6 +248,39 @@ class AuthRepository {
         final Map<String, dynamic> data = jsonDecode(response.body);
         if (data['status'] == 'success') {
           return Categorylistmodel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return throw Exception();
+  }
+
+  Future<Empolyereditprofilemodel> updateUserProfile(
+      name, number, email, flag, userid) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url = Uri.parse(
+            "https://test.kaamwalijobs.com/API/Mobile_api/userprofile_update")
+        .replace(queryParameters: queryParameters);
+
+    final body = {
+      'Name': name,
+      'MobileNo': number,
+      'EmailId': email,
+      'flag': flag,
+      'UserId': userid
+    };
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return Empolyereditprofilemodel.fromJson(data);
         }
       }
     } catch (e) {

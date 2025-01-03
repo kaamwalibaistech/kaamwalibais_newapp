@@ -6,6 +6,7 @@ import '../../../assets/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../auth/presentation/login_popup.dart';
+import '../../navigation/presentation/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -150,12 +151,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          backgroundColor: blueColor,
-                                          content: Text(
-                                              "you can access this soon")));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditProfile()));
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //     SnackBar(
+                                  //         duration: Duration(seconds: 1),
+                                  //         backgroundColor: blueColor,
+                                  //         content: Text(
+                                  //             "you can access this soon")));
                                 },
                                 child: Container(
                                   height: MediaQuery.of(context).size.height *

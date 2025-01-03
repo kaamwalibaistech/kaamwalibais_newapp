@@ -77,7 +77,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     print(serviceEnabled);
     if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
-      return;
+      // return;
     }
     permission = await Geolocator.checkPermission();
     print(permission);
