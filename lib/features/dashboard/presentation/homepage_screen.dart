@@ -33,6 +33,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   // final TextEditingController _controller = TextEditingController();
   final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
+  bool toggleSearch = true;
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
@@ -171,41 +172,69 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         );
                       }
                     }),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 15.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Container(
-                //         padding: const EdgeInsets.only(left: 10),
-                //         height: MediaQuery.of(context).size.height * 0.06,
-                //         width: MediaQuery.of(context).size.width * 0.82,
-                //         decoration: BoxDecoration(
-                //             color: whiteColor,
-                //             borderRadius: BorderRadius.circular(10)),
-                //         child: TextField(
-                //           controller: _controller,
-                //           decoration: const InputDecoration(
-                //             hintText: "Search a job or position",
-                //             hintStyle: TextStyle(color: textGreyColor),
-                //             border:
-                //                 OutlineInputBorder(borderSide: BorderSide.none),
-                //           ),
-                //         ),
-                //       ),
-                //       Container(
-                //           height: MediaQuery.of(context).size.height * 0.06,
-                //           width: MediaQuery.of(context).size.width * 0.10,
-                //           decoration: BoxDecoration(
-                //               color: whiteColor,
-                //               borderRadius: BorderRadius.circular(10)),
-                //           child: const Icon(Icons.tune))
-                //     ],
-                //   ),
-                // ),
-
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 10),
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.52,
+                        decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextField(
+                          //controller: _controller,
+                          decoration: const InputDecoration(
+                            hintText: "Search a job",
+                            hintStyle: TextStyle(color: textGreyColor),
+                            border:
+                                OutlineInputBorder(borderSide: BorderSide.none),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        width: MediaQuery.of(context).size.width * 0.40,
+                        decoration: BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(14),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Location",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Icons.keyboard_arrow_down_outlined,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Visibility(
+                    visible: toggleSearch,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      height: MediaQuery.of(context).size.height * 0.05,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      decoration: BoxDecoration(
+                          color: Colors.cyan.shade300,
+                          borderRadius: BorderRadius.circular(6)),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
