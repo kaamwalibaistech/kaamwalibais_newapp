@@ -16,6 +16,7 @@ import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
 import '../../../assets/shimmer_effect/jobs_opening_shimmer.dart';
+import '../../../models/categorylist.dart';
 import '../../../models/employer_register_model.dart';
 import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
@@ -33,6 +34,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   // final TextEditingController _controller = TextEditingController();
   final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
+  String selectedJob = "Select a job";
   bool toggleSearch = true;
 
   late HomepageBloc _homepageBloc;
@@ -174,50 +176,83 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     }),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 10),
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.52,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                          //controller: _controller,
-                          decoration: const InputDecoration(
-                            hintText: "Search a job",
-                            hintStyle: TextStyle(color: textGreyColor),
-                            border:
-                                OutlineInputBorder(borderSide: BorderSide.none),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        decoration: BoxDecoration(
-                            color: whiteColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(14),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Location",
-                                style: TextStyle(color: Colors.grey),
+                  child: BlocBuilder(
+                    bloc: _homepageBloc,
+                    builder: (context, state) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              HomepageBloc data = HomepageBloc();
+                              Categorylistmodel categorylistmodel =
+                                  await data.loadCategoryUpload();
+                              HomepageBloc().selectCategoryDropdown(
+                                context,
+                                categorylistmodel,
+                                (selectedName) {
+                                  setState(() {
+                                    selectedJob =
+                                        selectedName; // Update the selected text
+                                  });
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 15),
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.52,
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    selectedJob,
+                                    style: TextStyle(
+                                      color: selectedJob == "Select a job"
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 14),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Spacer(),
-                              Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                color: Colors.grey,
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: MediaQuery.of(context).size.width * 0.40,
+                            decoration: BoxDecoration(
+                                color: whiteColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(14),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Location",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Spacer(),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 Center(

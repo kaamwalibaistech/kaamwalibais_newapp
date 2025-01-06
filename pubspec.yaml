@@ -60,6 +60,7 @@ dependencies:
   geolocator: ^13.0.2
   geocoding: ^3.0.0
   fluttertoast: ^8.2.10
+  drop_down_list: ^1.0.0
 
 dev_dependencies:
   flutter_test:

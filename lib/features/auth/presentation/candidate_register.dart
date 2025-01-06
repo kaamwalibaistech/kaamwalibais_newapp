@@ -30,8 +30,10 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   final genderItems = ["Male", "Female", "Not prefer to say"];
   final educationItem = ["<5th", ">5th", ">10"];
   final timingItem = [
-    "Morning Shift", //
-    "Afternoon Shift", "Evening Shift", "Night Shift",
+    "Morning Shift",
+    "Afternoon Shift",
+    "Evening Shift",
+    "Night Shift",
   ];
 
   @override
