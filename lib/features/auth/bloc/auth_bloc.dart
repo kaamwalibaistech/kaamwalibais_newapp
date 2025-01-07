@@ -40,4 +40,31 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       print(e.toString());
     }
   }
+
+  Future<void> candidateAuthentication(
+      AuthenticationEvent event, Emitter<AuthBlocState> emit) async {
+    try {
+      emit(AuthLoadingState());
+      EmployerRegisterModel? localUserProfileData =
+          LocalStoragePref.instance?.getUserProfile();
+
+      if (localUserProfileData != null) {
+        emit(AuthLoadedState(userData: localUserProfileData));
+      } else {
+        EmployerRegisterModel? employerDetails = await authRepository.userLogin(
+            event.phoneNumber, event.password, event.userType);
+        if (employerDetails != null && employerDetails.status == '200') {
+          // store locally
+          LocalStoragePref.instance
+              ?.storeUserProfile(jsonEncode(employerDetails.toJson()));
+          emit(AuthLoadedState(userData: employerDetails));
+        } else {
+          emit(AuthLoadFailedState(userfailed: USERFAILED.unregister));
+        }
+      }
+    } catch (e) {
+      emit(AuthLoadFailedState(userfailed: USERFAILED.networkerror));
+      print(e.toString());
+    }
+  }
 }

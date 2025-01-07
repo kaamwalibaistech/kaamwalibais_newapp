@@ -156,7 +156,8 @@ class _EditProfileState extends State<EditProfile> {
                     child: Center(
                       child: Text(
                         "Update Profile",
-                        style: GoogleFonts.poltawskiNowy(color: whiteColor),
+                        style: GoogleFonts.poltawskiNowy(
+                            color: whiteColor, fontSize: 16),
                       ),
                     ),
                   ),

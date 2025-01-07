@@ -30,8 +30,7 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  // final TextEditingController _controller = TextEditingController();
-  final listViewController = ListViewItems();
+  // final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
 
   late HomepageBloc _homepageBloc;
@@ -67,7 +66,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   String coordinates = "";
   String address = "";
-  bool scanning = false;
 
   checkPermission() async {
     bool serviceEnabled;
@@ -77,13 +75,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
     print(serviceEnabled);
     if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
-      // return;
     }
+
+    permission = await Geolocator.requestPermission();
     permission = await Geolocator.checkPermission();
     print(permission);
 
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
       Fluttertoast.showToast(msg: "Request Denied !");
       return;
     }
@@ -95,9 +93,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   getLocation() async {
-    setState(() {
-      scanning = true;
-    });
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
@@ -106,13 +101,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
       List<Placemark> result =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       if (result.isNotEmpty) {
-        address =
-            '${result[0].name},${result[0].locality},${result[0].administrativeArea}';
+        address = '${result[0].locality},${result[0].administrativeArea}';
+        address.split(",");
       }
     } catch (e) {}
-    setState(() {
-      scanning = false;
-    });
+
+    LocationData._instance.locationData.addAll([address]);
   }
 
   @override
@@ -152,6 +146,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 3,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
@@ -407,4 +404,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
         ));
   }
+}
+
+class LocationData {
+  List<String?> locationData = [];
+  static final _instance = LocationData._internal();
+
+  static LocationData get instance => _instance;
+
+  LocationData._internal();
 }

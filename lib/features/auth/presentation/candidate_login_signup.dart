@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/candidate_register.dart';
+
+import '../../../Client/homepage_api.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
 
 class CandidateLoginSignup extends StatefulWidget {
   const CandidateLoginSignup({super.key});
@@ -95,7 +100,7 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                       child: TextFormField(
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "Enter Confirm Password";
+                            return "Enter password";
                           }
                           return null;
                         },
@@ -140,7 +145,13 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {
+                          BlocProvider.of<AuthBloc>(context, listen: false).add(
+                              AuthenticationEvent(
+                                  phoneNumber: phoneNumberController.text,
+                                  password: passwordController.text,
+                                  userType: USER.candidates));
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(

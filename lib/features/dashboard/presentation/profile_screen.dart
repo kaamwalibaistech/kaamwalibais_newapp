@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 
 import '../../../assets/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
@@ -38,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: BlocBuilder(
+          child: BlocBuilder<AuthBloc, AuthBlocState>(
               bloc: _authBloc,
               buildWhen: (previous, current) =>
                   current is AuthLoadedState ||
@@ -122,7 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      "----",
+                                      LocationData
+                                              .instance.locationData.first ??
+                                          "---",
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],
