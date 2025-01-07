@@ -10,6 +10,7 @@ import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
@@ -227,26 +228,35 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               ),
                             ),
                           ),
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            decoration: BoxDecoration(
-                                color: whiteColor,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(14),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Location",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Spacer(),
-                                  Icon(
-                                    Icons.keyboard_arrow_down_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                ],
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          LocationSelectScreen()));
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Location",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

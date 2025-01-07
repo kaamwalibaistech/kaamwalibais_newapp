@@ -6,9 +6,3 @@ class GetHomePageCategoriesEvents extends HomePageEvent {
   @override
   List<Object?> get props => [];
 }
-
-class GetCatogeryEvent extends HomePageEvent {
-  late List<String> list;
-  @override
-  List<Object?> get props => [list];
-}

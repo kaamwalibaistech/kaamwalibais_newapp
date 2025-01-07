@@ -10,6 +10,7 @@ import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.dart';
 
 import 'bloc/packages_bloc.dart';
+import 'features/dashboard/presentation/location/bloc/bloc/select_location_bloc.dart';
 import 'features/jobs/network/job_repository.dart';
 
 Future main() async {
@@ -43,6 +44,8 @@ class _MyAppState extends State<MyApp> {
                 DashboardBloc(dashboardNetwork: DashboardNetwork())),
         BlocProvider<JobBloc>(create: (context) => JobBloc(JobRepository())),
         BlocProvider<PackagesBloc>(create: (context) => PackagesBloc()),
+        BlocProvider<SelectLocationBloc>(
+            create: (context) => SelectLocationBloc()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
