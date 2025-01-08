@@ -142,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                           nameController.text,
                           phoneNoController.text,
                           emailController.text,
-                          flag.toString(),
+                          flag,
                           localUserProfileData!.userId);
                       Navigator.pop(context);
 

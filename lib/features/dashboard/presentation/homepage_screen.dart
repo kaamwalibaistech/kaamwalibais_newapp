@@ -64,8 +64,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
-  String coordinates = "";
-  String address = "";
+  String? coordinates = "";
+  String? address = "";
 
   checkPermission() async {
     bool serviceEnabled;
@@ -75,15 +75,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
     print(serviceEnabled);
     if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
+      return;
     }
 
-    permission = await Geolocator.requestPermission();
+    //
     permission = await Geolocator.checkPermission();
-    print(permission);
-
     if (permission == LocationPermission.denied) {
-      Fluttertoast.showToast(msg: "Request Denied !");
-      return;
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        Fluttertoast.showToast(msg: 'Request Denied');
+        return;
+      }
     }
 
     if (permission == LocationPermission.deniedForever) {
@@ -102,11 +105,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
           await placemarkFromCoordinates(position.latitude, position.longitude);
       if (result.isNotEmpty) {
         address = '${result[0].locality},${result[0].administrativeArea}';
-        address.split(",");
+        LocationData._instance.locationData.addAll([address]);
       }
     } catch (e) {}
-
-    LocationData._instance.locationData.addAll([address]);
   }
 
   @override
