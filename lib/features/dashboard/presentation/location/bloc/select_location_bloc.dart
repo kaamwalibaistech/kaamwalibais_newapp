@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bloc/bloc.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../../../../../../models/search_location_model.dart';
+import '../../../../../models/search_location_model.dart';
 
 part 'select_location_event.dart';
 part 'select_location_state.dart';
