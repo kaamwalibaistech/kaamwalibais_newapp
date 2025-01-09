@@ -32,7 +32,7 @@ class HomepageBloc extends Bloc<HomePageEvent, HomepageState> {
   selectCategoryDropdown(
       BuildContext context,
       Categorylistmodel categorylistModel,
-      Function(String selectedName) onValueSelected) {
+      Function(String selectedName, String selectedId) onValueSelected) {
     List<SelectedListItem> dropdownData = categorylistModel.data
         .map((categorylistModel) => SelectedListItem(
             name: categorylistModel.categoryName,
@@ -46,7 +46,7 @@ class HomepageBloc extends Bloc<HomePageEvent, HomepageState> {
               selectedList.first is SelectedListItem) {
             SelectedListItem selectedItem =
                 selectedList.first as SelectedListItem;
-            onValueSelected(selectedItem.name);
+            onValueSelected(selectedItem.name, selectedItem.value!);
           }
         },
       ),

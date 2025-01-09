@@ -19,7 +19,8 @@ class LocationSelectScreen extends StatelessWidget {
             shadowColor: Colors.black26,
             child: TextField(
               // autofocus: true,
-              //onSubmitted: (value) => callAllLeads(value),
+              onSubmitted: (value) =>
+                  context.read<SelectLocationBloc>().add(SearchEvent(value)),
               cursorColor: Colors.blue.shade700,
               decoration: InputDecoration(
                 hintText: "Search ",
@@ -74,7 +75,26 @@ class LocationSelectScreen extends StatelessWidget {
               ],
             );
           } else if (state is SelectLocationSearchingState) {
-            return Text("Searching");
+            return ListView.builder(
+                itemCount: state.searchLocationModel!.predictions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      String city = state
+                          .searchLocationModel!.predictions[index].description;
+                      Navigator.pop(context, city);
+                    },
+                    child: ListTile(
+                      title: Text(state.searchLocationModel!.predictions[index]
+                          .structuredFormatting.mainText),
+                      subtitle: Text(state
+                          .searchLocationModel!
+                          .predictions[index]
+                          .structuredFormatting
+                          .secondaryText),
+                    ),
+                  );
+                });
           } else if (state is SelectLocationSuccessState) {
             return Column(
               children: [
@@ -122,6 +142,7 @@ class LocationSelectScreen extends StatelessWidget {
               ),
             );
           }
+
           return Text("No State");
         },
       ),

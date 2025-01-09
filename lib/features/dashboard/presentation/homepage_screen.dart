@@ -23,6 +23,7 @@ import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
 import '../../auth/presentation/login_popup.dart';
 import '../../navigation/presentation/allcategories.dart';
+import '../../navigation/presentation/search_candidates.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -35,8 +36,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
   // final TextEditingController _controller = TextEditingController();
   final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
-  String selectedJob = "Select a job";
+  String selectedJobName = "Select a job";
+  String selecteJobdId = "2";
+  String selectedLocation = "Location";
   bool toggleSearch = true;
+  Categorylistmodel? categorylistmodel;
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
@@ -70,6 +74,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   String coordinates = "";
+  double latitude = 0.0;
+  double longitude = 0.0;
   String address = "";
   bool scanning = false;
 
@@ -117,6 +123,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
     setState(() {
       scanning = false;
     });
+  }
+
+  Future<void> getCoordinatesFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      latitude = locations.first.latitude;
+      longitude = locations.first.longitude;
+      print("Latitude: $latitude, Longitude: $longitude");
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   @override
@@ -186,15 +203,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           GestureDetector(
                             onTap: () async {
                               HomepageBloc data = HomepageBloc();
-                              Categorylistmodel categorylistmodel =
+                              categorylistmodel =
                                   await data.loadCategoryUpload();
                               HomepageBloc().selectCategoryDropdown(
                                 context,
-                                categorylistmodel,
-                                (selectedName) {
+                                categorylistmodel!,
+                                (selectedName, selectedId) {
                                   setState(() {
-                                    selectedJob =
-                                        selectedName; // Update the selected text
+                                    selectedJobName = selectedName;
+                                    selecteJobdId =
+                                        selectedId; // Update the selected text
                                   });
                                 },
                               );
@@ -209,9 +227,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               child: Row(
                                 children: [
                                   Text(
-                                    selectedJob,
+                                    selectedJobName,
                                     style: TextStyle(
-                                      color: selectedJob == "Select a job"
+                                      color: selectedJobName == "Select a job"
                                           ? Colors.grey
                                           : Colors.black,
                                     ),
@@ -229,12 +247,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          LocationSelectScreen()));
+                            onTap: () async {
+                              final city = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LocationSelectScreen(),
+                                ),
+                              );
+                              if (city != null && city is String) {
+                                setState(() {
+                                  selectedLocation = city;
+                                });
+                              }
+                              getCoordinatesFromAddress(selectedLocation);
                             },
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,
@@ -243,12 +268,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   color: whiteColor,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Padding(
-                                padding: const EdgeInsets.all(14),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   children: [
-                                    Text(
-                                      "Location",
-                                      style: TextStyle(color: Colors.grey),
+                                    Expanded(
+                                      child: Text(
+                                        selectedLocation,
+                                        style: TextStyle(
+                                            color:
+                                                selectedLocation == "Location"
+                                                    ? Colors.grey
+                                                    : Colors.black),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                     Spacer(),
                                     Icon(
@@ -267,19 +300,42 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ),
                 Center(
                   child: Visibility(
-                    visible: toggleSearch,
-                    child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      decoration: BoxDecoration(
-                          color: Colors.cyan.shade300,
-                          borderRadius: BorderRadius.circular(6)),
+                    visible: selectedJobName != "Select a job" ||
+                            selectedLocation != "Location"
+                        ? true
+                        : false,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchCandidates(
+                                    latitude,
+                                    longitude,
+                                    selectedJobName,
+                                    selecteJobdId)));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(218, 13, 72, 161),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Center(
+                            child: Text(
+                          "SEARCH",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      ),
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

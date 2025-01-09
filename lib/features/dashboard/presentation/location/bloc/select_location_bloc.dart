@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:bloc/bloc.dart';
@@ -62,9 +63,10 @@ class SelectLocationBloc
       }
     });
 
-    on<SearchEvent>((event, emit) {
-      emit(SelectLocationInitialState());
-      SelectLocationSearchingState();
+    on<SearchEvent>((event, emit) async {
+      SearchLocationModel searchLocationModel =
+          await getcategorynameid(event.searchKey);
+      emit(SelectLocationSearchingState(searchLocationModel));
     });
   }
 

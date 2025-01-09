@@ -39,7 +39,7 @@ class Prediction {
   String reference;
   StructuredFormatting structuredFormatting;
   List<Term> terms;
-  List<Type> types;
+  List<String> types;
 
   Prediction({
     required this.description,
@@ -61,7 +61,7 @@ class Prediction {
         structuredFormatting:
             StructuredFormatting.fromJson(json["structured_formatting"]),
         terms: List<Term>.from(json["terms"].map((x) => Term.fromJson(x))),
-        types: List<Type>.from(json["types"].map((x) => typeValues.map[x]!)),
+        types: List<String>.from(json["types"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,7 +72,7 @@ class Prediction {
         "reference": reference,
         "structured_formatting": structuredFormatting.toJson(),
         "terms": List<dynamic>.from(terms.map((x) => x.toJson())),
-        "types": List<dynamic>.from(types.map((x) => typeValues.reverse[x])),
+        "types": List<dynamic>.from(types.map((x) => x)),
       };
 }
 
@@ -143,24 +143,4 @@ class Term {
         "offset": offset,
         "value": value,
       };
-}
-
-enum Type { GEOCODE, LOCALITY, POLITICAL }
-
-final typeValues = EnumValues({
-  "geocode": Type.GEOCODE,
-  "locality": Type.LOCALITY,
-  "political": Type.POLITICAL
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
