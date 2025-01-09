@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/candidate_model.dart';
-
 class LocalStoragePref {
   static LocalStoragePref? _instance;
   static SharedPreferences? storage;
@@ -24,7 +22,8 @@ class LocalStoragePref {
   }
 
   void storeCandidateProfile(String userProfileData) async {
-    await storage!.setString(LocalStorageKeys.userProfile, userProfileData);
+    await storage!
+        .setString(LocalStorageKeys.storeCandidateProfile, userProfileData);
   }
 
   EmployerRegisterModel? getUserProfile() {
@@ -37,7 +36,14 @@ class LocalStoragePref {
     return null;
   }
 
-  CandidateData? getCandidateProfile() {
+  EmployerRegisterModel? getCandidateProfile() {
+    String? response =
+        storage?.getString(LocalStorageKeys.storeCandidateProfile);
+    if (response != null) {
+      EmployerRegisterModel candidateRegisterModel =
+          EmployerRegisterModel.fromJson(jsonDecode(response));
+      return candidateRegisterModel;
+    }
     return null;
   }
 
@@ -48,5 +54,5 @@ class LocalStoragePref {
 
 class LocalStorageKeys {
   static String userProfile = 'user_profile';
-  static String storeCandidateProfile = 'user_profile';
+  static String storeCandidateProfile = 'candidate_user_profile';
 }

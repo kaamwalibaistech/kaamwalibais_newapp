@@ -11,6 +11,7 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   AuthBloc() : super(AuthBlocInitial()) {
     on<AuthenticationEvent>(_authentication);
+    on<AuthenticationEventCandidate>(_candidateAuthentication);
   }
   AuthRepository authRepository = AuthRepository();
 
@@ -41,23 +42,24 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     }
   }
 
-  Future<void> candidateAuthentication(
-      AuthenticationEvent event, Emitter<AuthBlocState> emit) async {
+  Future<void> _candidateAuthentication(
+      AuthenticationEventCandidate event, Emitter<AuthBlocState> emit) async {
     try {
       emit(AuthLoadingState());
       EmployerRegisterModel? localUserProfileData =
-          LocalStoragePref.instance?.getUserProfile();
+          LocalStoragePref.instance?.getCandidateProfile();
 
       if (localUserProfileData != null) {
-        emit(AuthLoadedState(userData: localUserProfileData));
+        emit(AuthCandidateLoadedState(userData: localUserProfileData));
       } else {
-        EmployerRegisterModel? employerDetails = await authRepository.userLogin(
-            event.phoneNumber, event.password, event.userType);
-        if (employerDetails != null && employerDetails.status == '200') {
+        EmployerRegisterModel? candidateDetails =
+            await authRepository.candidateUserLogin(
+                event.phoneNumber, event.password, event.userType);
+        if (candidateDetails != null) {
           // store locally
           LocalStoragePref.instance
-              ?.storeUserProfile(jsonEncode(employerDetails.toJson()));
-          emit(AuthLoadedState(userData: employerDetails));
+              ?.storeCandidateProfile(jsonEncode(candidateDetails.toJson()));
+          emit(AuthCandidateLoadedState(userData: candidateDetails));
         } else {
           emit(AuthLoadFailedState(userfailed: USERFAILED.unregister));
         }
