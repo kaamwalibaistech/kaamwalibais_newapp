@@ -46,6 +46,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
     EmployerRegisterModel? userProfileData =
         LocalStoragePref.instance?.getUserProfile();
+
     if (userProfileData == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         checkLoginPopup();
@@ -104,8 +105,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
       List<Placemark> result =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       if (result.isNotEmpty) {
-        address = '${result[0].locality},${result[0].administrativeArea}';
-        LocationData._instance.locationData.addAll([address]);
+        address = result[0].administrativeArea;
+        LocationData._instance.locationData.add(address);
       }
     } catch (e) {}
   }

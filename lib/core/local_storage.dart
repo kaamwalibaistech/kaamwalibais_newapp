@@ -21,10 +21,10 @@ class LocalStoragePref {
     await storage!.setString(LocalStorageKeys.userProfile, userProfileData);
   }
 
-  void storeCandidateProfile(String userProfileData) async {
-    await storage!
-        .setString(LocalStorageKeys.storeCandidateProfile, userProfileData);
-  }
+  // void storeCandidateProfile(String userProfileData) async {
+  //   await storage!
+  //       .setString(LocalStorageKeys.storeCandidateProfile, userProfileData);
+  // }
 
   EmployerRegisterModel? getUserProfile() {
     String? response = storage?.getString(LocalStorageKeys.userProfile);
@@ -36,16 +36,16 @@ class LocalStoragePref {
     return null;
   }
 
-  EmployerRegisterModel? getCandidateProfile() {
-    String? response =
-        storage?.getString(LocalStorageKeys.storeCandidateProfile);
-    if (response != null) {
-      EmployerRegisterModel candidateRegisterModel =
-          EmployerRegisterModel.fromJson(jsonDecode(response));
-      return candidateRegisterModel;
-    }
-    return null;
-  }
+  // EmployerRegisterModel? getCandidateProfile() {
+  //   String? response =
+  //       storage?.getString(LocalStorageKeys.storeCandidateProfile);
+  //   if (response != null) {
+  //     EmployerRegisterModel candidateRegisterModel =
+  //         EmployerRegisterModel.fromJson(jsonDecode(response));
+  //     return candidateRegisterModel;
+  //   }
+  //   return null;
+  // }
 
   Future clearAllPref() async {
     await storage?.clear();
@@ -54,5 +54,5 @@ class LocalStoragePref {
 
 class LocalStorageKeys {
   static String userProfile = 'user_profile';
-  static String storeCandidateProfile = 'candidate_user_profile';
+  // static String storeCandidateProfile = 'candidate_user_profile';
 }

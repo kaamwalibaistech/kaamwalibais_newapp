@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:kaamwalijobs_new/models/candidate_model.dart';
 
 import '../../../models/employer_register_model.dart';
 
@@ -34,12 +33,12 @@ class AuthLoadedState extends AuthBlocState {
   List<Object> get props => [userData];
 }
 
-class AuthCandidateLoadedState extends AuthBlocState {
-  final EmployerRegisterModel userData;
-  AuthCandidateLoadedState({required this.userData});
-  @override
-  List<Object> get props => [userData];
-}
+// class AuthCandidateLoadedState extends AuthBlocState {
+//   final EmployerRegisterModel userData;
+//   AuthCandidateLoadedState({required this.userData});
+//   @override
+//   List<Object> get props => [userData];
+// }
 
 class AuthLoadFailedState extends AuthBlocState {
   final USERFAILED userfailed;
@@ -48,9 +47,9 @@ class AuthLoadFailedState extends AuthBlocState {
   List<Object> get props => [userfailed];
 }
 
-class CandidateAuthLoadedState extends AuthBlocState {
-  final CandidateData userData;
-  CandidateAuthLoadedState({required this.userData});
-  @override
-  List<Object> get props => [userData];
-}
+// class CandidateAuthLoadedState extends AuthBlocState {
+//   final CandidateData userData;
+//   CandidateAuthLoadedState({required this.userData});
+//   @override
+//   List<Object> get props => [userData];
+// }

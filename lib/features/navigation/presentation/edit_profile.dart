@@ -29,7 +29,6 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  String flag = "0";
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +141,8 @@ class _EditProfileState extends State<EditProfile> {
                           nameController.text,
                           phoneNoController.text,
                           emailController.text,
-                          flag,
-                          localUserProfileData!.userId);
+                          localUserProfileData!.flag,
+                          localUserProfileData.userId);
                       Navigator.pop(context);
 
                       Fluttertoast.showToast(msg: "Updated Successfully");

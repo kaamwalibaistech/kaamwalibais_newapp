@@ -36,15 +36,14 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
       body: SingleChildScrollView(
         child: BlocListener<AuthBloc, AuthBlocState>(
             listenWhen: (previous, current) =>
-                current is AuthLoadFailedState ||
-                current is AuthCandidateLoadedState,
+                current is AuthLoadFailedState || current is AuthLoadedState,
             listener: (context, state) {
               if (state is AuthLoadFailedState) {
                 if (state.userfailed == USERFAILED.unregister) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Invalid Credentials!')));
                 }
-              } else if (state is AuthCandidateLoadedState) {
+              } else if (state is AuthLoadedState) {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -166,7 +165,7 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                           onTap: () {
                             if (_formKey.currentState!.validate()) {
                               BlocProvider.of<AuthBloc>(context, listen: false)
-                                  .add(AuthenticationEventCandidate(
+                                  .add(AuthenticationEvent(
                                       phoneNumber: phoneNumberController.text,
                                       password: passwordController.text,
                                       userType: USER.candidates));

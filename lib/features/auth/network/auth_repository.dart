@@ -44,38 +44,42 @@ class AuthRepository {
     }
   }
 
-  Future<EmployerRegisterModel?> candidateUserLogin(
-      String number, String password, USER user) async {
-    Map<String, String> queryParameters = {};
-    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+  // Future<EmployerRegisterModel?> candidateUserLogin(
+  //     String number, String password, USER user) async {
+  //   Map<String, String> queryParameters = {};
+  //   queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_login")
-            .replace(queryParameters: queryParameters);
-    final body = {
-      'mobile_no': number,
-      'password': password,
-      'flag': user == USER.candidates ? '1' : '0'
-    };
-    try {
-      final request = http.MultipartRequest("POST", url);
-      request.fields.addAll(body);
-      request.headers.addAll(queryParameters);
-      final response = await request.send();
+  //   Uri url =
+  //       Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_login")
+  //           .replace(queryParameters: queryParameters);
+  //   final body = {
+  //     'mobile_no': number,
+  //     'password': password,
+  //     'flag': user == USER.candidates ? '1' : '0'
+  //   };
+  //   try {
+  //     final request = http.MultipartRequest("POST", url);
+  //     request.fields.addAll(body);
+  //     request.headers.addAll(queryParameters);
+  //     final response = await request.send();
 
-      if (response.statusCode == 200) {
-        var res = await http.Response.fromStream(response);
-        final result = jsonDecode(res.body) as Map<String, dynamic>;
-        EmployerRegisterModel candidateRegisterModel =
-            EmployerRegisterModel.fromJson(result);
-        return candidateRegisterModel;
-      } else {
-        throw Exception();
-      }
-    } catch (e) {
-      throw Exception();
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       var res = await http.Response.fromStream(response);
+  //       final result = jsonDecode(res.body) as Map<String, dynamic>;
+
+  //       EmployerRegisterModel candidateRegisterModel =
+  //           EmployerRegisterModel.fromJson(result);
+  //       if (candidateRegisterModel.status == "200") {
+  //         return candidateRegisterModel;
+  //       }
+  //       throw Exception();
+  //     } else {
+  //       throw Exception();
+  //     }
+  //   } catch (e) {
+  //     throw Exception();
+  //   }
+  // }
 
   Future postCandidateFormData(
       String name,

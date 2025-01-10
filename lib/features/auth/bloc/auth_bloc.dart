@@ -11,7 +11,7 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   AuthBloc() : super(AuthBlocInitial()) {
     on<AuthenticationEvent>(_authentication);
-    on<AuthenticationEventCandidate>(_candidateAuthentication);
+    // on<AuthenticationEvent>(_candidateAuthentication);
   }
   AuthRepository authRepository = AuthRepository();
 
@@ -42,31 +42,31 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     }
   }
 
-  Future<void> _candidateAuthentication(
-      AuthenticationEventCandidate event, Emitter<AuthBlocState> emit) async {
-    try {
-      emit(AuthLoadingState());
-      EmployerRegisterModel? localUserProfileData =
-          LocalStoragePref.instance?.getCandidateProfile();
+  // Future<void> _candidateAuthentication(
+  //     AuthenticationEvent event, Emitter<AuthBlocState> emit) async {
+  //   try {
+  //     emit(AuthLoadingState());
+  //     EmployerRegisterModel? localUserProfileData =
+  //         LocalStoragePref.instance?.getUserProfile();
 
-      if (localUserProfileData != null) {
-        emit(AuthCandidateLoadedState(userData: localUserProfileData));
-      } else {
-        EmployerRegisterModel? candidateDetails =
-            await authRepository.candidateUserLogin(
-                event.phoneNumber, event.password, event.userType);
-        if (candidateDetails != null) {
-          // store locally
-          LocalStoragePref.instance
-              ?.storeCandidateProfile(jsonEncode(candidateDetails.toJson()));
-          emit(AuthCandidateLoadedState(userData: candidateDetails));
-        } else {
-          emit(AuthLoadFailedState(userfailed: USERFAILED.unregister));
-        }
-      }
-    } catch (e) {
-      emit(AuthLoadFailedState(userfailed: USERFAILED.networkerror));
-      print(e.toString());
-    }
-  }
+  //     if (localUserProfileData != null) {
+  //       emit(AuthCandidateLoadedState(userData: localUserProfileData));
+  //     } else {
+  //       EmployerRegisterModel? candidateDetails =
+  //           await authRepository.candidateUserLogin(
+  //               event.phoneNumber, event.password, event.userType);
+  //       if (candidateDetails != null) {
+  //         // store locally
+  //         LocalStoragePref.instance
+  //             ?.storeUserProfile(jsonEncode(candidateDetails.toJson()));
+  //         emit(AuthCandidateLoadedState(userData: candidateDetails));
+  //       } else {
+  //         emit(AuthLoadFailedState(userfailed: USERFAILED.unregister));
+  //       }
+  //     }
+  //   } catch (e) {
+  //     emit(AuthLoadFailedState(userfailed: USERFAILED.networkerror));
+  //     print(e.toString());
+  //   }
+  // }
 }
