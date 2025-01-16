@@ -33,14 +33,14 @@ class EmployerRegisterModel {
 
   factory EmployerRegisterModel.fromJson(Map<String, dynamic> json) =>
       EmployerRegisterModel(
-        status: json["status"],
-        userId: json["UserId"],
-        name: json["Name"],
-        mobileNo: json["MobileNo"],
-        emailId: json["EmailId"],
-        flag: json["flag"],
-        token: json["token"],
-        msg: json["msg"],
+        status: json["status"] ?? "",
+        userId: json["UserId"] ?? "",
+        name: json["Name"] ?? "",
+        mobileNo: json["MobileNo"] ?? "",
+        emailId: json["EmailId"] ?? "",
+        flag: json["flag"] ?? "",
+        token: json["token"] ?? "",
+        msg: json["msg"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -169,9 +170,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text("This Feature is Coming soon")));
+                      Fluttertoast.showToast(
+                          msg: "This Feature is Coming soon");
                     },
                     child: Column(
                       children: [
@@ -199,10 +199,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 1),
-                          backgroundColor: blueColor,
-                          content: Text("Not posted any Jobs !")));
+                      Fluttertoast.showToast(msg: "Not posted any Jobs !");
                     },
                     child: Column(
                       children: [

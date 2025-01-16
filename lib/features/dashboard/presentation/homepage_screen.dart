@@ -39,7 +39,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
     checkPermission();
-    // getCurrentLocation();
+
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
