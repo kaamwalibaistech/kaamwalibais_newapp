@@ -12,6 +12,7 @@ import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.d
 import 'bloc/packages_bloc.dart';
 import 'features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 import 'features/jobs/network/job_repository.dart';
+import 'features/navigation/bloc/search_candidate_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<PackagesBloc>(create: (context) => PackagesBloc()),
         BlocProvider<SelectLocationBloc>(
             create: (context) => SelectLocationBloc()),
+        BlocProvider<SearchCandidateBloc>(
+            create: (context) => SearchCandidateBloc()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

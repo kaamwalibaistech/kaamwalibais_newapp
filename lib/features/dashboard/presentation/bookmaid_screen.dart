@@ -23,14 +23,6 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
   final int _pageSize = 10;
-  @override
-  void initState() {
-    super.initState();
-    dashboardBloc = BlocProvider.of<DashboardBloc>(context);
-    _paginationController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-  }
 
   final PagingController<int, CandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
@@ -40,6 +32,15 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   Future<void> _fetchPage(int pageKey) async {
     candidateRequest.page = pageKey.toString();
     dashboardBloc.add(GetCandidates(candidateRequest: candidateRequest));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dashboardBloc = BlocProvider.of<DashboardBloc>(context);
+    _paginationController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
   }
 
   @override

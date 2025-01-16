@@ -300,7 +300,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ),
                 Center(
                   child: Visibility(
-                    visible: selectedJobName != "Select a job" ||
+                    visible: selectedJobName != "Select a job" &&
                             selectedLocation != "Location"
                         ? true
                         : false,
@@ -312,8 +312,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 builder: (context) => SearchCandidates(
                                     latitude,
                                     longitude,
+                                    selecteJobdId,
                                     selectedJobName,
-                                    selecteJobdId)));
+                                    selectedLocation)));
                       },
                       child: Container(
                         margin: EdgeInsets.only(top: 20),

@@ -18,7 +18,8 @@ class LocationSelectScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(30.0),
             shadowColor: Colors.black26,
             child: TextField(
-              // autofocus: true,
+              onChanged: (value) =>
+                  context.read<SelectLocationBloc>().add(SearchEvent(value)),
               onSubmitted: (value) =>
                   context.read<SelectLocationBloc>().add(SearchEvent(value)),
               cursorColor: Colors.blue.shade700,
