@@ -11,6 +11,7 @@ import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
+import 'package:kaamwalijobs_new/features/jobs/presentation/jobs_apply.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
@@ -81,6 +82,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
     //
     permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.whileInUse) {
+      Fluttertoast.showToast(msg: "Permission Allowed ");
+    }
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
 
@@ -335,7 +339,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Job Openings",
+                        "Recent Job Openings",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -385,8 +389,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     decoration: const BoxDecoration(),
                                     child: GestureDetector(
                                         onTap: () {
-                                          Fluttertoast.showToast(
-                                              msg: "Working for this feature");
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobsApply(
+                                                          jobsLocation: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobLocation,
+                                                          jobsType: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobType,
+                                                          jobsId: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobpostId)));
                                         },
                                         child: const Text(
                                           "Apply Now",

@@ -68,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
                     }
                     return null;
                   },
-                  keyboardType: TextInputType.number,
+
                   // maxLength: 10,
                   controller: nameController,
                   decoration: InputDecoration(
@@ -119,7 +119,7 @@ class _EditProfileState extends State<EditProfile> {
                 width: MediaQuery.of(context).size.width,
                 child: TextFormField(
                   validator: validateEmail,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.emailAddress,
                   // maxLength: 10,
                   controller: emailController,
                   decoration: InputDecoration(
