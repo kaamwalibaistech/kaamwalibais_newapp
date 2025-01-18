@@ -12,6 +12,7 @@ import '../../../Client/homepage_api.dart';
 import '../../../core/local_storage.dart';
 import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
+import '../../jobs/presentation/jobs_post.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -199,7 +200,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Fluttertoast.showToast(msg: "Not posted any Jobs !");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => JobsPost()));
                     },
                     child: Column(
                       children: [

@@ -11,7 +11,6 @@ import '../../navigation/presentation/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
-  static List<String?> userData = [];
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -49,8 +48,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   current is AuthLoadingState,
               builder: (context, state) {
                 if (state is AuthLoadedState) {
-                  ProfileScreen.userData.addAll(
-                      [state.userData.mobileNo, state.userData.emailId]);
+                  String data = state.userData.emailId;
+                  String data1 = state.userData.mobileNo;
+                  if (data.isNotEmpty) {
+                    UserData._instance.userData1.addAll([data]);
+                    UserData1._instance.userData.addAll([data1]);
+                  }
 
                   return Column(
                     children: [
@@ -221,11 +224,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
-// class UserData {
-//   List<String?> userData = [];
-//   static final _instance = UserData._internal();
+class UserData {
+  List<String?> userData1 = [];
+  static final _instance = UserData._internal();
 
-//   static UserData get instance => _instance;
+  static UserData get instance => _instance;
 
-//   UserData._internal();
-// }
+  UserData._internal();
+}
+
+class UserData1 {
+  List<String?> userData = [];
+  static final _instance = UserData1._internal();
+
+  static UserData1 get instance => _instance;
+
+  UserData1._internal();
+}

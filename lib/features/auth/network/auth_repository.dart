@@ -321,7 +321,7 @@ class AuthRepository {
         }
       }
     } catch (e) {
-      throw Exception();
+      throw Exception(e.toString());
     }
 
     return throw Exception();

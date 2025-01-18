@@ -7,8 +7,9 @@ import 'package:kaamwalijobs_new/assets/widgets/packages_image.dart';
 import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
-import 'package:kaamwalijobs_new/features/dashboard/presentation/profile_screen.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import '../../dashboard/presentation/profile_screen.dart';
 
 class Packages extends StatefulWidget {
   const Packages({super.key});
@@ -39,8 +40,8 @@ class _PackagesState extends State<Packages> {
       'name': 'KaamWaliJobs',
       'description': packagename,
       'prefill': {
-        'contact': ProfileScreen.userData[0].toString(),
-        'email': ProfileScreen.userData[1].toString()
+        'contact': UserData.instance.userData1,
+        'email': UserData1.instance.userData
       }
     };
     try {
