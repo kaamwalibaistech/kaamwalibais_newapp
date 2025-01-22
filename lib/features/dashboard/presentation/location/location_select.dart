@@ -2,8 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 
-class LocationSelectScreen extends StatelessWidget {
+class LocationSelectScreen extends StatefulWidget {
   const LocationSelectScreen({super.key});
+
+  @override
+  State<LocationSelectScreen> createState() => _LocationSelectScreenState();
+}
+
+class _LocationSelectScreenState extends State<LocationSelectScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +112,8 @@ class LocationSelectScreen extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text("data")));
+                    String city = state.address;
+                    Navigator.pop(context, city);
                   },
                   child: ListTile(
                     leading: Icon(

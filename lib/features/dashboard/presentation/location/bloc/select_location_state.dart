@@ -18,9 +18,7 @@ final class SelectLocationSearchingState extends SelectLocationState {
 final class SelectLocationSuccessState extends SelectLocationState {
   final String address;
 
-  SelectLocationSuccessState(
-    this.address,
-  );
+  SelectLocationSuccessState(this.address);
 
   @override
   List<Object?> get props => [address];

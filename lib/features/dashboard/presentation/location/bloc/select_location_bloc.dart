@@ -52,7 +52,7 @@ class SelectLocationBloc
           Placemark place = placemarks[0];
 
           currentAddress =
-              ' ${place.street}, ${place.subLocality}, ${place.locality}';
+              '${place.subLocality}, ${place.locality},${place.administrativeArea},${place.postalCode}';
         }).catchError((e) {
           debugPrint(e);
         });

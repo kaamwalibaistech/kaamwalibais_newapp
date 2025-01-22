@@ -77,6 +77,13 @@ class _SearchCandidatesState extends State<SearchCandidates> {
         .add(SearchCandidateLoadDataEvent(candidateRequest: candidateRequest));
   }
 
+  sortcandidate(String sortvalueM) {
+    _paginationController.refresh();
+    candidateRequest.sortBy = sortvalueM;
+    _searchCandidateBloc
+        .add(SearchCandidateLoadDataEvent(candidateRequest: candidateRequest));
+  }
+
   @override
   void dispose() {
     _paginationController.dispose();
@@ -102,7 +109,6 @@ class _SearchCandidatesState extends State<SearchCandidates> {
   /* .................. Sort .......................... */
 
   String sortByValue = "";
-  int filterIndex = -1;
 
   List<SortModel> sortList = [
     SortModel("2", "Newest First"),
@@ -275,7 +281,9 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                               padding: const EdgeInsets.only(top: 10),
                               child: GestureDetector(
                                 onTap: () {
-                                  //   showSortDialog(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text("Sort")));
+                                  showSortDialog(context);
                                 },
                                 child: Column(
                                   children: [
@@ -849,6 +857,44 @@ class _SearchCandidatesState extends State<SearchCandidates> {
           ),
         ),
       ),
+    );
+  }
+
+  showSortDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Sort by'),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.1,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: sortList.length,
+                itemBuilder: (context, int index) {
+                  return ListTile(
+                    title: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            sortByValue = sortList[index].id.toString();
+                          });
+                          sortcandidate(sortByValue);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(sortList[index].title.toString())),
+                  );
+                }),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
