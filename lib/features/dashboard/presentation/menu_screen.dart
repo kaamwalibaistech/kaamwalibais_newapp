@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -11,6 +12,7 @@ import '../../../Client/homepage_api.dart';
 import '../../../core/local_storage.dart';
 import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
+import '../../jobs/presentation/jobs_post.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -167,42 +169,90 @@ class _MenuScreenState extends State<MenuScreen> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 2),
-                          content: Text("This Feature is Coming soon")));
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          height: MediaQuery.of(context).size.height * 0.08,
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          decoration: BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Image.asset(
-                            "lib/assets/images/become_an_agent.png",
-                            color: Colors.grey,
-                          ),
+                  BlocBuilder(
+                    bloc: _authBloc,
+                    builder: (context, state) {
+                      // GestureDetector(
+                      //   child: Column(
+                      //     children: [
+                      //       GestureDetector(
+                      //         onTap: () {
+                      //           if (state is AuthLoadedState) {
+                      //             Navigator.push(
+                      //                 context,
+                      //                 MaterialPageRoute(
+                      //                     builder: (context) => JobsPost()));
+                      //           } else {
+                      //             Fluttertoast.showToast(msg: "Please LogIn");
+                      //           }
+                      //         },
+                      //         child: Container(
+                      //           padding: const EdgeInsets.all(10),
+                      //           height:
+                      //               MediaQuery.of(context).size.height * 0.08,
+                      //           width: MediaQuery.of(context).size.width * 0.25,
+                      //           decoration: BoxDecoration(
+                      //               color: whiteColor,
+                      //               borderRadius: BorderRadius.circular(10)),
+                      //           child: Image.asset(
+                      //             "lib/assets/images/become_an_agent.png",
+                      //             color: Colors.grey,
+                      //           ),
+                      //         ),
+                      //       ),
+                      //       const Padding(
+                      //         padding: EdgeInsets.only(top: 10.0),
+                      //         child: Text(
+                      //           "Post Jobs",
+                      //           style: TextStyle(fontWeight: FontWeight.bold),
+                      //         ),
+                      //       )
+                      //     ],
+                      //   ),
+                      // );
+                      return GestureDetector(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (state is AuthLoadedState) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => JobsPost()));
+                                } else {
+                                  Fluttertoast.showToast(msg: "Please LogIn ");
+                                }
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.08,
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Image.asset(
+                                  "lib/assets/images/become_an_agent.png",
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 10.0),
+                              child: Text(
+                                "Post Jobs",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0),
-                          child: Text(
-                            "Becaome\n an agent",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   GestureDetector(
                     onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: Duration(seconds: 1),
-                          backgroundColor: blueColor,
-                          content: Text("Not posted any Jobs !")));
+                      Fluttertoast.showToast(msg: "Not Posted Any Job !");
                     },
                     child: Column(
                       children: [

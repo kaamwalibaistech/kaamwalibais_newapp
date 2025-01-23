@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 
 import '../../../assets/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../auth/presentation/login_popup.dart';
+import '../../navigation/presentation/edit_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,6 +18,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AuthBloc _authBloc;
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: BlocBuilder(
+          child: BlocBuilder<AuthBloc, AuthBlocState>(
               bloc: _authBloc,
               buildWhen: (previous, current) =>
                   current is AuthLoadedState ||
@@ -45,6 +48,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   current is AuthLoadingState,
               builder: (context, state) {
                 if (state is AuthLoadedState) {
+                  String data = state.userData.emailId;
+                  String data1 = state.userData.mobileNo;
+                  if (data.isNotEmpty) {
+                    UserData._instance.userData1.addAll([data]);
+                    UserData1._instance.userData.addAll([data1]);
+                  }
+
                   return Column(
                     children: [
                       SizedBox(
@@ -121,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      "----",
+                                      LocationData.instance.locationData,
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],
@@ -150,12 +160,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          duration: Duration(seconds: 1),
-                                          backgroundColor: blueColor,
-                                          content: Text(
-                                              "you can access this soon")));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditProfile()));
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //     SnackBar(
+                                  //         duration: Duration(seconds: 1),
+                                  //         backgroundColor: blueColor,
+                                  //         content: Text(
+                                  //             "you can access this soon")));
                                 },
                                 child: Container(
                                   height: MediaQuery.of(context).size.height *
@@ -206,4 +220,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
+}
+
+class UserData {
+  List<String?> userData1 = [];
+  static final _instance = UserData._internal();
+
+  static UserData get instance => _instance;
+
+  UserData._internal();
+}
+
+class UserData1 {
+  List<String?> userData = [];
+  static final _instance = UserData1._internal();
+
+  static UserData1 get instance => _instance;
+
+  UserData1._internal();
 }

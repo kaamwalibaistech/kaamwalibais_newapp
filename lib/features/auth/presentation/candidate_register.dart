@@ -112,6 +112,14 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   TextEditingController addressController = TextEditingController();
 
   TextEditingController locationController = TextEditingController();
+
+  String? validateEmail(String? email) {
+    RegExp emailRegEx = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
+    final isEmailValid = emailRegEx.hasMatch(email ?? "");
+    if (!isEmailValid) return "please  Enter a valid email";
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -225,12 +233,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       width: MediaQuery.of(context).size.width * 0.93,
                       child: TextFormField(
                         keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter a valid Email";
-                          }
-                          return null;
-                        },
+                        validator: validateEmail,
                         controller: emailController,
                         // maxLength: 10,
                         decoration: InputDecoration(

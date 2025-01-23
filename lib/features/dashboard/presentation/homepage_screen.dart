@@ -12,6 +12,7 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
+import 'package:kaamwalijobs_new/features/jobs/presentation/jobs_apply.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
@@ -33,8 +34,7 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  // final TextEditingController _controller = TextEditingController();
-  final listViewController = ListViewItems();
+  // final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
   String selectedJobName = "Select a job";
   String selecteJobdId = "2";
@@ -48,13 +48,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
     checkPermission();
-    // getCurrentLocation();
+
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
 
     EmployerRegisterModel? userProfileData =
         LocalStoragePref.instance?.getUserProfile();
+
     if (userProfileData == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         checkLoginPopup();
@@ -73,11 +74,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
+
   String coordinates = "";
   double latitude = 0.0;
   double longitude = 0.0;
   String address = "";
   bool scanning = false;
+
 
   checkPermission() async {
     bool serviceEnabled;
@@ -89,13 +92,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
       await Geolocator.openLocationSettings();
       return;
     }
-    permission = await Geolocator.checkPermission();
-    print(permission);
 
+    //
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.whileInUse) {
+      Fluttertoast.showToast(msg: "Permission Allowed ");
+    }
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      Fluttertoast.showToast(msg: "Request Denied !");
-      return;
+
+      if (permission == LocationPermission.denied) {
+        Fluttertoast.showToast(msg: 'Request Denied');
+        return;
+      }
     }
 
     if (permission == LocationPermission.deniedForever) {
@@ -105,9 +114,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   getLocation() async {
-    setState(() {
-      scanning = true;
-    });
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
@@ -116,13 +122,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
       List<Placemark> result =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       if (result.isNotEmpty) {
-        address =
-            '${result[0].name},${result[0].locality},${result[0].administrativeArea}';
+        address = result[0].administrativeArea;
+        LocationData._instance.locationData = address ?? "";
       }
     } catch (e) {}
-    setState(() {
-      scanning = false;
-    });
   }
 
   Future<void> getCoordinatesFromAddress(String address) async {
@@ -173,6 +176,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   style: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 3,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
@@ -357,7 +363,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           },
                           child: const Text(
                             "See all",
-                            style: TextStyle(color: blackColor),
+                            style: TextStyle(
+                                color: blackColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ))
                     ],
                   ),
@@ -366,7 +375,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   bloc: _homepageBloc,
                   buildWhen: (previous, current) =>
                       current is HomePageLoadedState ||
-                      current is HomePageLoadingState,
+                      current is HomePageLoadingState ||
+                      current is HomePageFailedState,
                   builder: (context, state) {
                     if (state is HomePageLoadedState)
                       return GridView.builder(
@@ -467,7 +477,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        "Job Openings",
+                        "Recent Job Openings",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
@@ -481,7 +491,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           },
                           child: const Text(
                             "See all",
-                            style: TextStyle(color: blackColor),
+                            style: TextStyle(
+                                color: blackColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
                           ))
                     ],
                   ),
@@ -517,8 +530,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     decoration: const BoxDecoration(),
                                     child: GestureDetector(
                                         onTap: () {
-                                          Fluttertoast.showToast(
-                                              msg: "Working for this feature");
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobsApply(
+                                                          jobsLocation: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobLocation,
+                                                          jobsType: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobType,
+                                                          jobsId: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobpostId)));
                                         },
                                         child: const Text(
                                           "Apply Now",
@@ -538,4 +566,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
         ));
   }
+}
+
+class LocationData {
+  String locationData = "";
+  static final _instance = LocationData._internal();
+
+  static LocationData get instance => _instance;
+
+  LocationData._internal();
 }

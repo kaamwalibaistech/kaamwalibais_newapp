@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
@@ -10,6 +9,7 @@ import 'package:kaamwalijobs_new/features/jobs/bloc/job_state.dart';
 import 'package:kaamwalijobs_new/models/job_listing.dart';
 
 import '../../../assets/shimmer_effect/book_maid_shimmer.dart';
+import 'jobs_apply.dart';
 
 class Alljobsopenings extends StatefulWidget {
   const Alljobsopenings({super.key});
@@ -237,7 +237,13 @@ class JobCard extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Fluttertoast.showToast(msg: "Working for this feature");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => new JobsApply(
+                                    jobsLocation: job!.jobLocation.toString(),
+                                    jobsType: job!.jobType.toString(),
+                                    jobsId: job!.jobpostId.toString())));
                       },
                       child: Container(
                         decoration: BoxDecoration(

@@ -33,9 +33,23 @@ class AuthLoadedState extends AuthBlocState {
   List<Object> get props => [userData];
 }
 
+// class AuthCandidateLoadedState extends AuthBlocState {
+//   final EmployerRegisterModel userData;
+//   AuthCandidateLoadedState({required this.userData});
+//   @override
+//   List<Object> get props => [userData];
+// }
+
 class AuthLoadFailedState extends AuthBlocState {
   final USERFAILED userfailed;
   AuthLoadFailedState({required this.userfailed});
   @override
   List<Object> get props => [userfailed];
 }
+
+// class CandidateAuthLoadedState extends AuthBlocState {
+//   final CandidateData userData;
+//   CandidateAuthLoadedState({required this.userData});
+//   @override
+//   List<Object> get props => [userData];
+// }
