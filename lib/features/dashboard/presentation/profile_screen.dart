@@ -131,9 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       style: GoogleFonts.poltawskiNowy(),
                                     ),
                                     Text(
-                                      LocationData.instance.locationData
-                                          .toList()
-                                          .toString(),
+                                      LocationData.instance.locationData,
                                       style: GoogleFonts.poltawskiNowy(),
                                     )
                                   ],

@@ -6,6 +6,7 @@ import 'package:http/http.dart ' as http;
 import 'package:kaamwalijobs_new/models/job_listing.dart';
 
 import '../../../models/applyjobpost_model.dart';
+import '../../../models/create_job_post.dart';
 
 final class JobRepository {
   Future<JobListing> getJobs({required int pageNo}) async {
@@ -64,6 +65,62 @@ final class JobRepository {
       }
     } catch (e) {
       throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<Createjobpostmodel?> createJobsPost(
+    String userId,
+    String categoryId,
+    String joblocation,
+    String jobType,
+    String schedule,
+    String gender,
+    String maritalStatus,
+    String religion,
+    String education,
+    String languages,
+    String age,
+    String experience,
+    String minimumprice,
+    String maximumprice,
+  ) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/create_jobpost")
+            .replace(queryParameters: queryParameters);
+
+    final body = {
+      'UserId': userId,
+      'CategoryId': categoryId,
+      'job_location': joblocation,
+      'job_type': jobType,
+      'schedule': schedule,
+      'Gender': gender,
+      'Marital_Status': maritalStatus,
+      'Religion': religion,
+      'Education': education,
+      'Languages': languages,
+      'Age': age,
+      'Experience': experience,
+      'minimum_price': minimumprice,
+      'maximum_price': maximumprice,
+    };
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return Createjobpostmodel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
     }
 
     return null;

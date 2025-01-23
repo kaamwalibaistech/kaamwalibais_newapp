@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -150,12 +149,9 @@ class _EditProfileState extends State<EditProfile> {
                               localUserProfileData.userId)
                           .then((_) {
                         BlocProvider.of<AuthBloc>(context, listen: false).add(
-                            AuthenticationEvent(
-                                phoneNumber: '',
-                                password: '',
-                                userType: localUserProfileData.flag == '0'
-                                    ? USER.employer
-                                    : USER.candidates));
+                            GetUserProfile(
+                                userId: localUserProfileData.userId,
+                                flag: localUserProfileData.flag));
                       });
                       Navigator.pop(context);
 

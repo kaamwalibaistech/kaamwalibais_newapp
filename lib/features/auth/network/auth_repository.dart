@@ -9,6 +9,7 @@ import '../../../models/employer_edit_profile.dart';
 import '../../../models/employer_forget_password_model.dart';
 import '../../../models/employer_register_model.dart';
 import '../../../models/empolyer_registerotp_model.dart';
+import '../../../models/updated_profile.dart';
 
 class AuthRepository {
   Future<EmployerRegisterModel?> userLogin(
@@ -42,6 +43,30 @@ class AuthRepository {
     } catch (e) {
       throw Exception();
     }
+  }
+
+  Future<UserUpdatedprofilemodel?> getUserUpatedProfile(
+      String userId, String flag) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/userprofile")
+            .replace(queryParameters: queryParameters);
+    final body = {'UserId': userId, 'flag': flag};
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return UserUpdatedprofilemodel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+    return null;
   }
 
   // Future<EmployerRegisterModel?> candidateUserLogin(
