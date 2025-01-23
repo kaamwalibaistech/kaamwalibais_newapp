@@ -10,6 +10,7 @@ import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/jobs_apply.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
@@ -17,11 +18,13 @@ import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
 import '../../../assets/shimmer_effect/jobs_opening_shimmer.dart';
+import '../../../models/categorylist.dart';
 import '../../../models/employer_register_model.dart';
 import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
 import '../../auth/presentation/login_popup.dart';
 import '../../navigation/presentation/allcategories.dart';
+import '../../navigation/presentation/search_candidates.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -33,6 +36,11 @@ class HomepageScreen extends StatefulWidget {
 class _HomepageScreenState extends State<HomepageScreen> {
   // final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
+  String selectedJobName = "Select a job";
+  String selecteJobdId = "2";
+  String selectedLocation = "Location";
+  bool toggleSearch = true;
+  Categorylistmodel? categorylistmodel;
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
@@ -66,8 +74,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
-  String? coordinates = "";
-  String? address = "";
+
+  String coordinates = "";
+  double latitude = 0.0;
+  double longitude = 0.0;
+  String address = "";
+  bool scanning = false;
+
 
   checkPermission() async {
     bool serviceEnabled;
@@ -113,6 +126,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
         LocationData._instance.locationData = address ?? "";
       }
     } catch (e) {}
+  }
+
+  Future<void> getCoordinatesFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      latitude = locations.first.latitude;
+      longitude = locations.first.longitude;
+      print("Latitude: $latitude, Longitude: $longitude");
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   @override
@@ -175,7 +199,150 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       }
                     }),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: BlocBuilder(
+                    bloc: _homepageBloc,
+                    builder: (context, state) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              HomepageBloc data = HomepageBloc();
+                              categorylistmodel =
+                                  await data.loadCategoryUpload();
+                              HomepageBloc().selectCategoryDropdown(
+                                context,
+                                categorylistmodel!,
+                                (selectedName, selectedId) {
+                                  setState(() {
+                                    selectedJobName = selectedName;
+                                    selecteJobdId =
+                                        selectedId; // Update the selected text
+                                  });
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(left: 15),
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.52,
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    selectedJobName,
+                                    style: TextStyle(
+                                      color: selectedJobName == "Select a job"
+                                          ? Colors.grey
+                                          : Colors.black,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 14),
+                                    child: Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              final city = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LocationSelectScreen(),
+                                ),
+                              );
+                              if (city != null && city is String) {
+                                setState(() {
+                                  selectedLocation = city;
+                                });
+                              }
+                              getCoordinatesFromAddress(selectedLocation);
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        selectedLocation,
+                                        style: TextStyle(
+                                            color:
+                                                selectedLocation == "Location"
+                                                    ? Colors.grey
+                                                    : Colors.black),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                Center(
+                  child: Visibility(
+                    visible: selectedJobName != "Select a job" &&
+                            selectedLocation != "Location"
+                        ? true
+                        : false,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchCandidates(
+                                    latitude,
+                                    longitude,
+                                    selecteJobdId,
+                                    selectedJobName,
+                                    selectedLocation)));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 20),
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(218, 13, 72, 161),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Center(
+                            child: Text(
+                          "SEARCH",
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
