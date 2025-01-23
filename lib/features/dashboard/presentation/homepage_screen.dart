@@ -74,13 +74,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
-
   String coordinates = "";
   double latitude = 0.0;
   double longitude = 0.0;
   String address = "";
   bool scanning = false;
-
+  String addressData = "";
 
   checkPermission() async {
     bool serviceEnabled;
@@ -122,8 +121,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
       List<Placemark> result =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       if (result.isNotEmpty) {
-        address = result[0].administrativeArea;
-        LocationData._instance.locationData = address ?? "";
+        addressData = result[0].administrativeArea ?? "";
+        LocationData._instance.locationData = addressData ?? "";
       }
     } catch (e) {}
   }
