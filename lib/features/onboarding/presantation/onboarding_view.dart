@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/navigationscreen.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../../screens/webview_widget.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -18,6 +21,7 @@ class _OnboardingScreenState extends State<OnboardingView> {
 
   final controller = OnboardingItems();
   final pageController = PageController();
+  bool? checkBoxValue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +114,74 @@ class _OnboardingScreenState extends State<OnboardingView> {
                       controller.items[index].descriptions,
                       style: GoogleFonts.poltawskiNowy(color: textBlackColor4),
                     ),
-                  )
+                  ),
+                  isLastPage
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 80.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                  value: checkBoxValue,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      checkBoxValue = newValue;
+                                    });
+                                  }),
+                              Text(
+                                "I agree to ",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const WebviewWidget(
+                                                  appBarTitle:
+                                                      'Terms & Conditions',
+                                                  url:
+                                                      'https://kaamwalijobs.com/terms-condition',
+                                                )));
+                                  },
+                                  child: Text(
+                                    "Terms of Services ",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: Colors.blue),
+                                  )),
+                              Text(
+                                "and ",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WebviewWidget(
+                                                appBarTitle: 'Privacy Policy',
+                                                url:
+                                                    'https://kaamwalijobs.com/privacy-policy',
+                                              )));
+                                },
+                                child: Text(
+                                  "Privacy Policy.",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.blue),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      : SizedBox()
                 ],
               );
             },
@@ -130,11 +201,14 @@ class _OnboardingScreenState extends State<OnboardingView> {
               // final pres = await SharedPreferences.getInstance();
               // pres.setBool("onboarrding", true);
               // if (!mounted) return;
-
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const Navigationscreen()));
+              if (checkBoxValue == true) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Navigationscreen()));
+              } else {
+                Fluttertoast.showToast(msg: "Accept all Privacy and Policy");
+              }
             },
             child: const Text(
               "Get Started",

@@ -116,24 +116,48 @@ class JobCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.36,
+        height: MediaQuery.of(context).size.height * 0.34,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 20,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0),
+                    child: Text(
+                      job!.jobType!,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   Text(
                     job!.postedBy!,
                     style: TextStyle(color: textGreyColor),
                   ),
                 ],
               ),
-              Text(job!.jobType!),
-              Text(
-                job!.jobLocation!,
-                style: TextStyle(color: textGreyColor),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: iconGreyColor,
+                    size: 18,
+                  ),
+                  Expanded(
+                    child: Text(
+                      maxLines: 1,
+                      softWrap: true,
+                      job!.jobLocation!,
+                      style: TextStyle(color: textGreyColor),
+                    ),
+                  ),
+                ],
               ),
               sizedBoxH10,
               Row(
@@ -235,6 +259,10 @@ class JobCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Text(
+                      "Rs. ${job!.monthPrice} / month",
+                      style: TextStyle(color: blueColor),
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -259,7 +287,6 @@ class JobCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text("Rs. ${job!.monthPrice} / month")
                   ],
                 ),
               )

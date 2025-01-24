@@ -49,7 +49,10 @@ class _JobsPostState extends State<JobsPost> {
   String? jobShiftvalue;
   String? scheduleValue;
   final languageItems = ["English", "Hindi", "Marathi", "Urdu"];
-  final genderItems = ["Male", "Female", "Not prefer to say"];
+  final genderItems = [
+    "Male",
+    "Female",
+  ];
   final marriageItems = ["Unmarried", "Married", "Divorce"];
   final religionItems = ["Hindu", "muslim", "Christian", "Sikh"];
   final educationItem = ["<5th", ">5th", ">10"];
