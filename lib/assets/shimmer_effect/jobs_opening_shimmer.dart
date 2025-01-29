@@ -1,76 +1,231 @@
-import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+// import 'package:flutter/material.dart';
+// import 'package:shimmer/shimmer.dart';
 
-import '../colors.dart';
+// class JobOpeningLoader extends StatelessWidget {
+//   const JobOpeningLoader({super.key});
 
-class JobsOpeningShimmer extends StatelessWidget {
-  const JobsOpeningShimmer({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      // backgroundColor: scaffoldColor,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ListView.builder(
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: 4,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Container(
-                // height: MediaQuery.of(context).size.height * .08,
-                // width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(color: whiteColor),
-                child: ListTile(
-                  leading: Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 238, 236, 236),
-                    highlightColor: const Color.fromARGB(255, 222, 221, 221),
-                    child: Container(
-                        height: 40,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                        )),
-                  ),
-                  title: Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 238, 236, 236),
-                    highlightColor: const Color.fromARGB(255, 222, 221, 221),
-                    child: Container(
-                        height: 10,
-                        width: 2,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                        )),
-                  ),
-                  subtitle: Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 238, 236, 236),
-                    highlightColor: const Color.fromARGB(255, 222, 221, 221),
-                    child: Container(
-                        height: 10,
-                        width: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                        )),
-                  ),
-                  trailing: Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(255, 238, 236, 236),
-                    highlightColor: const Color.fromARGB(255, 222, 221, 221),
-                    child: Container(
-                        height: 20,
-                        width: 10,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                        )),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//         scrollDirection: Axis.vertical,
+//         shrinkWrap: true,
+//         physics: const NeverScrollableScrollPhysics(),
+//         itemCount: 10,
+//         itemBuilder: (context, index) {
+//           return Padding(
+//             padding:
+//                 const EdgeInsets.symmetric(horizontal: 14.0, vertical: 8.0),
+//             child: Container(
+//               decoration: ShapeDecoration(
+//                 color: Colors.white,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(10),
+//                 ),
+//               ),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(
+//                         horizontal: 8.0, vertical: 5),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Row(
+//                           children: [
+//                             Shimmer.fromColors(
+//                               baseColor: Colors.grey.shade300,
+//                               highlightColor: Colors.grey.shade400,
+//                               child: Container(
+//                                   width: 30,
+//                                   height: 30,
+//                                   decoration: BoxDecoration(
+//                                       color: Colors.grey.shade300,
+//                                       borderRadius: BorderRadius.circular(00))),
+//                             ),
+//                             SizedBox(
+//                               width: 10,
+//                             ),
+//                             Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               // mainAxisAlignment: MainAxisAlignment.start,
+//                               children: [
+//                                 Shimmer.fromColors(
+//                                   baseColor: Colors.grey.shade300,
+//                                   highlightColor: Colors.grey.shade400,
+//                                   child: Container(
+//                                       width: 130,
+//                                       height: 15,
+//                                       decoration: BoxDecoration(
+//                                           color: Colors.grey.shade300,
+//                                           borderRadius:
+//                                               BorderRadius.circular(00))),
+//                                 ),
+//                                 SizedBox(
+//                                   height: 3,
+//                                 ),
+//                                 Shimmer.fromColors(
+//                                   baseColor: Colors.grey.shade300,
+//                                   highlightColor: Colors.grey.shade400,
+//                                   child: Container(
+//                                       width: 150,
+//                                       height: 15,
+//                                       decoration: BoxDecoration(
+//                                           color: Colors.grey.shade300,
+//                                           borderRadius:
+//                                               BorderRadius.circular(00))),
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 30,
+//                               height: 30,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 8.0),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                       children: [
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 25,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 25,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 25,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 25,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Padding(
+//                     padding: const EdgeInsets.only(top: 4.0),
+//                     child: Row(
+//                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                       children: [
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 45,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 45,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 45,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                         Shimmer.fromColors(
+//                           baseColor: Colors.grey.shade300,
+//                           highlightColor: Colors.grey.shade400,
+//                           child: Container(
+//                               width: 45,
+//                               height: 15,
+//                               decoration: BoxDecoration(
+//                                   color: Colors.grey.shade300,
+//                                   borderRadius: BorderRadius.circular(00))),
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: [
+//                       Expanded(
+//                         child: Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Shimmer.fromColors(
+//                             baseColor: Colors.grey.shade300,
+//                             highlightColor: Colors.grey.shade400,
+//                             child: Container(
+//                                 height: 15,
+//                                 decoration: BoxDecoration(
+//                                     color: Colors.grey.shade300,
+//                                     borderRadius: BorderRadius.circular(00))),
+//                           ),
+//                         ),
+//                       ),
+//                       Expanded(
+//                         child: Padding(
+//                           padding: const EdgeInsets.all(8.0),
+//                           child: Shimmer.fromColors(
+//                             baseColor: Colors.grey.shade300,
+//                             highlightColor: Colors.grey.shade400,
+//                             child: Container(
+//                                 height: 35,
+//                                 decoration: BoxDecoration(
+//                                     color: Colors.grey.shade300,
+//                                     borderRadius: BorderRadius.circular(00))),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   )
+//                 ],
+//               ),
+//             ),
+//           );
+//         });
+//   }
+// }

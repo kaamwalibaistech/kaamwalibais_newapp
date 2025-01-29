@@ -69,6 +69,9 @@ class _WebviewWidgetState extends State<WebviewWidget> {
             document.querySelector('.sticky').style.display = 'none';
           """);
                 await controller.evaluateJavascript(source: """
+            document.querySelector('.city_app_hide').style.display = 'none';
+          """);
+                await controller.evaluateJavascript(source: """
             var footer = document.querySelector('footer');
             if (footer) {
               footer.style.display = 'none';

@@ -5,9 +5,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/Filter_Sort/search_candidates_filter.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/search_candidate_event.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/search_candidate_states.dart';
-import 'package:kaamwalijobs_new/features/dashboard/presentation/Filter_Sort/search_candidates_filter.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
 import '../../../assets/shimmer_effect/book_maid_shimmer.dart';
