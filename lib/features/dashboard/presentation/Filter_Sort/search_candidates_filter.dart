@@ -58,12 +58,16 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
       maxAge = "",
       minExperience = "",
       maxExperience = "",
-      km = "";
+      km = "",
+      genderValue = "",
+      workingHoursValue = "",
+      religionValue = "",
+      languageValue = "";
 
-  List<String> genderValue = [];
-  List<String> workingHoursValue = [];
-  List<String> religionValue = [];
-  List<String> languageValue = [];
+  // List<String> genderValue = [];
+  // List<String> workingHoursValue = [];
+  // List<String> religionValue = [];
+  // List<String> languageValue = [];
 
   RangeValues salaryRange = const RangeValues(0, 30000);
   RangeValues ageRange = const RangeValues(18, 60);
@@ -110,10 +114,10 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                   for (int i = 0; i < filterText.length; i++) {
                     filterText[i].count = '';
                   }
-                  genderValue = [];
-                  workingHoursValue = [];
-                  religionValue = [];
-                  languageValue = [];
+                  genderValue = '';
+                  workingHoursValue = '';
+                  religionValue = '';
+                  languageValue = '';
                   kmRange = 3;
                   ageRange = const RangeValues(18, 60);
                   salaryRange = const RangeValues(0, 30000);
@@ -767,19 +771,18 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (genderValue.contains(genderList[index])) {
-                              genderValue.remove(genderList[index]);
+                              genderValue = '';
                               filterText[5].count = "";
                             } else {
-                              genderValue.add(genderList[index]);
+                              genderValue = genderList[index];
                               filterText[5].count = "1";
                             }
 
-                            if (genderValue.isEmpty) {
+                            if (genderValue == '') {
                               filterText[5].count = "";
                             } else {
                               filterText[5].count = "1";
                             }
-                            // genderValue = genderList[index];
                           });
                         },
                         child: Container(
@@ -861,20 +864,18 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                             setState(() {
                               if (workingHoursValue
                                   .contains(workingHoursList[index])) {
-                                workingHoursValue
-                                    .remove(workingHoursList[index]);
+                                workingHoursValue = '';
                                 filterText[6].count = "";
                               } else {
-                                workingHoursValue.add(workingHoursList[index]);
+                                workingHoursValue = workingHoursList[index];
                                 filterText[6].count = "1";
                               }
 
-                              if (workingHoursValue.isEmpty) {
+                              if (workingHoursValue == '') {
                                 filterText[6].count = "";
                               } else {
                                 filterText[6].count = "1";
                               }
-                              // workingHoursValue = workingHoursList[index];
                             });
                           },
                           child: Container(
@@ -957,17 +958,18 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (religionValue.contains(religionList[index])) {
-                              religionValue.remove(religionList[index]);
+                              religionValue = '';
+                              filterText[7].count = "";
                             } else {
-                              religionValue.add(religionList[index]);
+                              religionValue = religionList[index];
+                              filterText[7].count = "1";
                             }
 
-                            if (religionValue.isEmpty) {
+                            if (religionValue == '') {
                               filterText[7].count = "";
                             } else {
                               filterText[7].count = "1";
                             }
-                            // religionValue = religionList[index];
                           });
                         },
                         child: Container(
@@ -1048,13 +1050,17 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (languageValue.contains(languageList[index])) {
-                              languageValue.remove(languageList[index]);
+                              languageValue = '';
                               filterText[8].count = "";
                             } else {
-                              languageValue.add(languageList[index]);
+                              languageValue = languageList[index];
                               filterText[8].count = "1";
                             }
-                            // languageValue = languageList[index];
+                            if (languageValue == '') {
+                              filterText[8].count = "";
+                            } else {
+                              filterText[8].count = "1";
+                            }
                           });
                         },
                         child: Container(

@@ -349,6 +349,13 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                       _paginationController.error = error;
                     }
                   }
+                  if (state is SearchCandidateErrorState) {
+                    Center(
+                        child: Text(
+                      state.errorMsg,
+                      style: TextStyle(color: blackColor),
+                    ));
+                  }
                 },
                 child: PagedListView<int, SearchcandidateData?>(
                   keyboardDismissBehavior:
