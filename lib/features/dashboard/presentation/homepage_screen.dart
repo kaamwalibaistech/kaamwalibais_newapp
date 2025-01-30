@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
@@ -34,6 +36,8 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
+  bool isInternetConnected = true;
+  StreamSubscription? _streamSubscription;
   // final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
   String selectedJobName = "Select a job";
@@ -47,11 +51,29 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
+
+    _streamSubscription = InternetConnection().onStatusChange.listen((event) {
+      switch (event) {
+        case InternetStatus.connected:
+          setState(() {
+            isInternetConnected = true;
+          });
+          _homepageBloc.add(GetHomePageCategoriesEvents());
+          break;
+        case InternetStatus.disconnected:
+          setState(() {
+            isInternetConnected = false;
+          });
+          _homepageBloc.add(GetHomePageCategoriesEvents());
+          print("ERROR: executed");
+          break;
+      }
+    });
+
     checkPermission();
 
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
-    _homepageBloc.add(GetHomePageCategoriesEvents());
 
     EmployerRegisterModel? userProfileData =
         LocalStoragePref.instance?.getUserProfile();
@@ -208,20 +230,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                HomepageBloc data = HomepageBloc();
-                                categorylistmodel =
-                                    await data.loadCategoryUpload();
-                                HomepageBloc().selectCategoryDropdown(
-                                  context,
-                                  categorylistmodel!,
-                                  (selectedName, selectedId) {
-                                    setState(() {
-                                      selectedJobName = selectedName;
-                                      selecteJobdId =
-                                          selectedId; // Update the selected text
-                                    });
-                                  },
-                                );
+                                if (isInternetConnected) {
+                                  categorylistmodel =
+                                      await HomepageBloc().loadCategoryUpload();
+                                  HomepageBloc().selectCategoryDropdown(
+                                    context,
+                                    categorylistmodel!,
+                                    (selectedName, selectedId) {
+                                      setState(() {
+                                        selectedJobName = selectedName;
+                                        selecteJobdId =
+                                            selectedId; // Update the selected text
+                                      });
+                                    },
+                                  );
+                                } else {
+                                  // showWifiDialog(context);  use later
+                                  Fluttertoast.showToast(
+                                      msg: "No internet connection!");
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(left: 15),

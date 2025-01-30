@@ -26,7 +26,10 @@ class HomepageBloc extends Bloc<HomePageEvent, HomepageState> {
   }
 
   Future<Categorylistmodel> loadCategoryUpload() async {
-    return await AuthRepository().getcategorynameid();
+    Categorylistmodel categorylistmodel =
+        await AuthRepository().getcategorynameid();
+    print("ERROR: API call successful: $categorylistmodel");
+    return categorylistmodel;
   }
 
   selectCategoryDropdown(
