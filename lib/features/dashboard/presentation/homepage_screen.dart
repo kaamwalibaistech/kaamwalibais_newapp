@@ -65,7 +65,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
             isInternetConnected = false;
           });
           _homepageBloc.add(GetHomePageCategoriesEvents());
-          print("ERROR: executed");
           break;
       }
     });

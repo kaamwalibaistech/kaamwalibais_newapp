@@ -51,6 +51,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
     _searchCandidateBloc = BlocProvider.of<SearchCandidateBloc>(context);
     _paginationController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
+      print("Error: pageKey: ${pageKey}}");
     });
   }
 
@@ -61,18 +62,6 @@ class _SearchCandidatesState extends State<SearchCandidates> {
     candidateRequest.latitude = widget.latitude.toString();
     candidateRequest.longitude = widget.longitude.toString();
     candidateRequest.km = "3";
-    candidateRequest.minSalry = "";
-    candidateRequest.maxSalary = "";
-    candidateRequest.passport = "";
-    candidateRequest.minAge = "";
-    candidateRequest.maxAge = "";
-    candidateRequest.minExp = "";
-    candidateRequest.maxExp = "";
-    candidateRequest.gender = "";
-    candidateRequest.workingHours = "";
-    candidateRequest.religon = "";
-    candidateRequest.language = "";
-    candidateRequest.sortBy = "";
     _searchCandidateBloc
         .add(SearchCandidateLoadDataEvent(candidateRequest: candidateRequest));
   }
@@ -338,12 +327,14 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                   if (state is SearchCandidateSuccessState) {
                     try {
                       final candidates = state.candidates;
-                      final isLastPage = candidates.length < _pageSize;
+                      final isLastPage = candidates.length <= _pageSize;
                       if (isLastPage) {
                         _paginationController.appendLastPage(candidates);
+                        print("Error: if: ${isLastPage}}");
                       } else {
                         _paginationController.appendPage(
                             candidates, _paginationController.nextPageKey! + 1);
+                        print("Error: else: ${isLastPage}}");
                       }
                     } catch (error) {
                       _paginationController.error = error;
