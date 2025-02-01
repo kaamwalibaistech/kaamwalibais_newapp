@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 
-import '../../../assets/colors.dart';
+import '../../../constant/colors.dart';
 import '../../../core/local_storage.dart';
 import '../../../models/categorylist.dart';
 import '../../../models/employer_register_model.dart';
@@ -648,7 +648,7 @@ class _JobsPostState extends State<JobsPost> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0, right: 150),
+                  padding: const EdgeInsets.only(left: 5.0, right: 140),
                   child: Row(
                     children: [
                       Text(
@@ -658,7 +658,7 @@ class _JobsPostState extends State<JobsPost> {
                         ),
                       ),
                       SizedBox(
-                        width: 70,
+                        width: MediaQuery.of(context).size.width * 0.18,
                       ),
                       Text(
                         "Maximum",

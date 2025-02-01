@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
@@ -69,21 +69,21 @@ class _MenuScreenState extends State<MenuScreen> {
                                   decoration: BoxDecoration(
                                       color: Colors.grey,
                                       borderRadius: BorderRadius.circular(50)),
-                                  child: const Icon(
-                                    Icons.person_3_outlined,
-                                    size: 28,
-                                    color: scaffoldColor,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      checkLoginPopup();
+                                    },
+                                    child: const Icon(
+                                      Icons.person_3_outlined,
+                                      size: 28,
+                                      color: scaffoldColor,
+                                    ),
                                   )),
                               Padding(
                                 padding: const EdgeInsets.only(left: 8.0),
                                 child: GestureDetector(
                                   onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => const AlertDialog(
-                                            content: LoginPopup()
-                                            // actions: const [],
-                                            ));
+                                    checkLoginPopup();
                                   },
                                   child: Text.rich(
                                     TextSpan(
@@ -215,12 +215,20 @@ class _MenuScreenState extends State<MenuScreen> {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                final userLogIn =
+                                    LocalStoragePref().getUserProfile();
+
                                 if (state is AuthLoadedState) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => JobsPost()));
+                                  userLogIn!.flag == "0"
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => JobsPost()))
+                                      : Fluttertoast.showToast(
+                                          msg:
+                                              "Only Employer can access this feature!");
                                 } else {
+                                  checkLoginPopup();
                                   Fluttertoast.showToast(msg: "Please LogIn ");
                                 }
                               },
@@ -478,5 +486,14 @@ class _MenuScreenState extends State<MenuScreen> {
         ),
       ),
     );
+  }
+
+  checkLoginPopup() async {
+    // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
+    // if (!(bool.tryParse(isLogin) ?? false)) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(content: LoginPopup()));
+    // }
   }
 }

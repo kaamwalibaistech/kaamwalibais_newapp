@@ -319,7 +319,7 @@ class AuthRepository {
     return throw Exception();
   }
 
-  Future<Empolyereditprofilemodel> updateUserProfile(
+  Future<EmployerProfileEdit?> updateUserProfile(
       name, number, email, flag, userid) async {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
@@ -342,7 +342,7 @@ class AuthRepository {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] == '200') {
-          return Empolyereditprofilemodel.fromJson(data);
+          return EmployerProfileEdit.fromJson(data);
         }
       }
     } catch (e) {

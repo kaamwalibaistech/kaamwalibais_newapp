@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 
-import '../../../assets/colors.dart';
+import '../../../constant/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../auth/presentation/login_popup.dart';

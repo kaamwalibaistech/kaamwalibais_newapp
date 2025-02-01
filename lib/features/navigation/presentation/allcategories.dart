@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/models/homepage_model.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/all_categories_shimmer.dart';
 
 class Allcategories extends StatefulWidget {
-  const Allcategories({super.key});
+  const Allcategories({super.key, required this.image});
+  final List<String> image;
 
   @override
   State<Allcategories> createState() => _AllcategoriesState();
@@ -51,7 +52,7 @@ class _AllcategoriesState extends State<Allcategories> {
                             mainAxisSpacing: 20,
                             crossAxisCount: 3,
                             crossAxisSpacing: 20),
-                    itemCount: state.homepagemodel.categorylist.length,
+                    itemCount: state.homepagemodel.categorylist.length - 1,
                     itemBuilder: (BuildContext context, int index) {
                       List<Categorylist> categories =
                           state.homepagemodel.categorylist;
@@ -84,8 +85,8 @@ class _AllcategoriesState extends State<Allcategories> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Image.network(
-                                categories[index].image,
+                              Image.asset(
+                                widget.image[index],
                                 // color: const Color.fromARGB(255, 247, 115, 106),
                                 height: 60,
                               ),

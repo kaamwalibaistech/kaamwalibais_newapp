@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 
 class CandidateForgotPassword extends StatelessWidget {
   const CandidateForgotPassword({super.key});

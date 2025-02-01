@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/navigationscreen.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../screens/webview_widget.dart';
@@ -74,120 +75,105 @@ class _OnboardingScreenState extends State<OnboardingView> {
                 ],
               ),
       ),
-      body: Stack(children: [
-        // Container(
-        //   height: MediaQuery.of(context).size.height*0.15,
-        // width: MediaQuery.of(context).size.width,
-        //   decoration:   const BoxDecoration(color:Color(0xffE6E6E6),
-        //   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(1000),bottomRight: Radius.circular(1000),)
-        //   ),),
-
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          child: PageView.builder(
-            onPageChanged: (index) => setState(() {
-              isLastPage = controller.items.length - 1 == index;
-            }),
-            itemCount: controller.items.length,
-            controller: pageController,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: screenHeight * 0.25,
-                  ),
-                  Image.asset(
-                    controller.items[index].images,
-                    height: 300,
-                  ),
-                  Text(
-                    controller.items[index].title,
-                    style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        color: textBlackColor4,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      controller.items[index].descriptions,
-                      style: GoogleFonts.poltawskiNowy(color: textBlackColor4),
-                    ),
-                  ),
-                  isLastPage
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 80.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Checkbox(
-                                  value: checkBoxValue,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      checkBoxValue = newValue;
-                                    });
-                                  }),
-                              Text(
-                                "I agree to ",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const WebviewWidget(
-                                                  appBarTitle:
-                                                      'Terms & Conditions',
-                                                  url:
-                                                      'https://kaamwalijobs.com/terms-condition',
-                                                )));
-                                  },
-                                  child: Text(
-                                    "Terms of Services ",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.blue,
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: Colors.blue),
-                                  )),
-                              Text(
-                                "and ",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const WebviewWidget(
-                                                appBarTitle: 'Privacy Policy',
-                                                url:
-                                                    'https://kaamwalijobs.com/privacy-policy',
-                                              )));
-                                },
-                                child: Text(
-                                  "Privacy Policy.",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.blue,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.blue),
-                                ),
-                              )
-                            ],
+      body: PageView.builder(
+        onPageChanged: (index) => setState(() {
+          isLastPage = controller.items.length - 1 == index;
+        }),
+        itemCount: controller.items.length,
+        controller: pageController,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.18,
+              ),
+              Image.asset(
+                controller.items[index].images,
+                height: 300,
+              ),
+              Text(
+                controller.items[index].title,
+                style: GoogleFonts.poppins(
+                    fontSize: 28,
+                    color: textBlackColor4,
+                    fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: Text(
+                  textAlign: TextAlign.center,
+                  controller.items[index].descriptions,
+                  style: GoogleFonts.poltawskiNowy(color: textBlackColor4),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              isLastPage
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                            value: checkBoxValue,
+                            onChanged: (newValue) {
+                              setState(() {
+                                checkBoxValue = newValue;
+                              });
+                            }),
+                        Text(
+                          "I agree to ",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const WebviewWidget(
+                                            appBarTitle: 'Terms & Conditions',
+                                            url:
+                                                'https://kaamwalijobs.com/terms-condition',
+                                          )));
+                            },
+                            child: Text(
+                              "Terms of Services ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue),
+                            )),
+                        Text(
+                          "and ",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const WebviewWidget(
+                                          appBarTitle: 'Privacy Policy',
+                                          url:
+                                              'https://kaamwalijobs.com/privacy-policy',
+                                        )));
+                          },
+                          child: Text(
+                            "Privacy Policy.",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.blue),
                           ),
                         )
-                      : SizedBox()
-                ],
-              );
-            },
-          ),
-        ),
-      ]),
+                      ],
+                    )
+                  : SizedBox()
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -198,8 +184,8 @@ class _OnboardingScreenState extends State<OnboardingView> {
         decoration: const BoxDecoration(color: Color(0xff2C557D)),
         child: TextButton(
             onPressed: () async {
-              // final pres = await SharedPreferences.getInstance();
-              // pres.setBool("onboarrding", true);
+              final pres = await SharedPreferences.getInstance();
+              pres.setBool("onboarrding", true);
               // if (!mounted) return;
               if (checkBoxValue == true) {
                 Navigator.pushReplacement(

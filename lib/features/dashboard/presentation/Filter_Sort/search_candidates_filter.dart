@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/network/auth_repository.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/Filter_Sort/filter_control_model.dart';
 import 'package:kaamwalijobs_new/models/categorylist.dart';

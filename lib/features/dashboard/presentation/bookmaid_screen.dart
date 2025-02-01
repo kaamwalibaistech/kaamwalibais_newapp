@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/book_maid_shimmer.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/purchase_package_popup.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
@@ -52,8 +52,8 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   checkPackagesPopup() async {
     showDialog(
         context: context,
-        builder: (context) =>
-            const AlertDialog(content: PackagesPurchasePopup()));
+        builder: (context) => const AlertDialog(
+            scrollable: true, content: PackagesPurchasePopup()));
   }
 
   @override
@@ -116,6 +116,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                       ),
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -513,43 +514,36 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.07,
-                          width: MediaQuery.of(context).size.width * 0.55,
-                          child: Stack(
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF0DA931),
-                                    minimumSize: const Size(0, 35),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5))),
-                                onPressed: () {
-                                  checkPackagesPopup();
-                                },
-                                child: Row(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const SizedBox(width: 30),
-                                    Image.asset("lib/assets/images/call.png",
-                                        height: 17),
-                                    const SizedBox(width: 20),
-                                    SizedBox(
-                                      child: Text(
-                                        model.mobileNo!
-                                            .replaceRange(3, 7, "****"),
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: whiteColor),
-                                      ),
-                                    ),
-                                  ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 70.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF0DA931),
+                                minimumSize: const Size(0, 35),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5))),
+                            onPressed: () {
+                              checkPackagesPopup();
+                            },
+                            child: Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(width: 30),
+                                Image.asset("lib/assets/images/call.png",
+                                    height: 17),
+                                const SizedBox(width: 20),
+                                SizedBox(
+                                  child: Text(
+                                    model.mobileNo!.replaceRange(3, 7, "****"),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(width: 5),

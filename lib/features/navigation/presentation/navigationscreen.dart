@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/bookmaid_screen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import '../../../assets/colors.dart';
+import '../../../constant/colors.dart';
 import '../../auth/presentation/login_popup.dart';
 import '../../dashboard/presentation/menu_screen.dart';
 import '../../dashboard/presentation/profile_screen.dart';
@@ -41,6 +42,14 @@ class _NavigationscreenState extends State<Navigationscreen> {
         inactiveColorPrimary: CupertinoColors.systemGrey3,
       ),
       PersistentBottomNavBarItem(
+        onPressed: (p0) {
+          final userLogIn = LocalStoragePref().getUserProfile();
+          if (userLogIn != null) {
+            controller.index = 2;
+          } else {
+            checkLoginPopup();
+          }
+        },
         icon: Image.asset(
           'lib/assets/images/person2.png',
           height: 20,
@@ -100,7 +109,8 @@ class _NavigationscreenState extends State<Navigationscreen> {
     // if (!(bool.tryParse(isLogin) ?? false)) {
     showDialog(
         context: context,
-        builder: (context) => const AlertDialog(content: LoginPopup()));
+        builder: (context) =>
+            const AlertDialog(scrollable: true, content: LoginPopup()));
     // }
   }
 }

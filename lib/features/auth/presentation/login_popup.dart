@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
-import 'package:kaamwalijobs_new/features/auth/presentation/candidate_login_signup.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 
+import 'candidate_login_signup.dart';
 import 'employer_login_signup.dart';
 
 class LoginPopup extends StatelessWidget {
@@ -10,9 +11,9 @@ class LoginPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.22,
         decoration: const BoxDecoration(),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,8 +46,7 @@ class LoginPopup extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.01,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
               children: [
                 GestureDetector(
                   onTap: () {
@@ -55,11 +55,23 @@ class LoginPopup extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const EmployerLoginSignup()));
                   },
-                  child: Image.asset(
-                    "lib/assets/images/employer_icon.png",
-                    cacheHeight: 130,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "lib/assets/images/employer_icon.png",
+                        cacheHeight: 110,
+                      ),
+                      Text(
+                        "मुझे लोग काम पे रखना है",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: blueColor),
+                      ),
+                    ],
                   ),
                 ),
+                sizedBoxH10,
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -68,13 +80,25 @@ class LoginPopup extends StatelessWidget {
                             builder: (context) =>
                                 const CandidateLoginSignup()));
                   },
-                  child: Image.asset(
-                    "lib/assets/images/candidate_icon.png",
-                    cacheHeight: 130,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "lib/assets/images/candidate_icon.png",
+                        cacheHeight: 110,
+                      ),
+                      sizedBoxH5,
+                      Text(
+                        "मुझे नौकरी चाहिए",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: blueColor),
+                      ),
+                    ],
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ));
   }

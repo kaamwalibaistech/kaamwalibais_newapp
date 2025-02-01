@@ -4,7 +4,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/Filter_Sort/search_candidates_filter.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/search_candidate_event.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/search_candidate_states.dart';
@@ -12,6 +12,7 @@ import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
 import '../../../assets/shimmer_effect/book_maid_shimmer.dart';
 import '../../../models/search_candidate_model.dart';
+import '../../auth/presentation/purchase_package_popup.dart';
 import '../../dashboard/presentation/Filter_Sort/sort_control_model.dart';
 import '../../dashboard/presentation/location/location_select.dart';
 import '../bloc/search_candidate_bloc.dart';
@@ -88,6 +89,13 @@ class _SearchCandidatesState extends State<SearchCandidates> {
   void dispose() {
     _paginationController.dispose();
     super.dispose();
+  }
+
+  checkPackagesPopup() async {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            const AlertDialog(content: PackagesPurchasePopup()));
   }
 
   Future<void> getCoordinatesFromAddress(String address) async {
@@ -797,45 +805,39 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.07,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.55,
-                                  child: Stack(
-                                    children: [
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color(0xFF0DA931),
-                                            minimumSize: const Size(0, 35),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5))),
-                                        onPressed: () {
-                                          //checkPackagesPopup();
-                                        },
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(width: 30),
-                                            Image.asset(
-                                                "lib/assets/images/call.png",
-                                                height: 17),
-                                            const SizedBox(width: 20),
-                                            SizedBox(
-                                              child: Text(
-                                                model.mobileNo
-                                                    .replaceRange(3, 7, "****"),
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: whiteColor),
-                                              ),
-                                            ),
-                                          ],
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 70.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFF0DA931),
+                                        minimumSize: const Size(0, 35),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5))),
+                                    onPressed: () {
+                                      checkPackagesPopup();
+                                    },
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(width: 30),
+                                        Image.asset(
+                                            "lib/assets/images/call.png",
+                                            height: 17),
+                                        const SizedBox(width: 20),
+                                        SizedBox(
+                                          child: Text(
+                                            model.mobileNo
+                                                .replaceRange(3, 7, "****"),
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: whiteColor),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 5),

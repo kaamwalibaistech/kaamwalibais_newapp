@@ -14,6 +14,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
   void initState() {
     super.initState();
     context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
+    SelectLocationBloc().enableLocation();
   }
 
   @override
@@ -62,7 +63,6 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
       body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
         builder: (context, state) {
           if (state is SelectLocationInitialState) {
-            context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
             return Column(
               children: [
                 GestureDetector(
@@ -86,7 +86,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                 )
               ],
             );
-          } else if (state is SelectLocationSearchingState) {
+          }
+          if (state is SelectLocationSearchingState) {
             return ListView.builder(
                 itemCount: state.searchLocationModel!.predictions.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -107,13 +108,17 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                     ),
                   );
                 });
-          } else if (state is SelectLocationSuccessState) {
+          }
+          if (state is SelectLocationSuccessState) {
             return Column(
               children: [
                 GestureDetector(
                   onTap: () {
-                    String city = state.address;
-                    Navigator.pop(context, city);
+                    if (state.currentAddress !=
+                        "Click to get current location") {
+                      String city = state.currentAddress;
+                      Navigator.pop(context, city);
+                    }
                   },
                   child: ListTile(
                     leading: Icon(
@@ -122,7 +127,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                       color: Colors.blue.shade700,
                     ),
                     title: Text(
-                      "${state.address}",
+                      "${state.currentAddress}",
                       style: TextStyle(fontSize: 14),
                     ),
                     textColor: Colors.blue.shade700,
@@ -130,7 +135,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                 )
               ],
             );
-          } else if (state is SelectLocationErrorState) {
+          }
+          if (state is SelectLocationErrorState) {
             return Padding(
               padding: const EdgeInsets.all(30),
               child: Center(
@@ -149,6 +155,11 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                       state.error,
                       textAlign: TextAlign.center,
                     ),
+                    TextButton(
+                        onPressed: () {
+                          SelectLocationBloc().enableLocation();
+                        },
+                        child: Text("Click"))
                   ],
                 ),
               ),

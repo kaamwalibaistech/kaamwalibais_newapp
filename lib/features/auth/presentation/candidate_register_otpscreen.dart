@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
 import '../../../constant/sizebox.dart';
@@ -12,7 +12,7 @@ import '../network/auth_repository.dart';
 class CandidateRegisterOtpScreen extends StatefulWidget {
   final String name;
   final mobileNo;
-  final email;
+  final String? email;
   final password;
   final category;
   final maritalStatus;
@@ -33,7 +33,7 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       {super.key,
       required this.name,
       required this.mobileNo,
-      required this.email,
+      this.email,
       required this.password,
       required this.category,
       required this.maritalStatus,
@@ -82,7 +82,7 @@ class _CandidateRegisterOtpScreenState
     final postCandidateData = await authRepository.postCandidateFormData(
         widget.name,
         widget.mobileNo,
-        widget.email,
+        widget.email ?? "",
         widget.password,
         widget.category,
         widget.maritalStatus,

@@ -1,6 +1,8 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -21,7 +23,7 @@ Future main() async {
   // final onboarding = pres.getBool("onboarrding") ?? false;
 
   await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
+  runApp(DevicePreview(enabled: true, builder: (context) => MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -50,10 +52,13 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SearchCandidateBloc>(
             create: (context) => SearchCandidateBloc()),
       ],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: "KaamWaliJobs",
-          home: Splashscreen()),
+      child: ScreenUtilInit(
+        designSize: Size(375, 812),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: "KaamWaliJobs",
+            home: Splashscreen()),
+      ),
     );
   }
 }
