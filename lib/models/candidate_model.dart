@@ -46,6 +46,7 @@ class CandidateData {
   String? image;
   String? alreadySorted;
   String? ratingCount;
+  bool? isVisible;
 
   CandidateData(
       {this.candidateId,
@@ -68,7 +69,8 @@ class CandidateData {
       this.language,
       this.image,
       this.alreadySorted,
-      this.ratingCount});
+      this.ratingCount,
+      this.isVisible = false});
 
   CandidateData.fromJson(Map<String, dynamic> json) {
     candidateId = json['candidate_id'];
@@ -92,6 +94,7 @@ class CandidateData {
     image = json['image'];
     alreadySorted = json['already_sorted'];
     ratingCount = json['rating_count'];
+    isVisible = false;
   }
 
   Map<String, dynamic> toJson() {

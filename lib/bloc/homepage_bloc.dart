@@ -16,12 +16,14 @@ class HomepageBloc extends Bloc<HomePageEvent, HomepageState> {
   }
 
   void _getHomePageCategories(
-      GetHomePageCategoriesEvents event, Emitter<HomepageState> emit) async {
+      GetHomePageCategoriesEvents event, Emitter<HomepageState> emitter) async {
     try {
-      Homepagemodel homepagemodel = await Repositiory().getHomePageData();
-      emit(HomePageLoadedState(homepagemodel: homepagemodel));
+      Repositiory repositiory = Repositiory();
+
+      Homepagemodel? homepagemodel = await repositiory.getHomePageData();
+      emitter(HomePageLoadedState(homepagemodel: homepagemodel));
     } on Exception catch (e) {
-      (e.toString());
+      print(e.toString());
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/book_maid_shimmer.dart';
@@ -11,7 +12,13 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 
+import '../Client/menupage_api.dart';
+import '../core/local_storage.dart';
 import '../features/auth/presentation/purchase_package_popup.dart';
+import '../features/navigation/bloc/packages.state.dart';
+import '../features/navigation/bloc/packages_bloc.dart';
+import '../features/navigation/bloc/packages_event.dart';
+import '../models/sortlisted_candidate_model.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({
@@ -29,7 +36,7 @@ class _CategoryPageState extends State<CategoryPage> {
   late DashboardBloc dashboardBloc;
   final int _pageSize = 10;
 
-  // String phone = "";
+  String Variable = "V";
   @override
   void initState() {
     super.initState();
@@ -535,43 +542,115 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 70.0),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF0DA931),
-                                    minimumSize: const Size(0, 35),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5))),
-                                onPressed: () {
-                                  checkPackagesPopup();
-                                },
-                                child: Row(
-                                  // mainAxisAlignment:
-                                  //     MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const SizedBox(width: 30),
-                                    Image.asset("lib/assets/images/call.png",
-                                        height: 17),
-                                    const SizedBox(width: 20),
-                                    GestureDetector(
-                                      child: SizedBox(
-                                        child: Text(
-                                          model.mobileNo!
-                                              .replaceRange(3, 7, "****"),
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: whiteColor),
-                                        ),
+                            BlocBuilder<PurchasedPackageDataBloc, PackageState>(
+                                buildWhen: (PackageState previous,
+                                        PackageState current) =>
+                                    current is PackageLoadedStates ||
+                                    current is PackageLoadingState ||
+                                    current is PackageFailedState,
+                                builder: (context, state) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 70.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF0DA931),
+                                          minimumSize: const Size(0, 35),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5))),
+                                      onPressed: () async {
+                                        if (state is PackageLoadedStates) {
+                                          if (state.currentPackagePlan.package
+                                              .isNotEmpty) {
+                                            if (state.currentPackagePlan
+                                                    .package[0].packageType ==
+                                                Variable) {
+                                              LocalStoragePref
+                                                  localStoragePref =
+                                                  LocalStoragePref();
+                                              String userId = localStoragePref
+                                                      .getUserProfile()
+                                                      ?.userId ??
+                                                  "";
+                                              if (userId.isEmpty) {
+                                                checkPackagesPopup();
+                                              } else {
+                                                final sortType = "";
+
+                                                try {
+                                                  Shortlistedcandidatemodel
+                                                      sortListedCandidate =
+                                                      await MenuPageRepository()
+                                                          .getSortListedCandidate(
+                                                              sortType,
+                                                              model.candidateId,
+                                                              localStoragePref
+                                                                  .getUserProfile()!
+                                                                  .flag,
+                                                              userId);
+
+                                                  BlocProvider.of<
+                                                              PurchasedPackageDataBloc>(
+                                                          context)
+                                                      .add(
+                                                          PurchasedPackageEvent());
+
+                                                  setState(() {
+                                                    model.isVisible = true;
+                                                  });
+                                                } catch (e) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "Purchase candidate view Package Plan");
+                                                }
+                                              }
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Purchase candidate view Package Plan");
+                                            }
+                                          }
+                                        } else {
+                                          checkPackagesPopup();
+                                        }
+
+                                        // checkPackagesPopup();
+                                      },
+                                      child: Row(
+                                        // mainAxisAlignment:
+                                        //     MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const SizedBox(width: 30),
+                                          Image.asset(
+                                              "lib/assets/images/call.png",
+                                              height: 17),
+                                          const SizedBox(width: 20),
+                                          GestureDetector(
+                                            child: SizedBox(
+                                              child: Text(
+                                                // isPurchased
+                                                //     ? model.mobileNo!
+                                                //     :
+
+                                                model.isVisible ?? false
+                                                    ? model.mobileNo.toString()
+                                                    : model.mobileNo!
+                                                        .replaceRange(
+                                                            3, 7, "****"),
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: whiteColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                  );
+                                }),
                             const SizedBox(width: 5),
                             const SizedBox(
                               height: 10,

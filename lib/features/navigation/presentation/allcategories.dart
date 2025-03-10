@@ -52,7 +52,7 @@ class _AllcategoriesState extends State<Allcategories> {
                             mainAxisSpacing: 20,
                             crossAxisCount: 3,
                             crossAxisSpacing: 20),
-                    itemCount: state.homepagemodel.categorylist.length - 1,
+                    itemCount: state.homepagemodel.categorylist.length,
                     itemBuilder: (BuildContext context, int index) {
                       List<Categorylist> categories =
                           state.homepagemodel.categorylist;

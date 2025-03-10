@@ -53,6 +53,15 @@ class _AlljobsopeningsState extends State<Alljobsopenings> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 25.0),
+            child: Image.asset(
+              "lib/assets/images/kaamwalijobs.png",
+              height: 40,
+            ),
+          )
+        ],
         backgroundColor: scaffoldColor,
         leading: GestureDetector(
             onTap: () {

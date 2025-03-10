@@ -58,30 +58,31 @@ class SearchcandidateData {
   String image;
   String alreadySorted;
   String ratingCount;
+  bool? isVisible;
 
-  SearchcandidateData({
-    required this.candidateId,
-    required this.categoryName,
-    required this.mobileNo,
-    required this.jobType,
-    required this.serviceLocation,
-    required this.rating,
-    required this.aadharCard,
-    required this.otherDocuments,
-    required this.passposrt,
-    required this.age,
-    required this.maritalStatus,
-    required this.religion,
-    required this.totalExp,
-    required this.expectedSalary,
-    required this.gender,
-    required this.maximumEducation,
-    required this.workingHours,
-    required this.language,
-    required this.image,
-    required this.alreadySorted,
-    required this.ratingCount,
-  });
+  SearchcandidateData(
+      {required this.candidateId,
+      required this.categoryName,
+      required this.mobileNo,
+      required this.jobType,
+      required this.serviceLocation,
+      required this.rating,
+      required this.aadharCard,
+      required this.otherDocuments,
+      required this.passposrt,
+      required this.age,
+      required this.maritalStatus,
+      required this.religion,
+      required this.totalExp,
+      required this.expectedSalary,
+      required this.gender,
+      required this.maximumEducation,
+      required this.workingHours,
+      required this.language,
+      required this.image,
+      required this.alreadySorted,
+      required this.ratingCount,
+      this.isVisible = false});
 
   factory SearchcandidateData.fromJson(Map<String, dynamic> json) =>
       SearchcandidateData(
@@ -107,6 +108,7 @@ class SearchcandidateData {
         image: json["image"],
         alreadySorted: json["already_sorted"],
         ratingCount: json["rating_count"],
+        isVisible: json["false"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -132,6 +134,7 @@ class SearchcandidateData {
         "image": image,
         "already_sorted": alreadySorted,
         "rating_count": ratingCount,
+        "isVisible": "false"
       };
 }
 

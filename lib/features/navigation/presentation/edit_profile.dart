@@ -136,26 +136,32 @@ class _EditProfileState extends State<EditProfile> {
               ),
               Center(
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (_formKey.currentState!.validate()) {
-                      EmployerRegisterModel? localUserProfileData =
-                          LocalStoragePref.instance?.getUserProfile();
-                      AuthRepository()
-                          .updateUserProfile(
-                              nameController.text,
-                              phoneNoController.text,
-                              emailController.text,
-                              localUserProfileData!.flag,
-                              localUserProfileData.userId)
-                          .then((_) {
-                        BlocProvider.of<AuthBloc>(context, listen: false).add(
-                            GetUserProfile(
-                                userId: localUserProfileData.userId,
-                                flag: localUserProfileData.flag));
-                      });
-                      Navigator.pop(context);
+                      try {
+                        EmployerRegisterModel? localUserProfileData =
+                            LocalStoragePref.instance?.getUserProfile();
+                        await AuthRepository()
+                            .updateUserProfile(
+                                nameController.text,
+                                phoneNoController.text,
+                                emailController.text,
+                                localUserProfileData!.flag,
+                                localUserProfileData.userId)
+                            .then((_) {
+                          BlocProvider.of<AuthBloc>(context, listen: false).add(
+                              GetUserProfile(
+                                  userId: localUserProfileData.userId,
+                                  flag: localUserProfileData.flag));
+                        });
 
-                      Fluttertoast.showToast(msg: "Updated Successfully");
+                        Navigator.pop(context);
+
+                        Fluttertoast.showToast(msg: "Updated Successfully");
+                      } catch (e) {
+                        Fluttertoast.showToast(
+                            msg: "Mobile Number is Already Existed");
+                      }
                     }
                   },
                   child: Container(

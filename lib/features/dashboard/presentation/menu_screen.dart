@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
@@ -13,6 +14,9 @@ import '../../../core/local_storage.dart';
 import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../jobs/presentation/jobs_post.dart';
+import '../../navigation/bloc/packages.state.dart';
+import '../../navigation/bloc/packages_bloc.dart';
+import '../../navigation/bloc/packages_event.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -23,14 +27,36 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   late AuthBloc _authBloc;
+  late PurchasedPackageDataBloc _packageBloc;
+  int count = 0;
+  // CurrentPackagePlan? currentPackagePlan;
   @override
   void initState() {
     super.initState();
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
+
+    _packageBloc.add(PurchasedPackageEvent());
+
+    // test();
   }
+
+  // test() async {
+  //   LocalStoragePref localStoragePref = LocalStoragePref();
+  //   String userId = localStoragePref.getUserProfile()!.userId;
+  //   CurrentPackagePlan currentPackagePlan =
+  //       await Repositiory().getCurrentPackages(userId);
+  //   localStoragePref
+  //       .storeCurrentPackage(jsonEncode(currentPackagePlan.toJson()));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    String variable = "P";
+    // LocalStoragePref localStoragePref = LocalStoragePref();
+
+    // CurrentPackagePlan? planData = localStoragePref.currentPackageData();
+
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: Padding(
@@ -112,28 +138,194 @@ class _MenuScreenState extends State<MenuScreen> {
                             ],
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 10.0, bottom: 10),
-                          child: Divider(
-                            thickness: 2,
-                          ),
-                        ),
+                        // const Padding(
+                        //   padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                        //   child: Divider(
+                        //     thickness: 2,
+                        //   ),
+                        // ),
                       ],
                     ],
                   );
               },
             ),
-            const SizedBox(
-              height: 10,
-            ),
 
-            Text(
-              "Menu",
-              style: GoogleFonts.poltawskiNowy(
-                  fontWeight: FontWeight.bold, fontSize: 20),
-            ),
+// if(count>0){
+//   api call count --
+
+//   if sucessfull
+
+//   event new count data+
+// }
+
+            count == 0
+                ? BlocBuilder<PurchasedPackageDataBloc, PackageState>(
+                    bloc: _packageBloc,
+                    buildWhen: (PackageState previous, PackageState current) =>
+                        current is PackageLoadedStates,
+                    builder: (context, state) {
+                      if (state is PackageLoadedStates) {
+                        if (state.currentPackagePlan.package.isEmpty) {
+                          return SizedBox.shrink();
+                        } else {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/images/icons-package.png",
+                                    height: 30,
+                                  ),
+                                  sizedBoxH5,
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 2.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              "Current Packge",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              state.currentPackagePlan.package
+                                                  .first.packageName,
+                                              style: TextStyle(
+                                                  color: blackColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 11),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/images/icons-resume.png",
+                                    height: 30,
+                                  ),
+                                  sizedBoxH10,
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 2.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              "Available Count",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              state.currentPackagePlan.package
+                                                  .first.avilableCount
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: blackColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    "lib/assets/images/icons-calendar.png",
+                                    height: 30,
+                                  ),
+                                  sizedBoxH10,
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          color: whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.07,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            "Expire Date",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            state.currentPackagePlan.package
+                                                .first.expDate
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                      return SizedBox.shrink();
+                    })
+                : SizedBox.shrink(),
+            sizedBoxH15,
+            Row(children: <Widget>[
+              Expanded(child: Divider()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  "Menu",
+                  style: GoogleFonts.poltawskiNowy(
+                      fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              Expanded(child: Divider()),
+            ]),
+
             Padding(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: const EdgeInsets.only(top: 15.0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,95 +361,83 @@ class _MenuScreenState extends State<MenuScreen> {
                       ],
                     ),
                   ),
-                  BlocBuilder(
-                    bloc: _authBloc,
-                    builder: (context, state) {
-                      // GestureDetector(
-                      //   child: Column(
-                      //     children: [
-                      //       GestureDetector(
-                      //         onTap: () {
-                      //           if (state is AuthLoadedState) {
-                      //             Navigator.push(
-                      //                 context,
-                      //                 MaterialPageRoute(
-                      //                     builder: (context) => JobsPost()));
-                      //           } else {
-                      //             Fluttertoast.showToast(msg: "Please LogIn");
-                      //           }
-                      //         },
-                      //         child: Container(
-                      //           padding: const EdgeInsets.all(10),
-                      //           height:
-                      //               MediaQuery.of(context).size.height * 0.08,
-                      //           width: MediaQuery.of(context).size.width * 0.25,
-                      //           decoration: BoxDecoration(
-                      //               color: whiteColor,
-                      //               borderRadius: BorderRadius.circular(10)),
-                      //           child: Image.asset(
-                      //             "lib/assets/images/become_an_agent.png",
-                      //             color: Colors.grey,
-                      //           ),
-                      //         ),
-                      //       ),
-                      //       const Padding(
-                      //         padding: EdgeInsets.only(top: 10.0),
-                      //         child: Text(
-                      //           "Post Jobs",
-                      //           style: TextStyle(fontWeight: FontWeight.bold),
-                      //         ),
-                      //       )
-                      //     ],
-                      //   ),
-                      // );
-                      return GestureDetector(
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                final userLogIn =
-                                    LocalStoragePref().getUserProfile();
-
-                                if (state is AuthLoadedState) {
-                                  userLogIn!.flag == "0"
-                                      ? Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => JobsPost()))
-                                      : Fluttertoast.showToast(
-                                          msg:
-                                              "Only Employer can access this feature!");
-                                } else {
-                                  checkLoginPopup();
-                                  Fluttertoast.showToast(msg: "Please LogIn ");
-                                }
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.08,
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                decoration: BoxDecoration(
-                                    color: whiteColor,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Image.asset(
-                                  "lib/assets/images/become_an_agent.png",
-                                  color: Colors.grey,
+                  BlocBuilder<PurchasedPackageDataBloc, PackageState>(
+                      bloc: _packageBloc,
+                      buildWhen:
+                          (PackageState previous, PackageState current) =>
+                              current is PackageLoadedStates,
+                      builder: (context, state) {
+                        return GestureDetector(
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  final userLogIn =
+                                      LocalStoragePref().getUserProfile();
+                                  if (state is PackageLoadedStates) {
+                                    if (userLogIn != null) {
+                                      if (state.currentPackagePlan.package
+                                          .isNotEmpty) {
+                                        if (state.currentPackagePlan.package[0]
+                                                .packageType ==
+                                            variable) {
+                                          int count = int.parse(state
+                                              .currentPackagePlan
+                                              .package[0]
+                                              .avilableCount);
+                                          if (count > 0) {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JobsPost()));
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "No More Availabe counts");
+                                          }
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "Buy Job Posting Plan");
+                                        }
+                                      }
+                                      ;
+                                    } else {
+                                      checkLoginPopup();
+                                      Fluttertoast.showToast(
+                                          msg: "Please LogIn ");
+                                    }
+                                  } else {
+                                    checkLoginPopup();
+                                    Fluttertoast.showToast(
+                                        msg: "Please LogIn ");
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.08,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  decoration: BoxDecoration(
+                                      color: whiteColor,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Image.asset(
+                                    "lib/assets/images/become_an_agent.png",
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 10.0),
-                              child: Text(
-                                "Post Jobs",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 10.0),
+                                child: Text(
+                                  "Post Jobs",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                   GestureDetector(
                     onTap: () {
                       Fluttertoast.showToast(msg: "Not Posted Any Job !");
@@ -449,6 +629,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 ],
               ),
             ),
+
             BlocBuilder(
                 bloc: _authBloc,
                 buildWhen: (previous, current) =>
@@ -458,9 +639,12 @@ class _MenuScreenState extends State<MenuScreen> {
                 builder: (context, state) {
                   if (state is AuthLoadedState) {
                     return Padding(
-                        padding: const EdgeInsets.only(top: 40.0),
+                        padding: const EdgeInsets.only(top: 20.0),
                         child: GestureDetector(
                           onTap: () async {
+                            setState(() {
+                              count = 1;
+                            });
                             await LocalStoragePref.instance!.clearAllPref();
                             BlocProvider.of<AuthBloc>(context, listen: false)
                                 .add(AuthenticationEvent(
@@ -481,7 +665,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         ));
                   }
                   return SizedBox();
-                })
+                }),
           ],
         ),
       ),

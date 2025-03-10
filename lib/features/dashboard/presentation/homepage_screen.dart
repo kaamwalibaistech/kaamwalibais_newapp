@@ -92,6 +92,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
+  // void didChangeDependencies() {
+  //   precacheImage(
+  //       AssetImage("lib/assets/images/homepage_banner2.jpg"), context);
+
+  //   super.didChangeDependencies();
+  // }
+
   String coordinates = "";
   double latitude = 0.0;
   double longitude = 0.0;
@@ -495,10 +502,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => CandidateRegister()));
                       },
-                      child: Image.asset(
-                        "lib/assets/images/homepage_banner2.jpg",
-                        // width: MediaQuery.of(context).size.width,
-                      ),
+                      child:
+                          Image.asset("lib/assets/images/homepage_banner2.jpg"
+
+                              // width: MediaQuery.of(context).size.width,
+                              ),
                     ),
                   ),
                   Row(
@@ -837,11 +845,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 }
 
-class LocationData {
-  String locationData = "";
-  static final _instance = LocationData._internal();
+// class LocationData {
+//   String? locationData = "";
+//   static final _instance = LocationData?._internal();
 
-  static LocationData get instance => _instance;
+//   static LocationData? get instance => _instance;
 
-  LocationData._internal();
-}
+//   LocationData._internal();
+// }

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +8,7 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
+import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.dart';
 
 import 'bloc/packages_bloc.dart';
@@ -23,7 +23,7 @@ Future main() async {
   // final onboarding = pres.getBool("onboarrding") ?? false;
 
   await dotenv.load(fileName: ".env");
-  runApp(DevicePreview(enabled: true, builder: (context) => MyApp()));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -51,6 +51,8 @@ class _MyAppState extends State<MyApp> {
             create: (context) => SelectLocationBloc()),
         BlocProvider<SearchCandidateBloc>(
             create: (context) => SearchCandidateBloc()),
+        BlocProvider<PurchasedPackageDataBloc>(
+            create: (context) => PurchasedPackageDataBloc())
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),

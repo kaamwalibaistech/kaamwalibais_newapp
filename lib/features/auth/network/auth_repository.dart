@@ -17,9 +17,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_login")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/user_login")
+        .replace(queryParameters: queryParameters);
     final body = {
       'mobile_no': number,
       'password': password,
@@ -50,9 +49,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/userprofile")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/userprofile")
+        .replace(queryParameters: queryParameters);
     final body = {'UserId': userId, 'flag': flag};
     try {
       final response =
@@ -129,7 +127,7 @@ class AuthRepository {
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
     Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/apply_jobform");
+        Uri.parse("https://kaamwalijobs.com/API/Mobile_api/apply_jobform");
 
     final body = {
       'Name': name,
@@ -186,9 +184,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendsignupotp")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/sendsignupotp")
+        .replace(queryParameters: queryParameters);
 
     final body = {'mobile_no': number};
 
@@ -213,9 +210,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/user_signup")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/user_signup")
+        .replace(queryParameters: queryParameters);
     final body = {
       'name': name,
       'mobile_no': number,
@@ -242,9 +238,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/sendforgototp")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/sendforgototp")
+        .replace(queryParameters: queryParameters);
 
     final body = {'mobile_no': number};
 
@@ -269,9 +264,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/restpassword")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/restpassword")
+        .replace(queryParameters: queryParameters);
 
     final body = {'mobile_no': number, 'new_password': newPassword};
 
@@ -295,9 +289,8 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/categorylist1")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/categorylist1")
+        .replace(queryParameters: queryParameters);
 
     // final body = {'mobile_no': number, 'new_password': newPassword};
 
@@ -324,9 +317,9 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url = Uri.parse(
-            "https://test.kaamwalijobs.com/API/Mobile_api/userprofile_update")
-        .replace(queryParameters: queryParameters);
+    Uri url =
+        Uri.parse("https://kaamwalijobs.com/API/Mobile_api/userprofile_update")
+            .replace(queryParameters: queryParameters);
 
     final body = {
       'Name': name,

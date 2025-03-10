@@ -101,7 +101,7 @@ class Joblist {
   String maritalStatus;
   String jobLocation;
   String workingHours;
-  String experience;
+  dynamic experience;
   String monthPrice;
   String jobType;
   String postedBy;

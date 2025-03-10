@@ -13,8 +13,8 @@ class SearchCandidateBloc
   Future<void> _getSearchCanidateModel(SearchCandidateLoadDataEvent event,
       Emitter<SearchCandidateStates> emit) async {
     try {
-      SearchCandidateModel _searchCandidateModel = await getAvailableCandidates(
-          candidateRequest: event.candidateRequest);
+      SearchCandidateModel _searchCandidateModel = await NavRepositiory()
+          .getAvailableCandidates(candidateRequest: event.candidateRequest);
       emit(SearchCandidateSuccessState(candidates: _searchCandidateModel.data));
       emit(SearchCandidateCountLoaded(
           candidatecount: _searchCandidateModel.candidateCount));

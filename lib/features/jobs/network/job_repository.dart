@@ -12,8 +12,7 @@ final class JobRepository {
   Future<JobListing> getJobs({required int pageNo}) async {
     try {
       Dio dio = Dio();
-      String url =
-          'https://test.kaamwalijobs.com/API/Mobile_api/posted_job_list';
+      String url = 'https://kaamwalijobs.com/API/Mobile_api/posted_job_list';
 
       var formData = FormData.fromMap({'page': pageNo});
       Response response = await dio.post(
@@ -42,9 +41,8 @@ final class JobRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/applyjobpost")
-            .replace(queryParameters: queryParameters);
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/applyjobpost")
+        .replace(queryParameters: queryParameters);
 
     final body = {
       'candidate_name': name,
@@ -90,8 +88,7 @@ final class JobRepository {
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
     Uri url =
-        Uri.parse("https://test.kaamwalijobs.com/API/Mobile_api/create_jobpost")
-            .replace(queryParameters: queryParameters);
+        Uri.parse("https://kaamwalijobs.com/API/Mobile_api/create_jobpost");
 
     final body = {
       'UserId': userId,

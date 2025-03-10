@@ -10,8 +10,7 @@ class DashboardNetwork {
       {required CandidateRequest candidateRequest}) async {
     try {
       Dio dio = Dio();
-      String url =
-          'https://test.kaamwalijobs.com/API/Mobile_api/all_candidate_list';
+      String url = 'https://kaamwalijobs.com/API/Mobile_api/all_candidate_list';
       log(candidateRequest.toJson().toString());
       var formData = FormData.fromMap(candidateRequest.toJson());
       Response response = await dio.post(
@@ -40,7 +39,7 @@ class DashboardNetwork {
     try {
       Dio dio = Dio();
       String url =
-          'https://test.kaamwalijobs.com/API/Mobile_api/search_candidate_list';
+          'https://kaamwalijobs.com/API/Mobile_api/search_candidate_list';
       log(candidateRequest.toJson().toString());
       var formData = FormData.fromMap(candidateRequest.toJson());
       Response response = await dio.post(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
@@ -193,8 +194,7 @@ class _CandidateRegisterOtpScreenState
                   Navigator.pop(context);
                   Navigator.pop(context);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Invalid OTP")));
+                  Fluttertoast.showToast(msg: "Invalid OTP");
                 }
               },
               child: Padding(

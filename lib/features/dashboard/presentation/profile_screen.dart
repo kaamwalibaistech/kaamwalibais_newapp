@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 
 import '../../../constant/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
@@ -48,13 +48,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   current is AuthLoadingState,
               builder: (context, state) {
                 if (state is AuthLoadedState) {
-                  String data = state.userData.emailId;
-                  String data1 = state.userData.mobileNo;
-                  if (data.isNotEmpty) {
-                    UserData._instance.userData1.addAll([data]);
-                    UserData1._instance.userData.addAll([data1]);
-                  }
-
                   return Column(
                     children: [
                       SizedBox(
@@ -120,23 +113,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Location",
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    ),
-                                    Text(
-                                      LocationData.instance.locationData,
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              BlocConsumer<SelectLocationBloc,
+                                      SelectLocationState>(
+                                  listener: (context, state) {},
+                                  builder: (context, snapshot) {
+                                    if (snapshot
+                                        is SelectLocationSuccessState) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Location",
+                                              style:
+                                                  GoogleFonts.poltawskiNowy(),
+                                            ),
+                                            Text(
+                                              snapshot.currentAddress
+                                                  .split(",")
+                                                  .first,
+                                              style:
+                                                  GoogleFonts.poltawskiNowy(),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Location",
+                                            style: GoogleFonts.poltawskiNowy(),
+                                          ),
+                                          Text(
+                                            "---",
+                                            style: GoogleFonts.poltawskiNowy(),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20.0),
                                 child: Row(
@@ -220,22 +243,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
-}
-
-class UserData {
-  List<String?> userData1 = [];
-  static final _instance = UserData._internal();
-
-  static UserData get instance => _instance;
-
-  UserData._internal();
-}
-
-class UserData1 {
-  List<String?> userData = [];
-  static final _instance = UserData1._internal();
-
-  static UserData1 get instance => _instance;
-
-  UserData1._internal();
 }

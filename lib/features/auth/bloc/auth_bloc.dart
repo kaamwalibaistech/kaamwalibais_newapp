@@ -23,16 +23,29 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
     try {
       UserUpdatedprofilemodel? response =
           await authRepository.getUserUpatedProfile(event.userId, event.flag);
-      EmployerRegisterModel userData = EmployerRegisterModel(
-          status: response?.status ?? "",
-          userId: response?.candidate.first.userId ?? "",
-          name: response?.candidate.first.name ?? "",
-          mobileNo: response?.candidate.first.mobileNo ?? "",
-          emailId: response?.candidate.first.emailId ?? "",
-          flag: response?.candidate.first.flag ?? "",
-          token: "",
-          msg: "");
-      emit(AuthLoadedState(userData: userData));
+      if (response!.candidate.isNotEmpty) {
+        EmployerRegisterModel userData = EmployerRegisterModel(
+            status: response.status,
+            userId: response.candidate[0].userId,
+            name: response.candidate[0].name,
+            mobileNo: response.candidate[0].mobileNo,
+            emailId: response.candidate[0].emailId,
+            flag: response.candidate[0].flag,
+            token: "",
+            msg: "");
+        emit(AuthLoadedState(userData: userData));
+      } else {
+        EmployerRegisterModel userData = EmployerRegisterModel(
+            status: response.status,
+            userId: response.employer[0].userId,
+            name: response.employer[0].name,
+            mobileNo: response.employer[0].mobileNo,
+            emailId: response.employer[0].emailId,
+            flag: response.employer[0].flag,
+            token: "",
+            msg: "");
+        emit(AuthLoadedState(userData: userData));
+      }
     } catch (e) {
       emit(AuthLoadFailedState(userfailed: USERFAILED.networkerror));
       print(e.toString());
