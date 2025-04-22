@@ -588,7 +588,7 @@ class _BookMaidCardState extends State<BookMaidCard> {
                                       await MenuPageRepository()
                                           .getSortListedCandidate(
                                               sortType,
-                                              widget.mosdel.candidateId,
+                                              widget.model.candidateId,
                                               localStoragePref
                                                   .getUserProfile()!
                                                   .flag,

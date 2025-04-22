@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
+import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
 import '../../../constant/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
@@ -22,6 +24,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    EmployerRegisterModel? userProfileData =
+        LocalStoragePref.instance?.getUserProfile();
+
+    if (userProfileData == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        checkLoginPopup();
+      });
+    }
 
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
   }
@@ -226,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       checkLoginPopup();
                     },
                     child: Text(
-                      "Please LogIn First !",
+                      "Click here to LogIn First !",
                       style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w600, fontSize: 16),
                     ),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
-import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_view.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,29 +31,24 @@ class _SplashscreenState extends State<Splashscreen> {
           LocalStoragePref.instance?.getUserProfile();
       final pres = await SharedPreferences.getInstance();
 
-      final onboarding = pres.getBool("onboarrding") ?? false;
+      // final onboarding = pres.getBool("onboarrding") ?? false;
 
-      if (onboarding == true) {
-        if (employerRegisterModel != null) {
-          BlocProvider.of<AuthBloc>(context, listen: false).add(
-              AuthenticationEvent(
-                  password: '',
-                  phoneNumber: employerRegisterModel.mobileNo,
-                  userType: USER.employer));
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const Navigationscreen()));
-        } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const Navigationscreen()));
-        }
+      if (employerRegisterModel != null) {
+        BlocProvider.of<AuthBloc>(context, listen: false).add(
+            AuthenticationEvent(
+                password: '',
+                phoneNumber: employerRegisterModel.mobileNo,
+                userType: USER.employer));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const Navigationscreen()));
       } else {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const OnboardingView()));
+            MaterialPageRoute(builder: (context) => const Navigationscreen()));
       }
+      //  else {
+      //   Navigator.pushReplacement(context,
+      //       MaterialPageRoute(builder: (context) => const Navigationscreen()));
+      // }
     });
   }
 
