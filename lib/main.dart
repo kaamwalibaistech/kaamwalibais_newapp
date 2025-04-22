@@ -18,7 +18,7 @@ import 'features/navigation/bloc/search_candidate_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalStoragePref.instance?.initPrefBox();
+  await LocalStoragePref.instance?.initPrefBox();
   // final pres = await SharedPreferences.getInstance();
   // final onboarding = pres.getBool("onboarrding") ?? false;
 

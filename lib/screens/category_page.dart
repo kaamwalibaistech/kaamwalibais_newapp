@@ -11,6 +11,7 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Client/menupage_api.dart';
 import '../core/local_storage.dart';
@@ -629,22 +630,50 @@ class _CategoryPageState extends State<CategoryPage> {
                                           const SizedBox(width: 20),
                                           GestureDetector(
                                             child: SizedBox(
-                                              child: Text(
-                                                // isPurchased
-                                                //     ? model.mobileNo!
-                                                //     :
+                                                child: model.isVisible ?? false
+                                                    ? GestureDetector(
+                                                        onTap: () {
+                                                          final phoneUri = Uri(
+                                                              scheme: 'tel',
+                                                              path:
+                                                                  "+91 ${model.mobileNo.toString()}");
+                                                          launchUrl(phoneUri);
+                                                        },
+                                                        child: Text(
+                                                          // isPurchased
+                                                          //     ? model.mobileNo!
+                                                          //     :
 
-                                                model.isVisible ?? false
-                                                    ? model.mobileNo.toString()
-                                                    : model.mobileNo!
-                                                        .replaceRange(
-                                                            3, 7, "****"),
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: whiteColor),
-                                              ),
-                                            ),
+                                                          model.mobileNo
+                                                              .toString(),
+
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  fontSize: 14,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color:
+                                                                      whiteColor),
+                                                        ),
+                                                      )
+                                                    : Text(
+                                                        // isPurchased
+                                                        //     ? model.mobileNo!
+                                                        //     :
+
+                                                        model.mobileNo!
+                                                            .replaceRange(
+                                                                3, 7, "****"),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color:
+                                                                    whiteColor),
+                                                      )),
                                           ),
                                         ],
                                       ),

@@ -26,9 +26,8 @@ class _SplashscreenState extends State<Splashscreen> {
   void initState() {
     super.initState();
 
-    // final prefs =await SharedPreferences.getInstance();
-    // final onboarding = prefs.getBool("onboarding")??false;
     Timer(const Duration(seconds: 1), () async {
+      await LocalStoragePref.instance?.initPrefBox();
       EmployerRegisterModel? employerRegisterModel =
           LocalStoragePref.instance?.getUserProfile();
       final pres = await SharedPreferences.getInstance();

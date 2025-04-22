@@ -22,9 +22,9 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
   final gender;
   final passport;
   final education;
-  final timing;
+
   final workingHrs;
-  final address;
+
   final location;
   final expectedSalary;
   final totalExperience;
@@ -43,9 +43,7 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       required this.gender,
       required this.passport,
       required this.education,
-      required this.timing,
       required this.workingHrs,
-      required this.address,
       required this.location,
       required this.expectedSalary,
       required this.totalExperience,
@@ -92,9 +90,7 @@ class _CandidateRegisterOtpScreenState
         widget.gender,
         widget.passport.toString(),
         widget.education,
-        widget.timing,
         widget.workingHrs,
-        widget.address,
         widget.location,
         widget.expectedSalary,
         widget.totalExperience,

@@ -15,6 +15,7 @@ import 'package:kaamwalijobs_new/features/navigation/bloc/packages_event.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 import 'package:kaamwalijobs_new/models/sortlisted_candidate_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/local_storage.dart';
 import '../../navigation/bloc/packages.state.dart';
@@ -31,6 +32,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
   PurchasedPackageDataBloc? purchasedPackageBloc;
+  late PurchasedPackageDataBloc _packageBloc;
   final int _pageSize = 10;
 
   final PagingController<int, CandidateData?> _paginationController =
@@ -46,6 +48,9 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   @override
   void initState() {
     super.initState();
+    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
+
+    _packageBloc.add(PurchasedPackageEvent());
 
     dashboardBloc = BlocProvider.of<DashboardBloc>(context);
 
@@ -583,7 +588,7 @@ class _BookMaidCardState extends State<BookMaidCard> {
                                       await MenuPageRepository()
                                           .getSortListedCandidate(
                                               sortType,
-                                              widget.model.candidateId,
+                                              widget.mosdel.candidateId,
                                               localStoragePref
                                                   .getUserProfile()!
                                                   .flag,
@@ -622,20 +627,40 @@ class _BookMaidCardState extends State<BookMaidCard> {
                           Image.asset("lib/assets/images/call.png", height: 17),
                           const SizedBox(width: 20),
                           SizedBox(
-                            child: Text(
-                              // isPurchased
-                              //     ? model.mobileNo!
-                              //     :
+                            child: widget.model.isVisible ?? false
+                                ? GestureDetector(
+                                    onTap: () {
+                                      final phoneUri = Uri(
+                                          scheme: 'tel',
+                                          path:
+                                              "+91 ${widget.model.mobileNo.toString()}");
+                                      launchUrl(phoneUri);
+                                    },
+                                    child: Text(
+                                      // isPurchased
+                                      //     ? model.mobileNo!
+                                      //     :
 
-                              widget.model.isVisible ?? false
-                                  ? widget.model.mobileNo.toString()
-                                  : widget.model.mobileNo!
-                                      .replaceRange(3, 7, "****"),
-                              style: GoogleFonts.poppins(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: whiteColor),
-                            ),
+                                      widget.model.mobileNo.toString(),
+
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: whiteColor),
+                                    ),
+                                  )
+                                : Text(
+                                    // isPurchased
+                                    //     ? model.mobileNo!
+                                    //     :
+
+                                    widget.model.mobileNo!
+                                        .replaceRange(3, 7, "****"),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor),
+                                  ),
                           ),
                         ],
                       ),

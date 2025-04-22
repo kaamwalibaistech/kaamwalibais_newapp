@@ -440,7 +440,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       }),
                   GestureDetector(
                     onTap: () {
-                      Fluttertoast.showToast(msg: "Not Posted Any Job !");
+                      Fluttertoast.showToast(msg: "Coming Soon");
                     },
                     child: Column(
                       children: [
