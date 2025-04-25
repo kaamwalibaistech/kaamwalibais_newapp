@@ -1171,7 +1171,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                         }
                       },
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: EdgeInsets.only(bottom: 50),
                         width: MediaQuery.of(context).size.width * 0.50,
                         decoration: BoxDecoration(
                             color: blueColor,

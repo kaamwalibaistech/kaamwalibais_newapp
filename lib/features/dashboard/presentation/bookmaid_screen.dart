@@ -582,28 +582,36 @@ class _BookMaidCardState extends State<BookMaidCard> {
                               } else {
                                 final sortType = "";
 
-                                try {
-                                  Shortlistedcandidatemodel
-                                      sortListedCandidate =
-                                      await MenuPageRepository()
-                                          .getSortListedCandidate(
-                                              sortType,
-                                              widget.model.candidateId,
-                                              localStoragePref
-                                                  .getUserProfile()!
-                                                  .flag,
-                                              userId);
+                                if (widget.model.isVisible == false) {
+                                  try {
+                                    Shortlistedcandidatemodel
+                                        sortListedCandidate =
+                                        await MenuPageRepository()
+                                            .getSortListedCandidate(
+                                                sortType,
+                                                widget.model.candidateId,
+                                                localStoragePref
+                                                    .getUserProfile()!
+                                                    .flag,
+                                                userId);
 
-                                  BlocProvider.of<PurchasedPackageDataBloc>(
-                                          context)
-                                      .add(PurchasedPackageEvent());
+                                    BlocProvider.of<PurchasedPackageDataBloc>(
+                                            context)
+                                        .add(PurchasedPackageEvent());
 
-                                  setState(() {
-                                    widget.model.isVisible = true;
-                                  });
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                      msg: "You have exceeded the counts!");
+                                    setState(() {
+                                      widget.model.isVisible = true;
+                                    });
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                        msg: "You have exceeded the counts!");
+                                  }
+                                } else {
+                                  final phoneUri = Uri(
+                                      scheme: 'tel',
+                                      path:
+                                          "+91 ${widget.model.mobileNo.toString()}");
+                                  launchUrl(phoneUri);
                                 }
                               }
                             } else {
@@ -628,26 +636,17 @@ class _BookMaidCardState extends State<BookMaidCard> {
                           const SizedBox(width: 20),
                           SizedBox(
                             child: widget.model.isVisible ?? false
-                                ? GestureDetector(
-                                    onTap: () {
-                                      final phoneUri = Uri(
-                                          scheme: 'tel',
-                                          path:
-                                              "+91 ${widget.model.mobileNo.toString()}");
-                                      launchUrl(phoneUri);
-                                    },
-                                    child: Text(
-                                      // isPurchased
-                                      //     ? model.mobileNo!
-                                      //     :
+                                ? Text(
+                                    // isPurchased
+                                    //     ? model.mobileNo!
+                                    //     :
 
-                                      widget.model.mobileNo.toString(),
+                                    widget.model.mobileNo.toString(),
 
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: whiteColor),
-                                    ),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: whiteColor),
                                   )
                                 : Text(
                                     // isPurchased

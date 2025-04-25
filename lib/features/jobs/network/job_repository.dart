@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart ' as http;
+import 'package:kaamwalijobs_new/models/apply_candidate_list_model.dart';
+import 'package:kaamwalijobs_new/models/apply_candidate_status_update_model.dart';
 import 'package:kaamwalijobs_new/models/job_listing.dart';
+import 'package:kaamwalijobs_new/models/view_job_posted_model.dart';
 
 import '../../../models/applyjobpost_model.dart';
 import '../../../models/create_job_post.dart';
@@ -59,6 +62,91 @@ final class JobRepository {
         final Map<String, dynamic> data = jsonDecode(response.body);
         if (data['status'] == '200') {
           return Applyjobpost.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<ViewjobpostedModel?> viewJobPosted(String userId) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://kaamwalijobs.com/API/Mobile_api/open_jobpost_list")
+            .replace(queryParameters: queryParameters);
+
+    final body = {'UserId': userId};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return ViewjobpostedModel.fromJson(data);
+        } else {
+          return ViewjobpostedModel.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<ApplyCandidateList?> getApplyCandidateList(String jobPostId) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url =
+        Uri.parse("https://kaamwalijobs.com/API/Mobile_api/applyjob_candidate")
+            .replace(queryParameters: queryParameters);
+
+    final body = {'jobpost_id': jobPostId};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return ApplyCandidateList.fromJson(data);
+        } else {
+          return ApplyCandidateList.fromJson(data);
+        }
+      }
+    } catch (e) {
+      throw Exception();
+    }
+
+    return null;
+  }
+
+  Future<ApplyCandidateStatusUpdate?> updateApplyCandidateList(
+      String applyId, String stausNumber) async {
+    Map<String, String> queryParameters = {};
+    queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
+
+    Uri url = Uri.parse(
+            "https://kaamwalijobs.com/API/Mobile_api/applyjob_sttaus_update")
+        .replace(queryParameters: queryParameters);
+
+    final body = {'apply_id': applyId, 'status': stausNumber};
+
+    try {
+      final response =
+          await http.post(url, headers: queryParameters, body: body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['status'] == '200') {
+          return ApplyCandidateStatusUpdate.fromJson(data);
+        } else {
+          return ApplyCandidateStatusUpdate.fromJson(data);
         }
       }
     } catch (e) {

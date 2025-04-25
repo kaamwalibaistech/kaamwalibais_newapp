@@ -521,11 +521,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => CandidateRegister()));
                       },
-                      child:
-                          Image.asset("lib/assets/images/homepage_banner2.jpg"
+                      child: Image.asset(
+                          "lib/assets/images/homepage_banner (2).jpg"
 
-                              // width: MediaQuery.of(context).size.width,
-                              ),
+                          // width: MediaQuery.of(context).size.width,
+                          ),
                     ),
                   ),
                   Row(
@@ -806,8 +806,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          new JobsApply(
+                                                      builder:
+                                                          (context) => JobsApply(
                                                               jobsLocation: state
                                                                   .homepagemodel
                                                                   .joblist[

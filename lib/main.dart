@@ -52,7 +52,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<SearchCandidateBloc>(
             create: (context) => SearchCandidateBloc()),
         BlocProvider<PurchasedPackageDataBloc>(
-            create: (context) => PurchasedPackageDataBloc())
+            create: (context) => PurchasedPackageDataBloc()),
+        // BlocProvider<ApplicantsBloc>(create: (context) => ApplicantsBloc())
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
