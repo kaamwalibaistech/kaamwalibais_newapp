@@ -7,6 +7,7 @@ import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
+import 'package:kaamwalijobs_new/features/navigation/presentation/term_condition.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/view_job_posted.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
 
@@ -461,12 +462,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => const WebviewWidget(
-            appBarTitle: 'Terms & Conditions',
-            url: 'https://kaamwalijobs.com/terms-condition',
-          ),
-        ),
+        MaterialPageRoute(builder: (context) => TermsAndConditionsPage()),
       ),
       child: Column(
         children: [
