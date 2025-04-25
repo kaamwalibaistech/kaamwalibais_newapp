@@ -19,7 +19,7 @@ class PurchasedPackageDataBloc extends Bloc<PackageEvent, PackageState> {
       PackageEvent event, Emitter<PackageState> emit) async {
     try {
       LocalStoragePref localStoragePref = LocalStoragePref();
-      String userId = localStoragePref.getUserProfile()!.userId;
+      String? userId = localStoragePref.getUserProfile()?.userId ?? "";
       CurrentPackagePlan currentPackagePlan =
           await Repositiory().getCurrentPackages(userId);
       emit(PackageLoadedStates(currentPackagePlan: currentPackagePlan));

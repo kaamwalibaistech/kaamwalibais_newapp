@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 
 import '../../../bloc/homepage_bloc.dart';
 import '../../../constant/colors.dart';
@@ -165,29 +166,51 @@ class _JobsPostState extends State<JobsPost> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: SizedBox(
+                SizedBox(
                     width: MediaQuery.of(context).size.width * 0.93,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Job Location";
-                        }
-                        return null;
+                    child: GestureDetector(
+                      onTap: () async {
+                        final address = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LocationSelectScreen()));
+                        setState(() {
+                          locationController.text = address;
+                        });
                       },
-                      controller: locationController,
-                      decoration: InputDecoration(
-                        counterText: "",
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                        hintText: "Thane, Maharashtra, India",
-                        hintStyle: TextStyle(color: textGreyColor),
-                        border: OutlineInputBorder(),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
+                          border: Border.all(color: textGreyColor),
+                        ),
+                        child: Center(
+                            child: locationController.text.isEmpty
+                                ? Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          "Enter work location",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(locationController.text),
+                                      ),
+                                    ],
+                                  )),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
                 const Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 5),
                   child: Text(

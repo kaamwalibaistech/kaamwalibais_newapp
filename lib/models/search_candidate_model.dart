@@ -37,27 +37,27 @@ class SearchCandidateModel {
 }
 
 class SearchcandidateData {
-  String candidateId;
-  String categoryName;
+  String? candidateId;
+  String? categoryName;
   String mobileNo;
-  String jobType;
-  String serviceLocation;
-  String rating;
-  String aadharCard;
-  String otherDocuments;
-  String passposrt;
-  String age;
-  String maritalStatus;
-  String religion;
-  String totalExp;
-  String expectedSalary;
-  String gender;
-  String maximumEducation;
-  String workingHours;
-  List<Language> language;
-  String image;
-  String alreadySorted;
-  String ratingCount;
+  String? jobType;
+  String? serviceLocation;
+  String? rating;
+  String? aadharCard;
+  String? otherDocuments;
+  String? passposrt;
+  String? age;
+  String? maritalStatus;
+  String? religion;
+  String? totalExp;
+  String? expectedSalary;
+  String? gender;
+  String? maximumEducation;
+  String? workingHours;
+  List<Language?> language;
+  String? image;
+  String? alreadySorted;
+  String? ratingCount;
   bool? isVisible;
 
   SearchcandidateData(
@@ -75,7 +75,7 @@ class SearchcandidateData {
       required this.religion,
       required this.totalExp,
       required this.expectedSalary,
-      required this.gender,
+      this.gender,
       required this.maximumEducation,
       required this.workingHours,
       required this.language,
@@ -86,54 +86,54 @@ class SearchcandidateData {
 
   factory SearchcandidateData.fromJson(Map<String, dynamic> json) =>
       SearchcandidateData(
-        candidateId: json["candidate_id"],
-        categoryName: json["CategoryName"],
+        candidateId: json["candidate_id"] ?? "",
+        categoryName: json["CategoryName"] ?? "",
         mobileNo: json["MobileNo"],
-        jobType: json["job_type"],
-        serviceLocation: json["ServiceLocation"],
-        rating: json["rating"],
-        aadharCard: json["AadharCard"],
-        otherDocuments: json["OtherDocuments"],
-        passposrt: json["passposrt"],
-        age: json["Age"],
-        maritalStatus: json["MaritalStatus"],
-        religion: json["Religion"],
-        totalExp: json["TotalExp"],
-        expectedSalary: json["ExpectedSalary"],
-        gender: json["Gender"],
-        maximumEducation: json["MaximumEducation"],
-        workingHours: json["WorkingHours"],
+        jobType: json["job_type"] ?? "",
+        serviceLocation: json["ServiceLocation"] ?? "",
+        rating: json["rating"] ?? "",
+        aadharCard: json["AadharCard"] ?? "",
+        otherDocuments: json["OtherDocuments"] ?? "",
+        passposrt: json["passposrt"] ?? "",
+        age: json["Age"] ?? "",
+        maritalStatus: json["MaritalStatus"] ?? "",
+        religion: json["Religion"] ?? "",
+        totalExp: json["TotalExp"] ?? "",
+        expectedSalary: json["ExpectedSalary"] ?? "",
+        gender: json["Gender"] ?? "",
+        maximumEducation: json["MaximumEducation"] ?? "",
+        workingHours: json["WorkingHours"] ?? "",
         language: List<Language>.from(
-            json["Language"].map((x) => languageValues.map[x]!)),
-        image: json["image"],
-        alreadySorted: json["already_sorted"],
-        ratingCount: json["rating_count"],
+            json["Language"].map((x) => languageValues.map[x]!) ?? ""),
+        image: json["image"] ?? "",
+        alreadySorted: json["already_sorted"] ?? "",
+        ratingCount: json["rating_count"] ?? "",
         isVisible: json["false"],
       );
 
   Map<String, dynamic> toJson() => {
-        "candidate_id": candidateId,
-        "CategoryName": categoryName,
+        "candidate_id": candidateId ?? "",
+        "CategoryName": categoryName ?? "",
         "MobileNo": mobileNo,
-        "job_type": jobType,
-        "ServiceLocation": serviceLocation,
-        "rating": rating,
-        "AadharCard": aadharCard,
-        "OtherDocuments": otherDocuments,
-        "passposrt": passposrt,
-        "Age": age,
-        "MaritalStatus": maritalStatus,
-        "Religion": religion,
-        "TotalExp": totalExp,
-        "ExpectedSalary": expectedSalary,
-        "Gender": gender,
-        "MaximumEducation": maximumEducation,
-        "WorkingHours": workingHours,
-        "Language":
-            List<dynamic>.from(language.map((x) => languageValues.reverse[x])),
-        "image": image,
-        "already_sorted": alreadySorted,
-        "rating_count": ratingCount,
+        "job_type": jobType ?? "",
+        "ServiceLocation": serviceLocation ?? "",
+        "rating": rating ?? "",
+        "AadharCard": aadharCard ?? "",
+        "OtherDocuments": otherDocuments ?? "",
+        "passposrt": passposrt ?? "",
+        "Age": age ?? "",
+        "MaritalStatus": maritalStatus ?? "",
+        "Religion": religion ?? "",
+        "TotalExp": totalExp ?? "",
+        "ExpectedSalary": expectedSalary ?? "",
+        "Gender": gender ?? "",
+        "MaximumEducation": maximumEducation ?? "",
+        "WorkingHours": workingHours ?? "",
+        "Language": List<dynamic>.from(
+            language.map((x) => languageValues.reverse[x] ?? "")),
+        "image": image ?? "",
+        "already_sorted": alreadySorted ?? "",
+        "rating_count": ratingCount ?? "",
         "isVisible": "false"
       };
 }

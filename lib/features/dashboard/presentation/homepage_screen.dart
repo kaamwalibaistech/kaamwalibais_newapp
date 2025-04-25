@@ -14,12 +14,10 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
-import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
 import '../../../models/categorylist.dart';
-import '../../../models/employer_register_model.dart';
 import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
 import '../../auth/presentation/login_popup.dart';
@@ -36,7 +34,7 @@ class HomepageScreen extends StatefulWidget {
 
 class _HomepageScreenState extends State<HomepageScreen> {
   // final listViewController = ListViewItems();
-  final featuredJobsController = FeaturedJobsItems();
+  // final featuredJobsController = FeaturedJobsItems();
   String selectedJobName = "Select a job";
   String selecteJobdId = "2";
   String selectedLocation = "Location";
@@ -92,19 +90,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
 
-    EmployerRegisterModel? userProfileData =
-        LocalStoragePref.instance?.getUserProfile();
+    //   EmployerRegisterModel? userProfileData =
+    //       LocalStoragePref.instance?.getUserProfile();
 
-    if (userProfileData == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        checkLoginPopup();
-      });
-    } else {
-      // _authBloc.add(AuthenticationEvent(
-      //     password: '',
-      //     phoneNumber: userProfileData.mobileNo,
-      //     userType: USER.employer));
-    }
+    //   if (userProfileData == null) {
+    //     WidgetsBinding.instance.addPostFrameCallback((_) {
+    //       checkLoginPopup();
+    //     });
+    //   } else {
+    //     // _authBloc.add(AuthenticationEvent(
+    //     //     password: '',
+    //     //     phoneNumber: userProfileData.mobileNo,
+    //     //     userType: USER.employer));
+    //   }
   }
 
   checkLoginPopup() async {
@@ -523,11 +521,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => CandidateRegister()));
                       },
-                      child:
-                          Image.asset("lib/assets/images/homepage_banner2.jpg"
+                      child: Image.asset(
+                          "lib/assets/images/homepage_banner (2).jpg"
 
-                              // width: MediaQuery.of(context).size.width,
-                              ),
+                          // width: MediaQuery.of(context).size.width,
+                          ),
                     ),
                   ),
                   Row(
@@ -808,8 +806,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          new JobsApply(
+                                                      builder:
+                                                          (context) => JobsApply(
                                                               jobsLocation: state
                                                                   .homepagemodel
                                                                   .joblist[

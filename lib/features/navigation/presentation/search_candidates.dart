@@ -320,7 +320,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                           ]),
                       BlocBuilder<SearchCandidateBloc, SearchCandidateStates>(
                           builder: (context, state) {
-                        if (state is SearchCandidateCountLoaded)
+                        if (state is SearchCandidateCountLoaded) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 20),
@@ -331,7 +331,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                   color: Colors.blue.shade900),
                             ),
                           );
-                        else {
+                        } else {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 20),
@@ -439,7 +439,8 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                             width: 3,
                                           ),
                                           RatingBarIndicator(
-                                            rating: double.parse(model!.rating),
+                                            rating: double.parse(
+                                                model!.rating.toString()),
                                             itemBuilder: (context, index) =>
                                                 const Icon(
                                               Icons.star,
@@ -483,7 +484,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                model.jobType,
+                                                model.jobType.toString(),
                                                 style: GoogleFonts.poppins(
                                                   color: whiteColor,
                                                   fontSize: 11,
@@ -497,16 +498,17 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                 ],
                               ),
                               ListTile(
-                                leading: Image.network(model.image, height: 45),
+                                leading: Image.network(model.image.toString(),
+                                    height: 45),
                                 title: Text(
-                                  model.categoryName,
+                                  model.categoryName.toString(),
                                   style: GoogleFonts.quicksand(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
                                 subtitle: Text(
-                                  model.serviceLocation,
+                                  model.serviceLocation.toString(),
                                   maxLines: 1,
                                   style: GoogleFonts.quicksand(
                                     fontSize: 13,
