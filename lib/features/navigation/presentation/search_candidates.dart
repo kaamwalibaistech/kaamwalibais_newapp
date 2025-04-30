@@ -319,7 +319,11 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                             ),
                           ]),
                       BlocBuilder<SearchCandidateBloc, SearchCandidateStates>(
-                          builder: (context, state) {
+                          buildWhen: (previous, current) {
+                        return current is SearchCandidateCountLoaded ||
+                            current is SearchCandidateLoadingState ||
+                            current is SearchCandidateErrorState;
+                      }, builder: (context, state) {
                         if (state is SearchCandidateCountLoaded) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(

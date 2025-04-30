@@ -99,13 +99,18 @@ class _NavigationscreenState extends State<Navigationscreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedIndex,
-        onTap: changeTab, // Update PageView when tapping tabs
+        onTap: (value) {
+          changeTab(value);
+          setState(() => selectedIndex = value); // Update selected index
+          _pageController
+              .jumpToPage(value); // Update PageView when tapping tabs
+        }, // Update PageView when tapping tabs
         type: BottomNavigationBarType.fixed,
         // backgroundColor: Colors.amber,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         iconSize: 30,
-        selectedItemColor: Colors.deepOrangeAccent,
+        selectedItemColor: Colors.green,
         unselectedItemColor: Colors.blueGrey,
         items: [
           const BottomNavigationBarItem(
@@ -117,9 +122,9 @@ class _NavigationscreenState extends State<Navigationscreen> {
               label: "BookMaid",
               activeIcon: Icon(Icons.shopping_bag_rounded)),
           const BottomNavigationBarItem(
-              icon: Icon(Icons.message_outlined),
+              icon: Icon(Icons.person_3_outlined),
               label: "Profile",
-              activeIcon: Icon(Icons.message)),
+              activeIcon: Icon(Icons.person_3_outlined)),
           BottomNavigationBarItem(
               icon: Icon(Icons.menu),
               label: "Menu",
