@@ -71,8 +71,34 @@ class NavRepositiory {
       Dio dio = Dio();
       String url =
           "https://kaamwalijobs.com/API/Mobile_api/search_candidate_list";
-      print(candidateRequest.toJson().toString());
-      var formData = FormData.fromMap(candidateRequest.toJson());
+
+      // Format the request parameters
+      Map<String, dynamic> requestData = {
+        'CategoryId': candidateRequest.categoryId ?? '',
+        'UserId': candidateRequest.userId ?? '',
+        'page': candidateRequest.page ?? '1',
+        'latitude': candidateRequest.latitude ?? '',
+        'longitude': candidateRequest.longitude ?? '',
+        'km': candidateRequest.km ?? '3',
+        'min_salry': candidateRequest.minSalry ?? '',
+        'max_salary': candidateRequest.maxSalary ?? '',
+        'passport': candidateRequest.passport ?? '',
+        'min_age': candidateRequest.minAge ?? '',
+        'max_age': candidateRequest.maxAge ?? '',
+        'min_exp': candidateRequest.minExp ?? '',
+        'max_exp': candidateRequest.maxExp ?? '',
+        'gender': candidateRequest.gender ?? '',
+        'working_hours': candidateRequest.workingHours ?? '',
+        'religon': candidateRequest.religon ?? '',
+        'language': candidateRequest.language ?? '',
+        'sort_by': candidateRequest.sortBy ?? '',
+      };
+
+      // Remove empty parameters
+      requestData.removeWhere((key, value) => value == '');
+
+      var formData = FormData.fromMap(requestData);
+
       Response response = await dio.post(
         url,
         data: formData,
@@ -82,7 +108,7 @@ class NavRepositiory {
           },
         ),
       );
-      // Handling response
+
       if (response.statusCode == 200 && response.data != null) {
         SearchCandidateModel searchCandidateModel =
             SearchCandidateModel.fromJson(response.data);

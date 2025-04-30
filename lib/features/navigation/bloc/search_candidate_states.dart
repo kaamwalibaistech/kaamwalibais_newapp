@@ -24,6 +24,18 @@ class SearchCandidateSuccessState extends SearchCandidateStates {
   List<Object> get props => [candidates];
 }
 
+class SearchCandidateErrorState extends SearchCandidateStates {
+  final String errorMsg;
+  SearchCandidateErrorState({required this.errorMsg});
+  @override
+  List<Object> get props => [errorMsg];
+}
+
+class SearchCandidateCountLoading extends SearchCandidateStates {
+  @override
+  List<Object> get props => [];
+}
+
 class SearchCandidateCountLoaded extends SearchCandidateStates {
   final String candidatecount;
   SearchCandidateCountLoaded({required this.candidatecount});
@@ -31,9 +43,7 @@ class SearchCandidateCountLoaded extends SearchCandidateStates {
   List<Object> get props => [candidatecount];
 }
 
-class SearchCandidateErrorState extends SearchCandidateStates {
-  final String errorMsg;
-  SearchCandidateErrorState({required this.errorMsg});
+class SearchCandidateCountError extends SearchCandidateStates {
   @override
-  List<Object> get props => [errorMsg];
+  List<Object> get props => [];
 }
