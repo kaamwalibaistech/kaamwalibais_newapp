@@ -14,6 +14,7 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
+import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
@@ -89,6 +90,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
+    BlocProvider.of<PurchasedPackageDataBloc>(context);
 
     //   EmployerRegisterModel? userProfileData =
     //       LocalStoragePref.instance?.getUserProfile();

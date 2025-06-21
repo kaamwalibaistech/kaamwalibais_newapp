@@ -23,7 +23,7 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
     FilterListWithCountModel(title: 'Age', count: ''), // 3
     FilterListWithCountModel(title: 'Experience', count: ''), // 4
     FilterListWithCountModel(title: 'Gender', count: ''), // 5
-    FilterListWithCountModel(title: 'Working Hours', count: ''), // 6
+    FilterListWithCountModel(title: 'Working Hours', count: ''), // 6l̥
     FilterListWithCountModel(title: 'Religion', count: ''), // 7
     FilterListWithCountModel(title: 'Language', count: ''), // 8
     FilterListWithCountModel(title: 'KM', count: ''), // 9

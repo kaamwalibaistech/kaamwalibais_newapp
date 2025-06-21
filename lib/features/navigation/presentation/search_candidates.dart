@@ -222,11 +222,11 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                           builder: (context) =>
                                               SearchCandidatesFilter()));
                                   if (result != null) {
-                                    if (result['categoryName'] != '') {
-                                      setState(() {
+                                    setState(() {
+                                      if (result['categoryName'] != '') {
                                         categoryName = result['categoryName'];
-                                      });
-                                    }
+                                      }
+                                    });
                                     _paginationController.refresh();
                                     try {
                                       if (result['categoryId'] != '')
