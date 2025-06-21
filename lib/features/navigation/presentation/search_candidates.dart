@@ -222,58 +222,78 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                           builder: (context) =>
                                               SearchCandidatesFilter()));
                                   if (result != null) {
-                                    if (result['categoryName'] != '') {
-                                      setState(() {
+                                    setState(() {
+                                      if (result['categoryName'] != '') {
                                         categoryName = result['categoryName'];
-                                      });
-                                    }
+                                      }
+                                    });
                                     _paginationController.refresh();
                                     try {
                                       if (result['categoryId'] != '')
                                         candidateRequest.categoryId =
                                             result['categoryId'];
-                                      print(
-                                          "Updated categoryId: ${candidateRequest.categoryId}");
+
                                       if (result['minSalary'] != '')
                                         candidateRequest.minSalry =
                                             result['minSalary'];
                                       if (result['maxSalary'] != '')
                                         candidateRequest.maxSalary =
                                             result['maxSalary'];
+
                                       if (result['passportValue'] != '')
                                         candidateRequest.passport =
                                             result['passportValue'];
+
                                       if (result['minAge'] != '')
                                         candidateRequest.minAge =
                                             result['minAge'];
                                       if (result['maxAge'] != '')
                                         candidateRequest.maxAge =
                                             result['maxAge'];
+
                                       if (result['minExperience'] != '')
                                         candidateRequest.minExp =
                                             result['minExperience'];
                                       if (result['maxExperience'] != '')
                                         candidateRequest.maxExp =
                                             result['maxExperience'];
-                                      if (result['genderValue'] != '')
-                                        candidateRequest.gender =
-                                            result['genderValue'];
-                                      if (result['workingHoursValue'] != '')
-                                        candidateRequest.workingHours =
-                                            result['workingHoursValue'];
-                                      if (result['religionValue'] != '')
-                                        candidateRequest.religon =
-                                            result['religionValue'];
-                                      if (result['languageValue'] != '')
-                                        candidateRequest.language =
-                                            result['languageValue'];
 
+                                      if (result['genderValue'] != null &&
+                                          result['genderValue'].isNotEmpty)
+                                        candidateRequest.gender =
+                                            result['genderValue'].join(',');
+
+                                      if (result['workingHoursValue'] != null &&
+                                          result['workingHoursValue']
+                                              .isNotEmpty)
+                                        candidateRequest.workingHours =
+                                            result['workingHoursValue']
+                                                .join(',');
+
+                                      if (result['religionValue'] != null &&
+                                          result['religionValue'].isNotEmpty)
+                                        candidateRequest.religon =
+                                            result['religionValue'].join(',');
+
+                                      if (result['languageValue'] != null &&
+                                          result['languageValue'].isNotEmpty)
+                                        candidateRequest.language =
+                                            result['languageValue'].join(',');
+
+                                      if (result['km'] != '')
+                                        candidateRequest.km = result['km'];
+
+                                      // Reset pagination and fetch new results
+                                      _paginationController.refresh();
                                       _searchCandidateBloc.add(
                                           SearchCandidateLoadDataEvent(
                                               candidateRequest:
                                                   candidateRequest));
                                     } catch (e) {
-                                      print("Error: $e");
+                                      print("Error applying filters: $e");
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Error applying filters. Please try again.");
                                     }
                                   }
                                 },
@@ -293,57 +313,63 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                             const SizedBox(
                               width: 10,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text("Sort")));
-                                  showSortDialog(context);
-                                },
-                                child: Column(
-                                  children: [
-                                    const Icon(
-                                      Icons.sort,
-                                      size: 20,
-                                    ),
-                                    Text(
-                                      'Sort',
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(top: 10),
+                            //   child: GestureDetector(
+                            //     onTap: () {
+                            //       ScaffoldMessenger.of(context).showSnackBar(
+                            //           SnackBar(content: Text("Sort")));
+                            //       showSortDialog(context);
+                            //     },
+                            //     child: Column(
+                            //       children: [
+                            //         const Icon(
+                            //           Icons.sort,
+                            //           size: 20,
+                            //         ),
+                            //         Text(
+                            //           'Sort',
+                            //         )
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            // const SizedBox(
+                            //   width: 10,
+                            // ),
                           ]),
                       BlocBuilder<SearchCandidateBloc, SearchCandidateStates>(
+                          bloc: _searchCandidateBloc,
+                          buildWhen: (previous, current) {
+                            return current is SearchCandidateCountLoaded ||
+                                current is SearchCandidateCountLoading ||
+                                current is SearchCandidateCountError;
+                          },
                           builder: (context, state) {
-                        if (state is SearchCandidateCountLoaded) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            child: Text(
-                              "${categoryName} - Showing ${state.candidatecount} results",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue.shade900),
-                            ),
-                          );
-                        } else {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 20),
-                            child: Text(
-                              "${widget.categoryName} - Showing results",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue.shade900),
-                            ),
-                          );
-                        }
-                      }),
+                            if (state is SearchCandidateCountLoaded) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: Text(
+                                  "${categoryName} - Showing ${state.candidatecount} results",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue.shade900),
+                                ),
+                              );
+                            } else {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 20),
+                                child: Text(
+                                  "${widget.categoryName} - Showing results",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue.shade900),
+                                ),
+                              );
+                            }
+                          }),
                     ],
                   ),
                 ),
