@@ -46,6 +46,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
   final int _pageSize = 10;
   String searchLocation = "";
   String categoryName = "";
+  late PurchasedPackageDataBloc _packageBloc;
 
   final PagingController<int, SearchcandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
@@ -61,6 +62,10 @@ class _SearchCandidatesState extends State<SearchCandidates> {
     _paginationController.addPageRequestListener((pagekey) {
       _fetchPage(pagekey);
     });
+
+    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
+
+    _packageBloc.add(PurchasedPackageEvent());
   }
 
   Future<void> _fetchPage(int pageKey) async {
@@ -133,6 +138,100 @@ class _SearchCandidatesState extends State<SearchCandidates> {
     SortModel("5", "Experienced"),
     SortModel("6", "Freshers"),
   ];
+  // int count = 0;
+
+  // Widget _buildPackageInfoSection() {
+  //   if (count != 0) return const SizedBox.shrink();
+
+  //   return BlocBuilder<PurchasedPackageDataBloc, PackageState>(
+  //     bloc: _packageBloc,
+  //     buildWhen: (PackageState previous, PackageState current) =>
+  //         current is PackageLoadedStates,
+  //     builder: (context, state) {
+  //       if (state is PackageLoadedStates) {
+  //         if (state.currentPackagePlan.package.isEmpty) {
+  //           return SizedBox.shrink();
+  //         } else {
+  //           packageValue = true;
+
+  //           return _buildPackageInfoCards(state);
+  //         }
+  //       }
+  //       return const SizedBox.shrink();
+  //     },
+  //   );
+  // }
+
+  // Widget _buildPackageInfoCards(PackageLoadedStates state) {
+  //   final package = state.currentPackagePlan.package.first;
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       _buildInfoCard(
+  //         "lib/assets/images/icons-package.png",
+  //         "Current Package",
+  //         package.packageName,
+  //       ),
+  //       _buildInfoCard(
+  //         "lib/assets/images/icons-resume.png",
+  //         "Available Count",
+  //         package.avilableCount.toString(),
+  //       ),
+  //       _buildInfoCard(
+  //         "lib/assets/images/icons-calendar.png",
+  //         "Expire Date",
+  //         package.expDate.toString(),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // Widget _buildInfoCard(String iconPath, String title, String value) {
+  //   return Column(
+  //     children: [
+  //       Image.asset(iconPath, height: 30),
+  //       sizedBoxH10,
+  //       Padding(
+  //         padding: const EdgeInsets.only(bottom: 10.0),
+  //         child: Container(
+  //           decoration: BoxDecoration(
+  //             color: whiteColor,
+  //             borderRadius: BorderRadius.circular(10),
+  //           ),
+  //           height: MediaQuery.of(context).size.height * 0.07,
+  //           width: MediaQuery.of(context).size.width * 0.25,
+  //           child: Padding(
+  //             padding: const EdgeInsets.symmetric(horizontal: 2.0),
+  //             child: Column(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: [
+  //                 Text(
+  //                   title,
+  //                   maxLines: 1,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: const TextStyle(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   value,
+  //                   maxLines: 1,
+  //                   overflow: TextOverflow.ellipsis,
+  //                   style: const TextStyle(
+  //                     color: blackColor,
+  //                     fontWeight: FontWeight.bold,
+  //                     fontSize: 11,
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +242,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
           child: Column(
             children: [
               Container(
-                height: 160,
+                height: MediaQuery.of(context).size.height * 0.13,
                 color: Colors.blue.shade50,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 26),
@@ -313,63 +412,40 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                             const SizedBox(
                               width: 10,
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(top: 10),
-                            //   child: GestureDetector(
-                            //     onTap: () {
-                            //       ScaffoldMessenger.of(context).showSnackBar(
-                            //           SnackBar(content: Text("Sort")));
-                            //       showSortDialog(context);
-                            //     },
-                            //     child: Column(
-                            //       children: [
-                            //         const Icon(
-                            //           Icons.sort,
-                            //           size: 20,
-                            //         ),
-                            //         Text(
-                            //           'Sort',
-                            //         )
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                            // const SizedBox(
-                            //   width: 10,
-                            // ),
                           ]),
-                      BlocBuilder<SearchCandidateBloc, SearchCandidateStates>(
-                          bloc: _searchCandidateBloc,
-                          buildWhen: (previous, current) {
-                            return current is SearchCandidateCountLoaded ||
-                                current is SearchCandidateCountLoading ||
-                                current is SearchCandidateCountError;
-                          },
-                          builder: (context, state) {
-                            if (state is SearchCandidateCountLoaded) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 20),
-                                child: Text(
-                                  "${categoryName} - Showing ${state.candidatecount} results",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade900),
-                                ),
-                              );
-                            } else {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 20),
-                                child: Text(
-                                  "${widget.categoryName} - Showing results",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue.shade900),
-                                ),
-                              );
-                            }
-                          }),
+                      // BlocBuilder<SearchCandidateBloc, SearchCandidateStates>(
+                      //     bloc: _searchCandidateBloc,
+                      //     buildWhen: (previous, current) {
+                      //       return current is SearchCandidateCountLoaded ||
+                      //           current is SearchCandidateCountLoading ||
+                      //           current is SearchCandidateCountError;
+                      //     },
+                      //     builder: (context, state) {
+                      //       if (state is SearchCandidateCountLoaded) {
+                      //         return Padding(
+                      //           padding: const EdgeInsets.symmetric(
+                      //               horizontal: 10, vertical: 20),
+                      //           child: Text(
+                      //             "${categoryName} - Showing ${state.candidatecount} results",
+                      //             style: TextStyle(
+                      //                 fontWeight: FontWeight.bold,
+                      //                 color: Colors.blue.shade900),
+                      //           ),
+                      //         );
+                      //       } else {
+                      //         return Padding(
+                      //           padding: const EdgeInsets.symmetric(
+                      //               horizontal: 10, vertical: 20),
+                      //           child: Text(
+                      //             "${widget.categoryName} - Showing results",
+                      //             style: TextStyle(
+                      //                 fontWeight: FontWeight.bold,
+                      //                 color: Colors.blue.shade900),
+                      //           ),
+                      //         );
+                      //       }
+                      //     }),
+                      // _buildPackageInfoSection(),
                     ],
                   ),
                 ),
@@ -891,9 +967,7 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                                         "Purchase candidate view Package Plan");
                                               }
                                             } else {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      "Purchase candidate view Package Plan");
+                                              checkPackagesPopup();
                                             }
                                           } else {
                                             Fluttertoast.showToast(

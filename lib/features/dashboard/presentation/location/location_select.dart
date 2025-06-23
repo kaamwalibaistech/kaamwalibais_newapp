@@ -13,8 +13,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
-    SelectLocationBloc().enableLocation();
+    // context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
+    // SelectLocationBloc().enableLocation();
   }
 
   @override
@@ -62,31 +62,31 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
       ),
       body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
         builder: (context, state) {
-          if (state is SelectLocationInitialState) {
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    context
-                        .read<SelectLocationBloc>()
-                        .add(GetCurrentLocationEvent());
-                  },
-                  child: ListTile(
-                    leading: Icon(
-                      size: 16,
-                      Icons.my_location,
-                      color: Colors.blue.shade700,
-                    ),
-                    title: Text(
-                      "Click to get current location",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    textColor: Colors.blue.shade700,
-                  ),
-                )
-              ],
-            );
-          }
+          // if (state is SelectLocationInitialState) {
+          //   return Column(
+          //     children: [
+          //       GestureDetector(
+          //         onTap: () {
+          //           context
+          //               .read<SelectLocationBloc>()
+          //               .add(GetCurrentLocationEvent());
+          //         },
+          //         child: ListTile(
+          //           leading: Icon(
+          //             size: 16,
+          //             Icons.my_location,
+          //             color: Colors.blue.shade700,
+          //           ),
+          //           title: Text(
+          //             "Click to get current location",
+          //             style: TextStyle(fontSize: 14),
+          //           ),
+          //           textColor: Colors.blue.shade700,
+          //         ),
+          //       )
+          //     ],
+          //   );
+          // }
           if (state is SelectLocationSearchingState) {
             return ListView.builder(
                 itemCount: state.searchLocationModel!.predictions.length,
@@ -166,7 +166,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
             );
           }
 
-          return Text("No State");
+          return Text("");
         },
       ),
     );
