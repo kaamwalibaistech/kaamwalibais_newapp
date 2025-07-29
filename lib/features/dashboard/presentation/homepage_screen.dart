@@ -450,17 +450,22 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   mainAxisSpacing: 20,
                                   crossAxisCount: 3,
                                   crossAxisSpacing: 20),
-                          itemCount: state.homepagemodel.categorylist.length > 6
-                              ? state.homepagemodel.categorylist
+                          itemCount: (state.homepagemodel.categorylist !=
+                                      null &&
+                                  state.homepagemodel.categorylist!.length > 6)
+                              ? state.homepagemodel.categorylist!
                                   .sublist(0, 6)
                                   .length
-                              : state.homepagemodel.categorylist.length,
+                              : state.homepagemodel.categorylist?.length,
                           itemBuilder: (BuildContext context, int index) {
                             List<Categorylist> categories =
-                                state.homepagemodel.categorylist.length > 6
-                                    ? state.homepagemodel.categorylist
+                                (state.homepagemodel.categorylist != null &&
+                                        state.homepagemodel.categorylist!
+                                                .length >
+                                            6)
+                                    ? state.homepagemodel.categorylist!
                                         .sublist(0, 6)
-                                    : state.homepagemodel.categorylist;
+                                    : state.homepagemodel.categorylist ?? [];
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -468,9 +473,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     MaterialPageRoute(
                                         builder: (context) => CategoryPage(
                                             categoryId: state
-                                                .homepagemodel
-                                                .categorylist[index]
-                                                .categoryId)));
+                                                    .homepagemodel
+                                                    .categorylist?[index]
+                                                    .categoryId ??
+                                                "")));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -498,7 +504,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       height: 60,
                                     ),
                                     Text(
-                                      categories[index].categoryName,
+                                      categories[index].categoryName ?? "",
                                       style: const TextStyle(
                                           // color: blueColor,
                                           // fontWeight: FontWeight.bold
@@ -584,7 +590,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     crossAxisSpacing: 10,
                                     mainAxisExtent: 300,
                                     mainAxisSpacing: 10),
-                            itemCount: state.homepagemodel.joblist.length,
+                            itemCount: state.homepagemodel.joblist?.length ?? 0,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 decoration: BoxDecoration(
@@ -616,8 +622,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           padding:
                                               const EdgeInsets.only(left: 8.0),
                                           child: Text(
-                                            state.homepagemodel.joblist[index]
-                                                .postedBy,
+                                            state.homepagemodel.joblist?[index]
+                                                    .postedBy ??
+                                                "",
                                             style:
                                                 TextStyle(color: textGreyColor),
                                           ),
@@ -653,15 +660,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       padding: const EdgeInsets.only(
                                           top: 10.0, left: 10),
                                       child: Text(state.homepagemodel
-                                          .joblist[index].jobType),
+                                              .joblist?[index].jobType ??
+                                          ""),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Text(
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        state.homepagemodel.joblist[index]
-                                            .jobLocation,
+                                        state.homepagemodel.joblist?[index]
+                                                .jobLocation ??
+                                            "",
                                         style: TextStyle(color: textGreyColor),
                                       ),
                                     ),
@@ -680,7 +689,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].age} Yrs",
+                                            " ${state.homepagemodel.joblist?[index].age} Yrs",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -704,7 +713,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           Text(
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            " ${state.homepagemodel.joblist[index].gender}",
+                                            " ${state.homepagemodel.joblist?[index].gender}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -726,7 +735,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].experience}",
+                                            " ${state.homepagemodel.joblist?[index].experience}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -748,7 +757,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].religion}",
+                                            " ${state.homepagemodel.joblist?[index].religion}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -774,7 +783,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                               softWrap: true,
-                                              " ${state.homepagemodel.joblist[index].workingHours}",
+                                              " ${state.homepagemodel.joblist?[index].workingHours}",
                                               style: TextStyle(
                                                   color: iconGreyColor),
                                             ),
@@ -789,7 +798,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       child: Text(
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        "Rs. ${state.homepagemodel.joblist[index].monthPrice}/monthly",
+                                        "Rs. ${state.homepagemodel.joblist?[index].monthPrice}/monthly",
                                         style: TextStyle(
                                             color: blueColor,
                                             fontWeight: FontWeight.w700),
@@ -808,23 +817,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder:
-                                                          (context) => JobsApply(
-                                                              jobsLocation: state
+                                                      builder: (context) => JobsApply(
+                                                          jobsLocation: state
                                                                   .homepagemodel
-                                                                  .joblist[
+                                                                  .joblist?[
                                                                       index]
-                                                                  .jobLocation,
-                                                              jobsType: state
+                                                                  .jobLocation ??
+                                                              "",
+                                                          jobsType: state
                                                                   .homepagemodel
-                                                                  .joblist[
+                                                                  .joblist?[
                                                                       index]
-                                                                  .jobType,
-                                                              jobsId: state
+                                                                  .jobType ??
+                                                              "",
+                                                          jobsId: state
                                                                   .homepagemodel
-                                                                  .joblist[
+                                                                  .joblist?[
                                                                       index]
-                                                                  .jobpostId)));
+                                                                  .jobpostId ??
+                                                              "")));
                                             } else {
                                               Fluttertoast.showToast(
                                                   msg:

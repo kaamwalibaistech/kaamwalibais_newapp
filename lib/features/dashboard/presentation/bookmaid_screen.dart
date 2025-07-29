@@ -34,7 +34,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   late DashboardBloc dashboardBloc;
   PurchasedPackageDataBloc? purchasedPackageBloc;
   late PurchasedPackageDataBloc _packageBloc;
-  final int _pageSize = 10;
+  final int _pageSize = 100;
 
   final PagingController<int, CandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
@@ -100,7 +100,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   Widget _buildPackageInfoCards(PackageLoadedStates state) {
     final package = state.currentPackagePlan.package.first;
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 25.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -176,7 +176,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: PreferredSize(
-          preferredSize: Size(20, MediaQuery.of(context).size.height * 0.11),
+          preferredSize: Size(20, MediaQuery.of(context).size.height * 0.13),
           child: _buildPackageInfoSection()),
       body: SingleChildScrollView(
         child: Column(
