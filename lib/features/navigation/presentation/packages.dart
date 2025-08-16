@@ -46,12 +46,9 @@ class _PackagesState extends State<Packages> {
   }
 
   checkLoginPopup() async {
-    // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
-    // if (!(bool.tryParse(isLogin) ?? false)) {
     showDialog(
         context: context,
         builder: (context) => const AlertDialog(content: LoginPopup()));
-    // }
   }
 
   String? packageId;
@@ -80,9 +77,6 @@ class _PackagesState extends State<Packages> {
   @override
   void dispose() {
     super.dispose();
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    // _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
 
     _razorpay.clear();
   }
@@ -97,13 +91,7 @@ class _PackagesState extends State<Packages> {
 
     _purchasedPackageData.add(PurchasedPackageEvent());
 
-    // _purchasedPackageData.add(PurchasedPackageJobEvent());
-
     Fluttertoast.showToast(msg: "Successfully Purchased");
-    // final data = localStoragePref.currentPackageData();
-
-    // localStoragePref
-    //     .storeCurrentPackage(jsonEncode(currentPackagePlan.toJson()));
 
     Navigator.pop(context);
   }
@@ -307,8 +295,6 @@ class _PackagesState extends State<Packages> {
 
                                           if (userLogIn == null) {
                                             checkLoginPopup();
-                                            Fluttertoast.showToast(
-                                                msg: "Please LogIn ");
                                           } else {
                                             packageId = state
                                                 .candidatePackagesModel
@@ -335,14 +321,6 @@ class _PackagesState extends State<Packages> {
                                                 Razorpay.EVENT_EXTERNAL_WALLET,
                                                 _handleExternalWallet);
                                           }
-
-                                          // ScaffoldMessenger.of(context)
-                                          //     .showSnackBar(SnackBar(
-                                          //         duration:
-                                          //             Duration(seconds: 1),
-                                          //         backgroundColor: blueColor,
-                                          //         content: Text(
-                                          //             "you will able to purchase this app soon")));
                                         },
                                         child: ClipRRect(
                                           borderRadius:

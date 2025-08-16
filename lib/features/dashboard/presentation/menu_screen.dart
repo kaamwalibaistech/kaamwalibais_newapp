@@ -74,15 +74,6 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  // test() async {
-  //   LocalStoragePref localStoragePref = LocalStoragePref();
-  //   String userId = localStoragePref.getUserProfile()!.userId;
-  //   CurrentPackagePlan currentPackagePlan =
-  //       await Repositiory().getCurrentPackages(userId);
-  //   localStoragePref
-  //       .storeCurrentPackage(jsonEncode(currentPackagePlan.toJson()));
-  // }
-
   void _handlePostJobNavigation(PackageState state) {
     String variable = "P";
     final userLogIn = LocalStoragePref().getUserProfile();
@@ -112,7 +103,7 @@ class _MenuScreenState extends State<MenuScreen> {
           );
         } else {
           showNoPlanDialog(context);
-          Fluttertoast.showToast(msg: "No More Available counts");
+          // Fluttertoast.showToast(msg: "No More Available counts");
         }
       } else {
         showNoPlanDialog(context);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -837,9 +836,28 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                                   .jobpostId ??
                                                               "")));
                                             } else {
-                                              Fluttertoast.showToast(
-                                                  msg:
-                                                      "Only candidates are eligible to apply for the jobs!");
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                  title: Text(
+                                                      'candidates eligibility'),
+                                                  content: Text(
+                                                      "Only candidates are eligible to apply for the jobs!"),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                  ],
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                ),
+                                              );
                                             }
                                           }
                                         },
