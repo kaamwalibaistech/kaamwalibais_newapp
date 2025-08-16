@@ -75,8 +75,6 @@ class _ViewJobPostedState extends State<ViewJobPosted> {
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
       ),
       body: RefreshIndicator(
         onRefresh: _loadPostedJobs,

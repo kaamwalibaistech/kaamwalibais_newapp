@@ -52,10 +52,10 @@ class _AllcategoriesState extends State<Allcategories> {
                             mainAxisSpacing: 20,
                             crossAxisCount: 3,
                             crossAxisSpacing: 20),
-                    itemCount: state.homepagemodel.categorylist.length,
+                    itemCount: state.homepagemodel.categorylist?.length,
                     itemBuilder: (BuildContext context, int index) {
                       List<Categorylist> categories =
-                          state.homepagemodel.categorylist;
+                          state.homepagemodel.categorylist ?? [];
 
                       return GestureDetector(
                         onTap: () {
@@ -64,7 +64,7 @@ class _AllcategoriesState extends State<Allcategories> {
                               MaterialPageRoute(
                                   builder: (context) => CategoryPage(
                                       categoryId:
-                                          categories[index].categoryId)));
+                                          categories[index].categoryId ?? "")));
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -91,7 +91,7 @@ class _AllcategoriesState extends State<Allcategories> {
                                 height: 60,
                               ),
                               Text(
-                                categories[index].categoryName,
+                                categories[index].categoryName ?? "",
                                 style: const TextStyle(
                                     // color: blueColor,
                                     fontWeight: FontWeight.bold),

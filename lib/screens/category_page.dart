@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/book_maid_shimmer.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
@@ -34,6 +35,7 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   CandidateRequest candidateRequest = CandidateRequest();
+  late PurchasedPackageDataBloc _packageBloc;
   late DashboardBloc dashboardBloc;
   final int _pageSize = 10;
 
@@ -45,6 +47,9 @@ class _CategoryPageState extends State<CategoryPage> {
     _paginationController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
+
+    _packageBloc.add(PurchasedPackageEvent());
   }
 
   checkPackagesPopup() async {
@@ -71,19 +76,118 @@ class _CategoryPageState extends State<CategoryPage> {
     super.dispose();
   }
 
+  int count = 0;
+
+  Widget _buildPackageInfoSection() {
+    if (count != 0) return const SizedBox.shrink();
+
+    return BlocBuilder<PurchasedPackageDataBloc, PackageState>(
+      bloc: _packageBloc,
+      buildWhen: (PackageState previous, PackageState current) =>
+          current is PackageLoadedStates,
+      builder: (context, state) {
+        if (state is PackageLoadedStates) {
+          if (state.currentPackagePlan.package.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 10.0, left: 10),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "lib/assets/images/kaamwalijobs.png",
+                    height: 40,
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return _buildPackageInfoCards(state);
+          }
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+
+  Widget _buildPackageInfoCards(PackageLoadedStates state) {
+    final package = state.currentPackagePlan.package.first;
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildInfoCard(
+            "lib/assets/images/icons-package.png",
+            "Current Package",
+            package.packageName,
+          ),
+          _buildInfoCard(
+            "lib/assets/images/icons-resume.png",
+            "Available Count",
+            package.avilableCount.toString(),
+          ),
+          _buildInfoCard(
+            "lib/assets/images/icons-calendar.png",
+            "Expire Date",
+            package.expDate.toString(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard(String iconPath, String title, String value) {
+    return Column(
+      children: [
+        Image.asset(iconPath, height: 30),
+        sizedBoxH10,
+        Container(
+          decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: MediaQuery.of(context).size.height * 0.07,
+          width: MediaQuery.of(context).size.width * 0.25,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // EmployerRegisterModel? employerRegisterModel =
     //     LocalStoragePref.instance?.getUserProfile();
     return Scaffold(
       backgroundColor: scaffoldColor,
-      appBar: AppBar(
-        backgroundColor: scaffoldColor,
-        title: Image.asset(
-          "lib/assets/images/kaamwalijobs.png",
-          height: 40,
-        ),
-      ),
+      appBar: PreferredSize(
+          preferredSize: Size(20, MediaQuery.of(context).size.height * 0.13),
+          child: _buildPackageInfoSection()),
       body: BlocListener<DashboardBloc, DashboardState>(
         bloc: dashboardBloc,
         listener: (context, state) {
@@ -612,9 +716,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   msg:
                                                       "Purchase candidate view Package Plan");
                                             }
+                                          } else {
+                                            checkPackagesPopup();
                                           }
-                                        } else {
-                                          checkPackagesPopup();
                                         }
 
                                         // checkPackagesPopup();

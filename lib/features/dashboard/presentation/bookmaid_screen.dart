@@ -13,9 +13,9 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/packages_event.dart';
+import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
-import 'package:kaamwalijobs_new/models/sortlisted_candidate_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/local_storage.dart';
@@ -34,7 +34,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   late DashboardBloc dashboardBloc;
   PurchasedPackageDataBloc? purchasedPackageBloc;
   late PurchasedPackageDataBloc _packageBloc;
-  final int _pageSize = 10;
+  final int _pageSize = 100;
 
   final PagingController<int, CandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
@@ -100,7 +100,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   Widget _buildPackageInfoCards(PackageLoadedStates state) {
     final package = state.currentPackagePlan.package.first;
     return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
+      padding: const EdgeInsets.only(top: 25.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -176,7 +176,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: PreferredSize(
-          preferredSize: Size(20, MediaQuery.of(context).size.height * 0.11),
+          preferredSize: Size(20, MediaQuery.of(context).size.height * 0.13),
           child: _buildPackageInfoSection()),
       body: SingleChildScrollView(
         child: Column(
@@ -690,16 +690,14 @@ class _BookMaidCardState extends State<BookMaidCard> {
 
                                 if (widget.model.isVisible == false) {
                                   try {
-                                    Shortlistedcandidatemodel
-                                        sortListedCandidate =
-                                        await MenuPageRepository()
-                                            .getSortListedCandidate(
-                                                sortType,
-                                                widget.model.candidateId,
-                                                localStoragePref
-                                                    .getUserProfile()!
-                                                    .flag,
-                                                userId);
+                                    await MenuPageRepository()
+                                        .getSortListedCandidate(
+                                            sortType,
+                                            widget.model.candidateId,
+                                            localStoragePref
+                                                .getUserProfile()!
+                                                .flag,
+                                            userId);
 
                                     BlocProvider.of<PurchasedPackageDataBloc>(
                                             context)
@@ -721,8 +719,37 @@ class _BookMaidCardState extends State<BookMaidCard> {
                                 }
                               }
                             } else {
-                              Fluttertoast.showToast(
-                                  msg: "Purchase candidate view Package Plan");
+                              return showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('No Candidate View Plan'),
+                                  content: Text(
+                                      "You don't have a Candidate View Plan. Please purchase one to continue."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text('Cancel'),
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Future.delayed(
+                                            Duration(milliseconds: 1), () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    Packages()),
+                                          );
+                                        });
+                                      },
+                                      child: Text('Purchase'),
+                                    ),
+                                  ],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                ),
+                              );
                             }
                           } else {
                             checkPackagesPopup();
@@ -730,12 +757,8 @@ class _BookMaidCardState extends State<BookMaidCard> {
                         } else {
                           checkPackagesPopup();
                         }
-
-                        // checkPackagesPopup();
                       },
                       child: Row(
-                        // mainAxisAlignment:
-                        //     MainAxisAlignment.spaceEvenly,
                         children: [
                           const SizedBox(width: 30),
                           Image.asset("lib/assets/images/call.png", height: 17),
@@ -743,22 +766,13 @@ class _BookMaidCardState extends State<BookMaidCard> {
                           SizedBox(
                             child: widget.model.isVisible ?? false
                                 ? Text(
-                                    // isPurchased
-                                    //     ? model.mobileNo!
-                                    //     :
-
                                     widget.model.mobileNo.toString(),
-
                                     style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         color: whiteColor),
                                   )
                                 : Text(
-                                    // isPurchased
-                                    //     ? model.mobileNo!
-                                    //     :
-
                                     widget.model.mobileNo!
                                         .replaceRange(3, 7, "****"),
                                     style: GoogleFonts.poppins(
