@@ -23,8 +23,6 @@ class _NavigationscreenState extends State<Navigationscreen> {
     _pageController = PageController(initialPage: selectedIndex);
   }
 
-  // final loginModel = LocalStoragePref().getLoginModel();
-
   void changeTab(int index) {
     setState(() {
       selectedIndex = index;
@@ -93,13 +91,4 @@ class _NavigationscreenState extends State<Navigationscreen> {
       ),
     );
   }
-
-  // checkLoginPopup() async {
-  //   // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
-  //   // if (!(bool.tryParse(isLogin) ?? false)) {
-  //   showDialog(
-  //       contColor.fromARGB(255, 255, 255, 255)builder: (context) =>
-  //           const AlertDialog(scrollable: true, content: LoginPopup()));
-  //   // }
-  // }
 }

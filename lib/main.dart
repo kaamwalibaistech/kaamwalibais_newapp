@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
@@ -22,6 +23,16 @@ Future main() async {
 
   await dotenv.load(fileName: ".env");
   runApp(MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.light
+    ..maskType = EasyLoadingMaskType.black
+    ..dismissOnTap = false;
 }
 
 class MyApp extends StatefulWidget {
@@ -51,14 +62,15 @@ class _MyAppState extends State<MyApp> {
             create: (context) => SearchCandidateBloc()),
         BlocProvider<PurchasedPackageDataBloc>(
             create: (context) => PurchasedPackageDataBloc()),
-        // BlocProvider<ApplicantsBloc>(create: (context) => ApplicantsBloc())
       ],
       child: ScreenUtilInit(
         designSize: Size(375, 812),
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: "KaamWaliJobs",
-            home: Splashscreen()),
+          debugShowCheckedModeBanner: false,
+          title: "KaamWaliJobs",
+          home: Splashscreen(),
+          builder: EasyLoading.init(),
+        ),
       ),
     );
   }

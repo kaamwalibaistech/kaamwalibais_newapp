@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
@@ -20,12 +21,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AuthBloc _authBloc;
+  EmployerRegisterModel? userProfileData;
 
   @override
   void initState() {
     super.initState();
-    EmployerRegisterModel? userProfileData =
-        LocalStoragePref.instance?.getUserProfile();
+    userProfileData = LocalStoragePref.instance?.getUserProfile();
 
     if (userProfileData == null) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -41,11 +42,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
+        title: userProfileData != null
+            ? Image.asset(
+                "lib/assets/images/kaamwalijobs.png",
+                cacheHeight: 40,
+              )
+            : SizedBox.shrink(),
         backgroundColor: scaffoldColor,
-        title: Image.asset(
-          "lib/assets/images/kaamwalijobs.png",
-          cacheHeight: 40,
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -81,8 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color.fromARGB(255, 200, 197, 197),
                                 spreadRadius: 1,
                                 blurRadius: 7,
-                                offset:
-                                    Offset(0, 0), // changes position of shadow
+                                offset: Offset(0, 0),
                               ),
                             ]),
                         child: Padding(
@@ -197,12 +199,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => EditProfile()));
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //         duration: Duration(seconds: 1),
-                                  //         backgroundColor: blueColor,
-                                  //         content: Text(
-                                  //             "you can access this soon")));
                                 },
                                 child: Container(
                                   height: MediaQuery.of(context).size.height *
@@ -230,16 +226,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
                 return Center(
                     child: Padding(
-                  padding: const EdgeInsets.only(top: 300.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      checkLoginPopup();
-                    },
-                    child: Text(
-                      "Click here to LogIn First !",
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
+                  padding: const EdgeInsets.only(top: 200.0),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "lib/assets/images/kaamwalijobs.png",
+                        cacheHeight: 105,
+                      ),
+                      sizedBoxH20,
+                      Text(
+                        "Kaamwalijobs",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      sizedBoxH5,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          "Please Login >",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          checkLoginPopup();
+                        },
+                      ),
+                    ],
                   ),
                 ));
               }),
