@@ -242,7 +242,6 @@ class BookMaidCard extends StatefulWidget {
   const BookMaidCard({
     super.key,
     required this.model,
-    //  required this.isPurchased
   });
   final CandidateData model;
 
@@ -251,7 +250,6 @@ class BookMaidCard extends StatefulWidget {
 }
 
 class _BookMaidCardState extends State<BookMaidCard> {
-  // final bool isPurchased;
   @override
   Widget build(BuildContext context) {
     return Padding(

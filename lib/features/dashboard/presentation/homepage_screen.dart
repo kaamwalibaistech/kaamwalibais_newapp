@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -33,8 +34,6 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
-  // final listViewController = ListViewItems();
-  // final featuredJobsController = FeaturedJobsItems();
   String selectedJobName = "Select a job";
   String selecteJobdId = "2";
   String selectedLocation = "Location";
@@ -83,27 +82,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
-    // checkPermission();
+
     checkForUpdate();
 
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
     BlocProvider.of<PurchasedPackageDataBloc>(context);
-
-    //   EmployerRegisterModel? userProfileData =
-    //       LocalStoragePref.instance?.getUserProfile();
-
-    //   if (userProfileData == null) {
-    //     WidgetsBinding.instance.addPostFrameCallback((_) {
-    //       checkLoginPopup();
-    //     });
-    //   } else {
-    //     // _authBloc.add(AuthenticationEvent(
-    //     //     password: '',
-    //     //     phoneNumber: userProfileData.mobileNo,
-    //     //     userType: USER.employer));
-    //   }
   }
 
   checkLoginPopup() async {
@@ -112,65 +97,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
 
-  // void didChangeDependencies() {
-  //   precacheImage(
-  //       AssetImage("lib/assets/images/homepage_banner2.jpg"), context);
-
-  //   super.didChangeDependencies();
-  // }
-
   String coordinates = "";
   double latitude = 0.0;
   double longitude = 0.0;
   String address = "";
   bool scanning = false;
   String addressData = "";
-
-  // checkPermission() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   print(serviceEnabled);
-  //   if (!serviceEnabled) {
-  //     await Geolocator.openLocationSettings();
-  //     return;
-  //   }
-
-  //   //
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.whileInUse) {
-  //     Fluttertoast.showToast(msg: "Permission Allowed ");
-  //   }
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-
-  //     if (permission == LocationPermission.denied) {
-  //       Fluttertoast.showToast(msg: 'Request Denied');
-  //       return;
-  //     }
-  //   }
-
-  //   if (permission == LocationPermission.deniedForever) {
-  //     Fluttertoast.showToast(msg: "Denied Forever");
-  //   }
-  //   getLocation();
-  // }
-
-  // getLocation() async {
-  //   try {
-  //     Position position = await Geolocator.getCurrentPosition(
-  //         desiredAccuracy: LocationAccuracy.best);
-  //     coordinates =
-  //         'Latitude ${position.latitude} \n Longitude ${position.longitude}';
-  //     List<Placemark> result =
-  //         await placemarkFromCoordinates(position.latitude, position.longitude);
-  //     if (result.isNotEmpty) {
-  //       addressData = result[0].locality ?? "";
-  //       LocationData._instance.locationData = addressData ?? "";
-  //     }
-  //   } catch (e) {}
-  // }
 
   Future<void> getCoordinatesFromAddress(String address) async {
     try {
@@ -256,17 +188,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           children: [
                             GestureDetector(
                               onTap: () async {
+                                EasyLoading.show();
                                 HomepageBloc data = HomepageBloc();
                                 categorylistmodel =
                                     await data.loadCategoryUpload();
+                                EasyLoading.dismiss();
                                 data.selectCategoryDropdown(
                                   context,
                                   categorylistmodel!,
                                   (selectedName, selectedId) {
                                     setState(() {
                                       selectedJobName = selectedName;
-                                      selecteJobdId =
-                                          selectedId; // Update the selected text
+                                      selecteJobdId = selectedId;
                                     });
                                   },
                                 );
@@ -484,8 +417,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                         color:
                                             Color.fromARGB(255, 245, 243, 243),
                                         blurRadius: 1,
-                                        // offset: Offset(
-                                        //     5, 5), // changes position of shadow
                                       ),
                                     ],
                                     color: whiteColor,
@@ -499,15 +430,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   children: [
                                     Image.asset(
                                       categoriesImages[index],
-                                      // color: const Color.fromARGB(255, 247, 115, 106),
                                       height: 60,
                                     ),
                                     Text(
                                       categories[index].categoryName ?? "",
-                                      style: const TextStyle(
-                                          // color: blueColor,
-                                          // fontWeight: FontWeight.bold
-                                          fontSize: 12),
+                                      style: const TextStyle(fontSize: 12),
                                     )
                                   ],
                                 ),
@@ -608,8 +535,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     border: Border.all(
                                         color: const Color.fromARGB(
                                             255, 243, 243, 245))),
-
-                                // width: 50,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -892,12 +817,3 @@ class _HomepageScreenState extends State<HomepageScreen> {
         ));
   }
 }
-
-// class LocationData {
-//   String? locationData = "";
-//   static final _instance = LocationData?._internal();
-
-//   static LocationData? get instance => _instance;
-
-//   LocationData._internal();
-// }

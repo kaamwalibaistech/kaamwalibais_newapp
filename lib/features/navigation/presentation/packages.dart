@@ -36,7 +36,6 @@ class _PackagesState extends State<Packages> {
     _purchasedPackageData =
         BlocProvider.of<PurchasedPackageDataBloc>(context, listen: false);
 
-    // _purchasedPackageData.add((PurchasedPackagesEvent()));
     _razorpay = Razorpay();
 
     _packageBloc = BlocProvider.of<PackagesBloc>(context);
@@ -56,17 +55,22 @@ class _PackagesState extends State<Packages> {
 
   void openCheckOut(String price, String packagename) async {
     final data = LocalStoragePref().getUserProfile();
+
     var options = {
       'key': 'rzp_live_LyJ0vTp92CsDwL',
       'amount': int.parse(price) * 100,
       'name': 'KaamWaliJobs',
       'description': packagename,
-      'prefill': {'contact': data!.mobileNo.toString(), 'email': data.emailId}
+      'prefill': {
+        'contact': data?.mobileNo ?? "",
+        'email': data?.emailId ?? ""
+      },
     };
+
     try {
       _razorpay.open(options);
     } catch (e) {
-      print('erroe $e');
+      print('error $e');
     }
   }
 
@@ -91,17 +95,135 @@ class _PackagesState extends State<Packages> {
 
     _purchasedPackageData.add(PurchasedPackageEvent());
 
-    Fluttertoast.showToast(msg: "Successfully Purchased");
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text("🎉 Payment Successful"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Colors.green, size: 60),
+              const SizedBox(height: 12),
+              Text("Payment ID: ${response.paymentId}"),
+              const SizedBox(height: 8),
+              const Text("Thank you for your purchase!",
+                  style: TextStyle(fontWeight: FontWeight.w500)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.pop(context); // close dialog
+                Navigator.popUntil(context, (route) => route.isFirst);
+                // or push to a success screen if you want
+              },
+            ),
+          ],
+        );
+      },
+    );
 
-    Navigator.pop(context);
+    // Navigator.pop(context);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    print("failed");
+    showPaymentCancelledDialog(context);
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
     print("object");
+  }
+
+  void showPaymentCancelledDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // prevent closing by tapping outside
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Cancel Icon
+                Icon(Icons.cancel_outlined, size: 80, color: Colors.redAccent),
+                const SizedBox(height: 15),
+
+                // Title
+                const Text(
+                  "Payment Cancelled",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Subtitle
+                const Text(
+                  "Transaction not completed",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Description
+                const Text(
+                  "You cancelled the payment. Please try again if you wish to continue with the purchase.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                const SizedBox(height: 20),
+
+                // Retry Button
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 12),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Try Again"),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Footer "Secured by Razorpay"
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Secured by ",
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                    Image.network(
+                      "https://razorpay.com/favicon.png",
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override

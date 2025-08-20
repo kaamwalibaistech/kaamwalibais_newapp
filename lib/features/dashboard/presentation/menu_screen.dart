@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
@@ -31,7 +30,7 @@ class _MenuScreenState extends State<MenuScreen> {
   late AuthBloc _authBloc;
   late PurchasedPackageDataBloc _packageBloc;
   int count = 0;
-  // CurrentPackagePlan? currentPackagePlan;
+
   @override
   void initState() {
     super.initState();
@@ -39,8 +38,6 @@ class _MenuScreenState extends State<MenuScreen> {
     _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
 
     _packageBloc.add(PurchasedPackageEvent());
-
-    // test();
   }
 
   void showNoPlanDialog(BuildContext context) {
@@ -52,14 +49,13 @@ class _MenuScreenState extends State<MenuScreen> {
             "You don't have a job posting plan. Please purchase one to continue."),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context), // just dismiss
+            onPressed: () => Navigator.pop(context),
             child: Text('Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(context); // first close the dialog
+              Navigator.pop(context);
               Future.delayed(Duration(milliseconds: 1), () {
-                // Then navigate after dialog is dismissed
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Packages()),
@@ -75,12 +71,13 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void _handlePostJobNavigation(PackageState state) {
+    String wallentPan = "Wallet Plan";
     String variable = "P";
     final userLogIn = LocalStoragePref().getUserProfile();
 
     if (userLogIn == null) {
       checkLoginPopup();
-      Fluttertoast.showToast(msg: "Please Login");
+
       return;
     }
 
@@ -92,9 +89,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
       final package = state.currentPackagePlan.package.first;
 
-      // Check if package is expired
-
-      if (package.packageType == variable) {
+      if (package.packageType == variable ||
+          package.packageName == wallentPan) {
         final availableCount = int.tryParse(package.avilableCount) ?? 0;
         if (availableCount > 0) {
           Navigator.push(
@@ -103,7 +99,6 @@ class _MenuScreenState extends State<MenuScreen> {
           );
         } else {
           showNoPlanDialog(context);
-          // Fluttertoast.showToast(msg: "No More Available counts");
         }
       } else {
         showNoPlanDialog(context);
@@ -113,21 +108,12 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // LocalStoragePref localStoragePref = LocalStoragePref();
-
-    // CurrentPackagePlan? planData = localStoragePref.currentPackageData();
-
     return Scaffold(
       backgroundColor: scaffoldColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image.asset(
-            //   "lib/assets/images/kaamwalijobs.png",
-            //   height: 50,
-            // ),
             _buildAuthSection(),
             _buildPackageInfoSection(),
             _buildMenuDivider(),
@@ -204,12 +190,6 @@ class _MenuScreenState extends State<MenuScreen> {
                     ],
                   ),
                 ),
-                // const Padding(
-                //   padding: EdgeInsets.only(top: 10.0, bottom: 10),
-                //   child: Divider(
-                //     thickness: 2,
-                //   ),
-                // ),
               ],
             ],
           );
