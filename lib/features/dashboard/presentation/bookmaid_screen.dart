@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,9 +33,9 @@ class BookmaidScreen extends StatefulWidget {
 class _BookmaidScreenState extends State<BookmaidScreen> {
   CandidateRequest candidateRequest = CandidateRequest();
   late DashboardBloc dashboardBloc;
-  PurchasedPackageDataBloc? purchasedPackageBloc;
   late PurchasedPackageDataBloc _packageBloc;
-  final int _pageSize = 100;
+
+  final int _pageSize = 10;
 
   final PagingController<int, CandidateData?> _paginationController =
       PagingController(firstPageKey: 1);
@@ -43,14 +44,19 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
 
   Future<void> _fetchPage(int pageKey) async {
     candidateRequest.page = pageKey.toString();
-    dashboardBloc.add(GetCandidates(candidateRequest: candidateRequest));
+    dashboardBloc.add(
+      GetCandidates(
+        candidateRequest: candidateRequest,
+        pageKey: pageKey,
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
 
+    _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
     _packageBloc.add(PurchasedPackageEvent());
 
     dashboardBloc = BlocProvider.of<DashboardBloc>(context);
@@ -58,11 +64,15 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
     _paginationController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+
+    // 👇 ensures first load always starts clean
+    _paginationController.refresh();
   }
 
   @override
   void dispose() {
     _paginationController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -76,7 +86,7 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
           current is PackageLoadedStates,
       builder: (context, state) {
         if (state is PackageLoadedStates) {
-          if (state.currentPackagePlan.package.isEmpty) {
+          if (state.currentPackagePlan.package?.isEmpty ?? false) {
             return Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 10),
               child: Row(
@@ -92,13 +102,13 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
             return _buildPackageInfoCards(state);
           }
         }
-        return const SizedBox.shrink();
+        return SizedBox.shrink();
       },
     );
   }
 
   Widget _buildPackageInfoCards(PackageLoadedStates state) {
-    final package = state.currentPackagePlan.package.first;
+    final package = state.currentPackagePlan.package?.first;
     return Padding(
       padding: const EdgeInsets.only(top: 25.0),
       child: Row(
@@ -107,17 +117,17 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
           _buildInfoCard(
             "lib/assets/images/icons-package.png",
             "Current Package",
-            package.packageName,
+            package?.packageName ?? "",
           ),
           _buildInfoCard(
             "lib/assets/images/icons-resume.png",
             "Available Count",
-            package.avilableCount.toString(),
+            package?.avilableCount.toString() ?? "",
           ),
           _buildInfoCard(
             "lib/assets/images/icons-calendar.png",
             "Expire Date",
-            package.expDate.toString(),
+            package?.expDate.toString() ?? "",
           ),
         ],
       ),
@@ -171,8 +181,8 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   String variablee = "v";
   @override
   Widget build(BuildContext context) {
-    purchasedPackageBloc =
-        BlocProvider.of<PurchasedPackageDataBloc>(context, listen: false);
+    // purchasedPackageBloc =
+    //     BlocProvider.of<PurchasedPackageDataBloc>(context, listen: false);
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: PreferredSize(
@@ -181,56 +191,56 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            BlocListener<DashboardBloc, DashboardState>(
+            BlocConsumer<DashboardBloc, DashboardState>(
               bloc: dashboardBloc,
+              listenWhen: (_, state) => state is CandidateListLoadedState,
               listener: (context, state) {
                 if (state is CandidateListLoadedState) {
                   try {
                     final candidates = state.candidates;
                     final isLastPage = candidates.length < _pageSize;
+
                     if (isLastPage) {
                       _paginationController.appendLastPage(candidates);
                     } else {
-                      _paginationController.appendPage(
-                          candidates, _paginationController.nextPageKey! + 1);
+                      final nextPageKey = state.pageKey + 1;
+                      _paginationController.appendPage(candidates, nextPageKey);
                     }
                   } catch (error) {
                     _paginationController.error = error;
                   }
                 }
               },
-              child: PagedListView<int, CandidateData?>(
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.onDrag,
-                shrinkWrap: true,
-                pagingController: _paginationController,
-                scrollController: _scrollController,
-                builderDelegate: PagedChildBuilderDelegate<CandidateData?>(
-                    noMoreItemsIndicatorBuilder: (_) => const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Center(
-                            child: SizedBox(
-                              height: 21,
-                            ),
-                          ),
-                        ),
-                    newPageProgressIndicatorBuilder: (_) =>
-                        const Center(child: BookMaidShimmer()),
-                    firstPageProgressIndicatorBuilder: (_) =>
-                        const Center(child: BookMaidShimmer()),
-                    itemBuilder: (context, model, index) {
-                      // bool isPurchased = index<;
-                      return BookMaidCard(
-                        model: model!,
-                        //  isPurchased: isPurchased
-                      );
-                    },
-                    noItemsFoundIndicatorBuilder: (
-                      _,
-                    ) =>
-                        const SizedBox.shrink()),
-              ),
-            ),
+              builder: (context, state) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    _paginationController.refresh();
+                  },
+                  child: PagedListView<int, CandidateData?>(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    shrinkWrap: true,
+                    pagingController: _paginationController,
+                    scrollController: _scrollController,
+                    builderDelegate: PagedChildBuilderDelegate<CandidateData?>(
+                      noMoreItemsIndicatorBuilder: (_) => const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(child: SizedBox(height: 21)),
+                      ),
+                      newPageProgressIndicatorBuilder: (_) =>
+                          const Center(child: BookMaidShimmer()),
+                      firstPageProgressIndicatorBuilder: (_) =>
+                          const Center(child: BookMaidShimmer()),
+                      itemBuilder: (context, model, index) {
+                        return BookMaidCard(model: model!);
+                      },
+                      noItemsFoundIndicatorBuilder: (_) =>
+                          const SizedBox.shrink(),
+                    ),
+                  ),
+                );
+              },
+            )
           ],
         ),
       ),
@@ -671,52 +681,59 @@ class _BookMaidCardState extends State<BookMaidCard> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5))),
                       onPressed: () async {
+                        EasyLoading.show();
+
                         if (state is PackageLoadedStates) {
-                          if (state.currentPackagePlan.package.isNotEmpty) {
-                            String packageType =
-                                state.currentPackagePlan.package[0].packageType;
+                          if (state.currentPackagePlan.package?.isNotEmpty ??
+                              false) {
+                            String packageType = state
+                                .currentPackagePlan.package!.first.packageType
+                                .toString();
                             if (packageType == "V") {
                               LocalStoragePref localStoragePref =
                                   LocalStoragePref();
                               String userId =
                                   localStoragePref.getUserProfile()?.userId ??
                                       "";
-                              if (userId.isEmpty) {
-                                Fluttertoast.showToast(msg: "Please Login!");
-                              } else {
-                                final sortType = "";
+                              // if (userId.isEmpty) {
+                              //   Fluttertoast.showToast(msg: "Please Login!");
+                              // } else {
+                              final sortType = "";
 
-                                if (widget.model.isVisible == false) {
-                                  try {
-                                    await MenuPageRepository()
-                                        .getSortListedCandidate(
-                                            sortType,
-                                            widget.model.candidateId,
-                                            localStoragePref
-                                                .getUserProfile()!
-                                                .flag,
-                                            userId);
+                              if (widget.model.isVisible == false) {
+                                try {
+                                  await MenuPageRepository()
+                                      .getSortListedCandidate(
+                                          sortType,
+                                          widget.model.candidateId,
+                                          localStoragePref
+                                              .getUserProfile()!
+                                              .flag,
+                                          userId);
 
-                                    BlocProvider.of<PurchasedPackageDataBloc>(
-                                            context)
-                                        .add(PurchasedPackageEvent());
+                                  BlocProvider.of<PurchasedPackageDataBloc>(
+                                          context)
+                                      .add(PurchasedPackageEvent());
 
-                                    setState(() {
-                                      widget.model.isVisible = true;
-                                    });
-                                  } catch (e) {
-                                    Fluttertoast.showToast(
-                                        msg: "You have exceeded the counts!");
-                                  }
-                                } else {
-                                  final phoneUri = Uri(
-                                      scheme: 'tel',
-                                      path:
-                                          "+91 ${widget.model.mobileNo.toString()}");
-                                  launchUrl(phoneUri);
+                                  setState(() {
+                                    widget.model.isVisible = true;
+                                    EasyLoading.dismiss();
+                                  });
+                                } catch (e) {
+                                  EasyLoading.dismiss();
+                                  Fluttertoast.showToast(
+                                      msg: "You have exceeded the counts!");
                                 }
+                              } else {
+                                EasyLoading.dismiss();
+                                final phoneUri = Uri(
+                                    scheme: 'tel',
+                                    path:
+                                        "+91 ${widget.model.mobileNo.toString()}");
+                                launchUrl(phoneUri);
                               }
                             } else {
+                              EasyLoading.dismiss();
                               return showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
@@ -750,9 +767,11 @@ class _BookMaidCardState extends State<BookMaidCard> {
                               );
                             }
                           } else {
+                            EasyLoading.dismiss();
                             checkPackagesPopup();
                           }
                         } else {
+                          EasyLoading.dismiss();
                           checkPackagesPopup();
                         }
                       },

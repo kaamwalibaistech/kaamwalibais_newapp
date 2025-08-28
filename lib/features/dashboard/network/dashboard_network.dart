@@ -6,8 +6,9 @@ import 'package:kaamwalijobs_new/models/candidate_request.dart';
 import '../../../models/candidate_model.dart';
 
 class DashboardNetwork {
-  Future<CandidateModel> fetchCandidates(
-      {required CandidateRequest candidateRequest}) async {
+  Future<CandidateModel> fetchCandidates({
+    required CandidateRequest candidateRequest,
+  }) async {
     try {
       Dio dio = Dio();
       String url = 'https://kaamwalijobs.com/API/Mobile_api/all_candidate_list';
@@ -22,7 +23,6 @@ class DashboardNetwork {
           },
         ),
       );
-      // Handling response
       if (response.statusCode == 200) {
         CandidateModel candidateModel = CandidateModel.fromJson(response.data);
         return candidateModel;

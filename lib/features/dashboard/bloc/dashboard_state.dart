@@ -20,11 +20,16 @@ class CandidateListLoadingState extends DashboardState {
 }
 
 class CandidateListLoadedState extends DashboardState {
-  CandidateListLoadedState({required this.candidates});
-  final List<CandidateData> candidates;
-  @override
-  List<Object> get props => [candidates];
+  final List<CandidateData?> candidates;
+  final int pageKey;
+
+  CandidateListLoadedState({
+    required this.candidates,
+    required this.pageKey,
+  });
 }
+
+class CandidateListFailedState extends DashboardState {}
 
 class CategoryLisFailedState extends DashboardState {
   CategoryLisFailedState();

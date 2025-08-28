@@ -919,9 +919,13 @@ class _SearchCandidatesState extends State<SearchCandidates> {
                                         onPressed: () async {
                                           if (state is PackageLoadedStates) {
                                             if (state.currentPackagePlan.package
-                                                .isNotEmpty) {
-                                              if (state.currentPackagePlan
-                                                      .package[0].packageType ==
+                                                    ?.isNotEmpty ??
+                                                false) {
+                                              if (state
+                                                      .currentPackagePlan
+                                                      .package
+                                                      ?.first
+                                                      .packageType ==
                                                   "V") {
                                                 LocalStoragePref
                                                     localStoragePref =
