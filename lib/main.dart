@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+<<<<<<< HEAD
+=======
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
+import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.dart';
 
 import 'bloc/packages_bloc.dart';
@@ -16,12 +22,24 @@ import 'features/navigation/bloc/search_candidate_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalStoragePref.instance?.initPrefBox();
-  // final pres = await SharedPreferences.getInstance();
-  // final onboarding = pres.getBool("onboarrding") ?? false;
+  await LocalStoragePref.instance?.initPrefBox();
 
   await dotenv.load(fileName: ".env");
+<<<<<<< HEAD
   runApp(const MyApp());
+=======
+  runApp(MyApp());
+  configLoading();
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.light
+    ..maskType = EasyLoadingMaskType.black
+    ..dismissOnTap = false;
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 }
 
 class MyApp extends StatefulWidget {
@@ -49,11 +67,25 @@ class _MyAppState extends State<MyApp> {
             create: (context) => SelectLocationBloc()),
         BlocProvider<SearchCandidateBloc>(
             create: (context) => SearchCandidateBloc()),
+        BlocProvider<PurchasedPackageDataBloc>(
+            create: (context) => PurchasedPackageDataBloc()),
       ],
+<<<<<<< HEAD
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "KaamWaliJobs",
           home: Splashscreen()),
+=======
+      child: ScreenUtilInit(
+        designSize: Size(375, 812),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "KaamWaliJobs",
+          home: Splashscreen(),
+          builder: EasyLoading.init(),
+        ),
+      ),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
     );
   }
 }

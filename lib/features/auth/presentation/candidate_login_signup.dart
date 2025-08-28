@@ -40,8 +40,8 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
             listener: (context, state) {
               if (state is AuthLoadFailedState) {
                 if (state.userfailed == USERFAILED.unregister) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Wait For administrative Approval")));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("incorrect credentials")));
                 }
               } else if (state is AuthLoadedState) {
                 Navigator.pushReplacement(

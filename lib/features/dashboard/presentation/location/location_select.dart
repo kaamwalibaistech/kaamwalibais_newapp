@@ -13,7 +13,12 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
   @override
   void initState() {
     super.initState();
+<<<<<<< HEAD
     context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
+=======
+    // context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
+    // SelectLocationBloc().enableLocation();
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
   @override
@@ -61,6 +66,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
       ),
       body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
         builder: (context, state) {
+<<<<<<< HEAD
           if (state is SelectLocationInitialState) {
             context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
             return Column(
@@ -87,6 +93,34 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
               ],
             );
           } else if (state is SelectLocationSearchingState) {
+=======
+          // if (state is SelectLocationInitialState) {
+          //   return Column(
+          //     children: [
+          //       GestureDetector(
+          //         onTap: () {
+          //           context
+          //               .read<SelectLocationBloc>()
+          //               .add(GetCurrentLocationEvent());
+          //         },
+          //         child: ListTile(
+          //           leading: Icon(
+          //             size: 16,
+          //             Icons.my_location,
+          //             color: Colors.blue.shade700,
+          //           ),
+          //           title: Text(
+          //             "Click to get current location",
+          //             style: TextStyle(fontSize: 14),
+          //           ),
+          //           textColor: Colors.blue.shade700,
+          //         ),
+          //       )
+          //     ],
+          //   );
+          // }
+          if (state is SelectLocationSearchingState) {
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
             return ListView.builder(
                 itemCount: state.searchLocationModel!.predictions.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -155,7 +189,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
             );
           }
 
-          return Text("No State");
+          return Text("");
         },
       ),
     );

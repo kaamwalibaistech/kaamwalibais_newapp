@@ -1,11 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:kaamwalijobs_new/constant/colors.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/features/dashboard/presentation/bookmaid_screen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
-import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
+<<<<<<< HEAD
 import '../../../assets/colors.dart';
 import '../../auth/presentation/login_popup.dart';
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import '../../dashboard/presentation/menu_screen.dart';
 import '../../dashboard/presentation/profile_screen.dart';
 
@@ -17,6 +22,7 @@ class Navigationscreen extends StatefulWidget {
 }
 
 class _NavigationscreenState extends State<Navigationscreen> {
+<<<<<<< HEAD
   PersistentTabController controller = PersistentTabController(initialIndex: 0);
   List<PersistentBottomNavBarItem> navBarsItems() {
     return [
@@ -57,43 +63,86 @@ class _NavigationscreenState extends State<Navigationscreen> {
         inactiveColorPrimary: CupertinoColors.systemGrey3,
       ),
     ];
+=======
+  int selectedIndex = 0;
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: selectedIndex);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
-  List<Widget> buildScreens() {
-    return [
-      const HomepageScreen(),
-      const BookmaidScreen(),
-      const ProfileScreen(),
-      const MenuScreen(),
-    ];
+  void changeTab(int index) {
+    setState(() {
+      selectedIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: controller,
-        screens: buildScreens(),
-        items: navBarsItems(),
-        handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset:
-            true, // This needs to be true if you want to move up the screen on a non-scrollable screen when keyboard appears. Default is true.
-        stateManagement: true, // Default is true.
-        hideNavigationBarWhenKeyboardAppears: true,
-
-        padding: const EdgeInsets.only(top: 8),
-        // backgroundColor: Colors.grey.shade900,
-        isVisible: true,
-
-        confineToSafeArea: true,
-        navBarHeight: kBottomNavigationBarHeight,
-        navBarStyle: NavBarStyle.style1,
-        // Choose the nav bar style with this property
-        backgroundColor: blueColor,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: (value) {
+          changeTab(value);
+          setState(() => selectedIndex = value); // Update selected index
+          _pageController
+              .jumpToPage(value); // Update PageView when tapping tabs
+        }, // Update PageView when tapping tabs
+        type: BottomNavigationBarType.fixed,
+        // backgroundColor: Colors.amber,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        iconSize: 30,
+        selectedItemColor: blueColor,
+        unselectedItemColor: Colors.blueGrey,
+        items: [
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              label: "Home",
+              activeIcon: Icon(Icons.home_rounded)),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_bag_outlined),
+              label: "BookMaid",
+              activeIcon: Icon(Icons.shopping_bag_rounded)),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.person_3_outlined),
+              label: "Profile",
+              activeIcon: Icon(Icons.person_3_outlined)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: "Menu",
+              activeIcon: Icon(Icons.menu)),
+        ],
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() => selectedIndex = index);
+        },
+        children: [
+          const HomepageScreen(),
+          const BookmaidScreen(),
+          const ProfileScreen(),
+          const MenuScreen(),
+        ],
       ),
     );
   }
+<<<<<<< HEAD
 
   checkLoginPopup() async {
     // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
@@ -103,4 +152,6 @@ class _NavigationscreenState extends State<Navigationscreen> {
         builder: (context) => const AlertDialog(content: LoginPopup()));
     // }
   }
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 }

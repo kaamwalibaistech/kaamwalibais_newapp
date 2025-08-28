@@ -26,3 +26,4 @@ const selectionGreenColor = Color(0xFF23AF00);
 const lightGreenColor = Color(0xFFE1FFD3);
 const blueColor2 = Color(0xFF0040A0); //first
 const blueor2 = Color(0xFFBABABA); //first
+

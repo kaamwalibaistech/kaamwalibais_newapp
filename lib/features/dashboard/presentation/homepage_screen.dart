@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
+<<<<<<< HEAD
 import 'package:geolocator/geolocator.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
+=======
+import 'package:google_fonts/google_fonts.dart';
+import 'package:in_app_update/in_app_update.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
@@ -15,12 +20,11 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
-import 'package:kaamwalijobs_new/features/onboarding/presantation/onboarding_items.dart';
+import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
 import '../../../models/categorylist.dart';
-import '../../../models/employer_register_model.dart';
 import '../../../models/homepage_model.dart';
 import '../../auth/presentation/candidate_register.dart';
 import '../../auth/presentation/login_popup.dart';
@@ -36,15 +40,37 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
+<<<<<<< HEAD
   bool isInternetConnected = true;
   StreamSubscription? _streamSubscription;
   // final listViewController = ListViewItems();
   final featuredJobsController = FeaturedJobsItems();
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   String selectedJobName = "Select a job";
   String selecteJobdId = "2";
   String selectedLocation = "Location";
   bool toggleSearch = true;
   Categorylistmodel? categorylistmodel;
+
+  Future<void> checkForUpdate() async {
+    try {
+      AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        if (updateInfo.immediateUpdateAllowed) {
+          await InAppUpdate.performImmediateUpdate();
+        } else if (updateInfo.flexibleUpdateAllowed) {
+          await InAppUpdate.startFlexibleUpdate();
+          await InAppUpdate.completeFlexibleUpdate();
+        } else {
+          print("Update available, but no method allowed.");
+        }
+      }
+    } catch (e) {
+      print("Error checking for update: $e");
+    }
+  }
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
@@ -52,6 +78,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
 
+<<<<<<< HEAD
     _streamSubscription = InternetConnection().onStatusChange.listen((event) {
       switch (event) {
         case InternetStatus.connected:
@@ -87,6 +114,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
       //     phoneNumber: userProfileData.mobileNo,
       //     userType: USER.employer));
     }
+=======
+    checkForUpdate();
+
+    _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
+    _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+    _homepageBloc.add(GetHomePageCategoriesEvents());
+    BlocProvider.of<PurchasedPackageDataBloc>(context);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
   checkLoginPopup() async {
@@ -102,6 +137,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   bool scanning = false;
   String addressData = "";
 
+<<<<<<< HEAD
   checkPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -148,6 +184,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
     } catch (e) {}
   }
 
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   Future<void> getCoordinatesFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
@@ -229,6 +267,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           children: [
                             GestureDetector(
                               onTap: () async {
+<<<<<<< HEAD
                                 if (isInternetConnected) {
                                   categorylistmodel =
                                       await HomepageBloc().loadCategoryUpload();
@@ -248,6 +287,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   Fluttertoast.showToast(
                                       msg: "No internet connection!");
                                 }
+=======
+                                EasyLoading.show();
+                                HomepageBloc data = HomepageBloc();
+                                categorylistmodel =
+                                    await data.loadCategoryUpload();
+                                EasyLoading.dismiss();
+                                data.selectCategoryDropdown(
+                                  context,
+                                  categorylistmodel!,
+                                  (selectedName, selectedId) {
+                                    setState(() {
+                                      selectedJobName = selectedName;
+                                      selecteJobdId = selectedId;
+                                    });
+                                  },
+                                );
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(left: 15),
@@ -417,17 +473,22 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   mainAxisSpacing: 20,
                                   crossAxisCount: 3,
                                   crossAxisSpacing: 20),
-                          itemCount: state.homepagemodel.categorylist.length > 6
-                              ? state.homepagemodel.categorylist
+                          itemCount: (state.homepagemodel.categorylist !=
+                                      null &&
+                                  state.homepagemodel.categorylist!.length > 6)
+                              ? state.homepagemodel.categorylist!
                                   .sublist(0, 6)
                                   .length
-                              : state.homepagemodel.categorylist.length,
+                              : state.homepagemodel.categorylist?.length,
                           itemBuilder: (BuildContext context, int index) {
                             List<Categorylist> categories =
-                                state.homepagemodel.categorylist.length > 6
-                                    ? state.homepagemodel.categorylist
+                                (state.homepagemodel.categorylist != null &&
+                                        state.homepagemodel.categorylist!
+                                                .length >
+                                            6)
+                                    ? state.homepagemodel.categorylist!
                                         .sublist(0, 6)
-                                    : state.homepagemodel.categorylist;
+                                    : state.homepagemodel.categorylist ?? [];
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -435,19 +496,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     MaterialPageRoute(
                                         builder: (context) => CategoryPage(
                                             categoryId: state
-                                                .homepagemodel
-                                                .categorylist[index]
-                                                .categoryId)));
+                                                    .homepagemodel
+                                                    .categorylist?[index]
+                                                    .categoryId ??
+                                                "")));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     boxShadow: const [
                                       BoxShadow(
                                         color:
+<<<<<<< HEAD
                                             Color.fromARGB(255, 200, 197, 197),
                                         blurRadius: 3,
                                         // offset: Offset(
                                         //     5, 5), // changes position of shadow
+=======
+                                            Color.fromARGB(255, 245, 243, 243),
+                                        blurRadius: 1,
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                       ),
                                     ],
                                     color: whiteColor,
@@ -459,6 +526,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+<<<<<<< HEAD
                                     Image.network(
                                       categories[index].image,
                                       // color: const Color.fromARGB(255, 247, 115, 106),
@@ -469,6 +537,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       style: const TextStyle(
                                           // color: blueColor,
                                           fontWeight: FontWeight.bold),
+=======
+                                    Image.asset(
+                                      categoriesImages[index],
+                                      height: 60,
+                                    ),
+                                    Text(
+                                      categories[index].categoryName ?? "",
+                                      style: const TextStyle(fontSize: 12),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                     )
                                   ],
                                 ),
@@ -489,6 +566,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => CandidateRegister()));
                       },
+<<<<<<< HEAD
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.170,
                         decoration: const BoxDecoration(color: Colors.grey),
@@ -498,6 +576,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           width: MediaQuery.of(context).size.width,
                         ),
                       ),
+=======
+                      child: Image.asset(
+                          "lib/assets/images/homepage_banner (2).jpg"
+
+                          // width: MediaQuery.of(context).size.width,
+                          ),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                     ),
                   ),
                   Padding(
@@ -545,7 +630,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     crossAxisSpacing: 10,
                                     mainAxisExtent: 300,
                                     mainAxisSpacing: 10),
-                            itemCount: state.homepagemodel.joblist.length,
+                            itemCount: state.homepagemodel.joblist?.length ?? 0,
                             itemBuilder: (BuildContext context, int index) {
                               return Container(
                                 decoration: BoxDecoration(
@@ -564,8 +649,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     border: Border.all(
                                         color: const Color.fromARGB(
                                             255, 243, 243, 245))),
-
-                                // width: 50,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -577,8 +660,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           padding:
                                               const EdgeInsets.only(left: 8.0),
                                           child: Text(
-                                            state.homepagemodel.joblist[index]
-                                                .postedBy,
+                                            state.homepagemodel.joblist?[index]
+                                                    .postedBy ??
+                                                "",
                                             style:
                                                 TextStyle(color: textGreyColor),
                                           ),
@@ -614,15 +698,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       padding: const EdgeInsets.only(
                                           top: 10.0, left: 10),
                                       child: Text(state.homepagemodel
-                                          .joblist[index].jobType),
+                                              .joblist?[index].jobType ??
+                                          ""),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Text(
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        state.homepagemodel.joblist[index]
-                                            .jobLocation,
+                                        state.homepagemodel.joblist?[index]
+                                                .jobLocation ??
+                                            "",
                                         style: TextStyle(color: textGreyColor),
                                       ),
                                     ),
@@ -641,7 +727,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].age} Yrs",
+                                            " ${state.homepagemodel.joblist?[index].age} Yrs",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -665,7 +751,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                           Text(
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            " ${state.homepagemodel.joblist[index].gender}",
+                                            " ${state.homepagemodel.joblist?[index].gender}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -687,7 +773,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].experience}",
+                                            " ${state.homepagemodel.joblist?[index].experience}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -709,7 +795,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 TextStyle(color: iconGreyColor),
                                           ),
                                           Text(
-                                            " ${state.homepagemodel.joblist[index].religion}",
+                                            " ${state.homepagemodel.joblist?[index].religion}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           )
@@ -730,10 +816,22 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           ),
+<<<<<<< HEAD
                                           Text(
                                             " ${state.homepagemodel.joblist[index].workingHours}",
                                             style:
                                                 TextStyle(color: iconGreyColor),
+=======
+                                          Expanded(
+                                            child: Text(
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
+                                              " ${state.homepagemodel.joblist?[index].workingHours}",
+                                              style: TextStyle(
+                                                  color: iconGreyColor),
+                                            ),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                           )
                                         ],
                                       ),
@@ -745,7 +843,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       child: Text(
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        "Rs. ${state.homepagemodel.joblist[index].monthPrice}/monthly",
+                                        "Rs. ${state.homepagemodel.joblist?[index].monthPrice}/monthly",
                                         style: TextStyle(
                                             color: blueColor,
                                             fontWeight: FontWeight.w700),
@@ -755,6 +853,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     Center(
                                       child: GestureDetector(
                                         onTap: () {
+<<<<<<< HEAD
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -772,6 +871,61 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                               .homepagemodel
                                                               .joblist[index]
                                                               .jobpostId)));
+=======
+                                          final userLogIn = LocalStoragePref()
+                                              .getUserProfile();
+                                          if (userLogIn == null) {
+                                            checkLoginPopup();
+                                          } else {
+                                            if (userLogIn.flag == "1") {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => JobsApply(
+                                                          jobsLocation: state
+                                                                  .homepagemodel
+                                                                  .joblist?[
+                                                                      index]
+                                                                  .jobLocation ??
+                                                              "",
+                                                          jobsType: state
+                                                                  .homepagemodel
+                                                                  .joblist?[
+                                                                      index]
+                                                                  .jobType ??
+                                                              "",
+                                                          jobsId: state
+                                                                  .homepagemodel
+                                                                  .joblist?[
+                                                                      index]
+                                                                  .jobpostId ??
+                                                              "")));
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                  title: Text(
+                                                      'candidates eligibility'),
+                                                  content: Text(
+                                                      "Only candidates are eligible to apply for the jobs!"),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () =>
+                                                          Navigator.pop(
+                                                              context),
+                                                      child: Text('Cancel'),
+                                                    ),
+                                                  ],
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                ),
+                                              );
+                                            }
+                                          }
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                         },
                                         child: Container(
                                           height: 30,
@@ -803,13 +957,4 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
         ));
   }
-}
-
-class LocationData {
-  String locationData = "";
-  static final _instance = LocationData._internal();
-
-  static LocationData get instance => _instance;
-
-  LocationData._internal();
 }

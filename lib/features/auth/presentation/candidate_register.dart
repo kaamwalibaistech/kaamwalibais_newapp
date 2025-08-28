@@ -4,6 +4,7 @@ import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/models/categorylist.dart';
 
 import '../../../models/empolyer_registerotp_model.dart';
+import '../../dashboard/presentation/location/location_select.dart';
 import '../network/auth_repository.dart';
 import 'candidate_register_otpscreen.dart';
 
@@ -25,7 +26,11 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   Categorylistmodel? categoryitemModel;
 
   final marriageItems = ["Unmarried", "Married", "Divorce"];
-  final religionItems = ["Hindu", "muslim", "Christian", "Sikh"];
+  final religionItems = [
+    "Hindu",
+    "Muslim",
+    "Catholic",
+  ];
 
   final genderItems = ["Male", "Female", "Not prefer to say"];
   final educationItem = ["<5th", ">5th", ">10"];
@@ -50,9 +55,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   }
 
   final workingItem = [
-    "1 Hours", // hours
-    "2 Hours", "3 Hours", "4 Hours", "5 Hours", "6 Hours", "7 Hours", "8 Hours",
-    "9 Hours", "10 Hours", "11 Hours", "12 Hours", "24 Hours"
+    // hours
+    "2 Hours", "4 Hours", "6 Hours", "8 Hours",
+    "10 Hours", "12 Hours", "24 Hours"
   ];
   final expectedSalaryItem = [
     "1000",
@@ -93,7 +98,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "10 >"
   ];
 
-  String? categoryvalue;
+  List<String> categoryvalue = [];
   String? marriedvalue;
   String? religionvalue;
   String? genderValue;
@@ -223,7 +228,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5),
                     child: Text(
-                      "Email. (ईमेल) *",
+                      "Email (ईमेल)",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -284,33 +289,116 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                     ),
                   ),
                   SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey),
                       ),
-                      hint: const Text("Select Category"),
-                      value: categoryvalue,
-                      items: categoryitemModel?.data.map((source) {
-                        return DropdownMenuItem(
-                          value: source.categoryId,
-                          child: Text(source.categoryName),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          categoryvalue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Category'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  List<String> tempSelectedCategories =
+                                      List.from(categoryvalue);
+
+                                  return AlertDialog(
+                                    title: Text("Select Categories"),
+                                    content: Container(
+                                      width: double.maxFinite,
+                                      child: categoryitemModel == null
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: categoryitemModel!
+                                                  .data.length,
+                                              itemBuilder: (context, index) {
+                                                final category =
+                                                    categoryitemModel!
+                                                        .data[index];
+                                                return CheckboxListTile(
+                                                  title: Text(
+                                                      category.categoryName),
+                                                  value: tempSelectedCategories
+                                                      .contains(
+                                                          category.categoryId),
+                                                  onChanged: (bool? value) {
+                                                    if (value == true) {
+                                                      tempSelectedCategories
+                                                          .add(category
+                                                              .categoryId);
+                                                    } else {
+                                                      tempSelectedCategories
+                                                          .remove(category
+                                                              .categoryId);
+                                                    }
+                                                    (context as Element)
+                                                        .markNeedsBuild();
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Cancel"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            categoryvalue =
+                                                tempSelectedCategories;
+                                          });
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Done"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                categoryvalue.isEmpty
+                                    ? Text(
+                                        "Select Category",
+                                        style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 16),
+                                      )
+                                    : Expanded(
+                                        child: Text(
+                                          _getSelectedCategoryNames(),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                Icon(Icons.arrow_drop_down),
+                              ],
+                            ),
+                          ),
+                          if (categoryvalue.isEmpty &&
+                              _formKey.currentState?.validate() == false)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'Select Category',
+                                style:
+                                    TextStyle(color: Colors.red, fontSize: 12),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                   const Padding(
@@ -364,10 +452,14 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       width: MediaQuery.of(context).size.width * 0.93,
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        maxLength: 2,
+                        maxLength: 3,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Enter Age";
+                          } else {
+                            if (int.parse(value) < 18) {
+                              return "Age must be greater than 18";
+                            }
                           }
                           return null;
                         },
@@ -460,7 +552,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
-                      "Passport (पारपत्र ) *",
+                      "Passport (पारपत्र )",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -553,41 +645,41 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Timing (समय) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Timing"),
-                      value: timingValue,
-                      items: timingItem.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          timingValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Timing'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  //   child: Text(
+                  //     "Timing (समय) *",
+                  //     style: TextStyle(fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   child: DropdownButtonFormField<String>(
+                  //     decoration: InputDecoration(
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(8),
+                  //       ),
+                  //     ),
+                  //     hint: const Text("Select Timing"),
+                  //     value: timingValue,
+                  //     items: timingItem.map((source) {
+                  //       return DropdownMenuItem(
+                  //         value: source,
+                  //         child: Text(source),
+                  //       );
+                  //     }).toList(),
+                  //     onChanged: (String? newValue) {
+                  //       setState(() {
+                  //         timingValue = newValue!;
+                  //       });
+                  //     },
+                  //     validator: (value) {
+                  //       if (value == null || value.isEmpty) {
+                  //         return 'Select Timing'; // Validation message
+                  //       }
+                  //       return null; // Valid input
+                  //     },
+                  //   ),
+                  // ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -623,59 +715,59 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Address (पता) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.93,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Address";
-                        }
-                        return null;
-                      },
-                      controller: addressController,
-                      cursorColor: Colors.black,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: whiteColor,
-                        border: OutlineInputBorder(),
-                        hintText: 'Home Address',
-                        hintStyle: const TextStyle(
-                          color: textGreyColor4,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          fontFamily: "Arial",
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 6),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: blackColor,
-                            width: 0.80,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: blackColor,
-                            width: 0.80,
-                          ),
-                        ),
-                      ),
-                      keyboardType: TextInputType.text,
-                      maxLines: 3,
-                    ),
-                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
+                  //   child: Text(
+                  //     "Address (पता) *",
+                  //     style: TextStyle(fontWeight: FontWeight.bold),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   width: MediaQuery.of(context).size.width * 0.93,
+                  //   child: TextFormField(
+                  //     validator: (value) {
+                  //       if (value!.isEmpty) {
+                  //         return "Enter Address";
+                  //       }
+                  //       return null;
+                  //     },
+                  //     controller: addressController,
+                  //     cursorColor: Colors.black,
+                  //     style: const TextStyle(
+                  //       fontSize: 14,
+                  //     ),
+                  //     decoration: InputDecoration(
+                  //       filled: true,
+                  //       fillColor: whiteColor,
+                  //       border: OutlineInputBorder(),
+                  //       hintText: 'Home Address',
+                  //       hintStyle: const TextStyle(
+                  //         color: textGreyColor4,
+                  //         fontWeight: FontWeight.w500,
+                  //         fontSize: 14,
+                  //         fontFamily: "Arial",
+                  //       ),
+                  //       contentPadding: const EdgeInsets.symmetric(
+                  //           vertical: 12, horizontal: 6),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //         borderSide: const BorderSide(
+                  //           color: blackColor,
+                  //           width: 0.80,
+                  //         ),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(10.0),
+                  //         borderSide: const BorderSide(
+                  //           color: blackColor,
+                  //           width: 0.80,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     keyboardType: TextInputType.text,
+                  //     maxLines: 3,
+                  //   ),
+                  // ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -684,51 +776,101 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.93,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Work Location";
-                        }
-                        return null;
-                      },
-                      controller: locationController,
-                      cursorColor: Colors.black,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: whiteColor,
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter Work Location',
-                        hintStyle: const TextStyle(
-                          color: textGreyColor4,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          fontFamily: "Arial",
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12, horizontal: 6),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: blackColor,
-                            width: 0.80,
+                      width: MediaQuery.of(context).size.width * 0.93,
+                      child: GestureDetector(
+                        onTap: () async {
+                          final address = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      LocationSelectScreen()));
+                          setState(() {
+                            locationController.text = address;
+                          });
+                        },
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            border: Border.all(color: textGreyColor),
                           ),
+                          child: Center(
+                              child: locationController.text.isEmpty
+                                  ? Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            "Enter work location",
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Row(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(locationController.text),
+                                        ),
+                                      ],
+                                    )),
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                          borderSide: const BorderSide(
-                            color: blackColor,
-                            width: 0.80,
-                          ),
-                        ),
+                      )
+                      // TextField(
+                      //   onChanged: (value) => context
+                      //       .read<SelectLocationBloc>()
+                      //       .add(SearchEvent(value)),
+                      //   onSubmitted: (value) => context
+                      //       .read<SelectLocationBloc>()
+                      //       .add(SearchEvent(value)),
+                      //   // validator: (value) {
+                      //   //   if (value!.isEmpty) {
+                      //   //     return "Enter Work Location";
+                      //   //   }
+                      //   //   return null;
+                      //   // },
+                      //   controller: locationController,
+                      //   cursorColor: Colors.black,
+                      //   style: const TextStyle(
+                      //     fontSize: 14,
+                      //   ),
+                      //   decoration: InputDecoration(
+                      //     filled: true,
+                      //     fillColor: whiteColor,
+                      //     border: OutlineInputBorder(),
+                      //     hintText: 'Enter Work Location',
+                      //     hintStyle: const TextStyle(
+                      //       color: textGreyColor4,
+                      //       fontWeight: FontWeight.w500,
+                      //       fontSize: 14,
+                      //       fontFamily: "Arial",
+                      //     ),
+                      //     contentPadding: const EdgeInsets.symmetric(
+                      //         vertical: 12, horizontal: 6),
+                      //     enabledBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(10.0),
+                      //       borderSide: const BorderSide(
+                      //         color: blackColor,
+                      //         width: 0.80,
+                      //       ),
+                      //     ),
+                      //     focusedBorder: OutlineInputBorder(
+                      //       borderRadius: BorderRadius.circular(10.0),
+                      //       borderSide: const BorderSide(
+                      //         color: blackColor,
+                      //         width: 0.80,
+                      //       ),
+                      //     ),
+                      //   ),
+                      //   keyboardType: TextInputType.text,
+                      //   // maxLines: 2,
+                      // ),
                       ),
-                      keyboardType: TextInputType.text,
-                      // maxLines: 2,
-                    ),
-                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -984,16 +1126,14 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                             numberController.text.isNotEmpty &&
                             emailController.text.isNotEmpty &&
                             passwordController.text.isNotEmpty &&
-                            categoryvalue!.isNotEmpty &&
+                            categoryvalue.isNotEmpty &&
                             marriedvalue!.isNotEmpty &&
                             religionvalue!.isNotEmpty &&
                             genderValue!.isNotEmpty &&
                             passportSelected!.name.isNotEmpty &&
                             educationValue!.isNotEmpty &&
-                            timingValue!.isNotEmpty &&
                             workingHrsValue!.isNotEmpty &&
                             ageController.text.isNotEmpty &&
-                            addressController.text.isNotEmpty &&
                             locationController.text.isNotEmpty &&
                             expectedSalaryValue!.isNotEmpty &&
                             totalExperienceValue!.isNotEmpty &&
@@ -1017,9 +1157,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                                             gender: genderValue,
                                             passport: passport.toString(),
                                             education: educationValue,
-                                            timing: timingValue,
                                             workingHrs: workingHrsValue,
-                                            address: addressController.text,
                                             location: locationController.text,
                                             expectedSalary: expectedSalaryValue,
                                             totalExperience:
@@ -1034,7 +1172,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                         }
                       },
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: EdgeInsets.only(bottom: 50),
                         width: MediaQuery.of(context).size.width * 0.50,
                         decoration: BoxDecoration(
                             color: blueColor,
@@ -1240,4 +1378,19 @@ class _CandidateRegisterState extends State<CandidateRegister> {
           String totalExperienceItem) =>
       DropdownMenuItem(
           value: totalExperienceItem, child: Text(totalExperienceItem));
+
+  String _getSelectedCategoryNames() {
+    if (categoryitemModel == null) return "";
+
+    List<String> names = [];
+    for (String categoryId in categoryvalue) {
+      for (var category in categoryitemModel!.data) {
+        if (category.categoryId == categoryId) {
+          names.add(category.categoryName);
+          break;
+        }
+      }
+    }
+    return names.join(", ");
+  }
 }

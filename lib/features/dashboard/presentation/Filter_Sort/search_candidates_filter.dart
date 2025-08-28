@@ -23,7 +23,7 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
     FilterListWithCountModel(title: 'Age', count: ''), // 3
     FilterListWithCountModel(title: 'Experience', count: ''), // 4
     FilterListWithCountModel(title: 'Gender', count: ''), // 5
-    FilterListWithCountModel(title: 'Working Hours', count: ''), // 6
+    FilterListWithCountModel(title: 'Working Hours', count: ''), // 6l̥
     FilterListWithCountModel(title: 'Religion', count: ''), // 7
     FilterListWithCountModel(title: 'Language', count: ''), // 8
     FilterListWithCountModel(title: 'KM', count: ''), // 9
@@ -771,17 +771,24 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (genderValue.contains(genderList[index])) {
+<<<<<<< HEAD
                               genderValue = '';
                               filterText[5].count = "";
                             } else {
                               genderValue = genderList[index];
                               filterText[5].count = "1";
+=======
+                              genderValue.remove(genderList[index]);
+                            } else {
+                              genderValue.add(genderList[index]);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                             }
 
                             if (genderValue == '') {
                               filterText[5].count = "";
                             } else {
-                              filterText[5].count = "1";
+                              filterText[5].count =
+                                  genderValue.length.toString();
                             }
                           });
                         },
@@ -864,17 +871,25 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                             setState(() {
                               if (workingHoursValue
                                   .contains(workingHoursList[index])) {
+<<<<<<< HEAD
                                 workingHoursValue = '';
                                 filterText[6].count = "";
                               } else {
                                 workingHoursValue = workingHoursList[index];
                                 filterText[6].count = "1";
+=======
+                                workingHoursValue
+                                    .remove(workingHoursList[index]);
+                              } else {
+                                workingHoursValue.add(workingHoursList[index]);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                               }
 
                               if (workingHoursValue == '') {
                                 filterText[6].count = "";
                               } else {
-                                filterText[6].count = "1";
+                                filterText[6].count =
+                                    workingHoursValue.length.toString();
                               }
                             });
                           },
@@ -968,7 +983,8 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                             if (religionValue == '') {
                               filterText[7].count = "";
                             } else {
-                              filterText[7].count = "1";
+                              filterText[7].count =
+                                  religionValue.length.toString();
                             }
                           });
                         },
@@ -1050,6 +1066,7 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (languageValue.contains(languageList[index])) {
+<<<<<<< HEAD
                               languageValue = '';
                               filterText[8].count = "";
                             } else {
@@ -1061,6 +1078,19 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                             } else {
                               filterText[8].count = "1";
                             }
+=======
+                              languageValue.remove(languageList[index]);
+                            } else {
+                              languageValue.add(languageList[index]);
+                            }
+
+                            if (languageValue.isEmpty) {
+                              filterText[8].count = "";
+                            } else {
+                              filterText[8].count =
+                                  languageValue.length.toString();
+                            }
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                           });
                         },
                         child: Container(

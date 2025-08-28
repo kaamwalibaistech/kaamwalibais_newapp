@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
@@ -43,8 +44,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
             listener: (context, state) {
               if (state is AuthLoadFailedState) {
                 if (state.userfailed == USERFAILED.unregister) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Invalid Credentials!')));
+                  Fluttertoast.showToast(msg: "Invalid Credentials!");
                 }
               } else if (state is AuthLoadedState) {
                 Navigator.pushReplacement(

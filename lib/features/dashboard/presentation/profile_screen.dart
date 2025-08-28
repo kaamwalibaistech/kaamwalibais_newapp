@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
+import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
+import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
 import '../../../assets/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
@@ -18,10 +21,18 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AuthBloc _authBloc;
+  EmployerRegisterModel? userProfileData;
 
   @override
   void initState() {
     super.initState();
+    userProfileData = LocalStoragePref.instance?.getUserProfile();
+
+    if (userProfileData == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        checkLoginPopup();
+      });
+    }
 
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
   }
@@ -31,11 +42,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
+        title: userProfileData != null
+            ? Image.asset(
+                "lib/assets/images/kaamwalijobs.png",
+                cacheHeight: 40,
+              )
+            : SizedBox.shrink(),
         backgroundColor: scaffoldColor,
-        title: Image.asset(
-          "lib/assets/images/kaamwalijobs.png",
-          cacheHeight: 40,
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -48,13 +61,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   current is AuthLoadingState,
               builder: (context, state) {
                 if (state is AuthLoadedState) {
-                  String data = state.userData.emailId;
-                  String data1 = state.userData.mobileNo;
-                  if (data.isNotEmpty) {
-                    UserData._instance.userData1.addAll([data]);
-                    UserData1._instance.userData.addAll([data1]);
-                  }
-
                   return Column(
                     children: [
                       SizedBox(
@@ -78,8 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color.fromARGB(255, 200, 197, 197),
                                 spreadRadius: 1,
                                 blurRadius: 7,
-                                offset:
-                                    Offset(0, 0), // changes position of shadow
+                                offset: Offset(0, 0),
                               ),
                             ]),
                         child: Padding(
@@ -120,23 +125,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Location",
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    ),
-                                    Text(
-                                      LocationData.instance.locationData,
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              BlocConsumer<SelectLocationBloc,
+                                      SelectLocationState>(
+                                  listener: (context, state) {},
+                                  builder: (context, snapshot) {
+                                    if (snapshot
+                                        is SelectLocationSuccessState) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Location",
+                                              style:
+                                                  GoogleFonts.poltawskiNowy(),
+                                            ),
+                                            Text(
+                                              snapshot.currentAddress
+                                                  .split(",")
+                                                  .first,
+                                              style:
+                                                  GoogleFonts.poltawskiNowy(),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Location",
+                                            style: GoogleFonts.poltawskiNowy(),
+                                          ),
+                                          Text(
+                                            "---",
+                                            style: GoogleFonts.poltawskiNowy(),
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20.0),
                                 child: Row(
@@ -164,12 +199,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => EditProfile()));
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //         duration: Duration(seconds: 1),
-                                  //         backgroundColor: blueColor,
-                                  //         content: Text(
-                                  //             "you can access this soon")));
                                 },
                                 child: Container(
                                   height: MediaQuery.of(context).size.height *
@@ -197,16 +226,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
                 return Center(
                     child: Padding(
-                  padding: const EdgeInsets.only(top: 300.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      checkLoginPopup();
-                    },
-                    child: Text(
-                      "Please LogIn First !",
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w600, fontSize: 16),
-                    ),
+                  padding: const EdgeInsets.only(top: 200.0),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        "lib/assets/images/kaamwalijobs.png",
+                        cacheHeight: 105,
+                      ),
+                      sizedBoxH20,
+                      Text(
+                        "Kaamwalijobs",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                      sizedBoxH5,
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Text(
+                          "Please Login >",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () {
+                          checkLoginPopup();
+                        },
+                      ),
+                    ],
                   ),
                 ));
               }),
@@ -220,22 +269,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
         context: context,
         builder: (context) => const AlertDialog(content: LoginPopup()));
   }
-}
-
-class UserData {
-  List<String?> userData1 = [];
-  static final _instance = UserData._internal();
-
-  static UserData get instance => _instance;
-
-  UserData._internal();
-}
-
-class UserData1 {
-  List<String?> userData = [];
-  static final _instance = UserData1._internal();
-
-  static UserData1 get instance => _instance;
-
-  UserData1._internal();
 }

@@ -1,59 +1,63 @@
-// To parse this JSON data, do
-//
-//     final homepagemodel = homepagemodelFromJson(jsonString);
-
 import 'dart:convert';
 
-Homepagemodel homepagemodelFromJson(String str) =>
-    Homepagemodel.fromJson(json.decode(str));
+Homepagemodel? homepagemodelFromJson(String str) =>
+    str.isNotEmpty ? Homepagemodel.fromJson(json.decode(str)) : null;
 
-String homepagemodelToJson(Homepagemodel data) => json.encode(data.toJson());
+String homepagemodelToJson(Homepagemodel? data) =>
+    data != null ? json.encode(data.toJson()) : '';
 
 class Homepagemodel {
-  String status;
-  List<Categorylist> categorylist;
-  List<Joblist> joblist;
-  List<Advlist> advlist;
-  List<Advlist> banner;
+  String? status;
+  List<Categorylist>? categorylist;
+  List<Joblist>? joblist;
+  List<Advlist>? advlist;
+  List<Advlist>? banner;
 
   Homepagemodel({
-    required this.status,
-    required this.categorylist,
-    required this.joblist,
-    required this.advlist,
-    required this.banner,
+    this.status,
+    this.categorylist,
+    this.joblist,
+    this.advlist,
+    this.banner,
   });
 
   factory Homepagemodel.fromJson(Map<String, dynamic> json) => Homepagemodel(
         status: json["status"],
-        categorylist: List<Categorylist>.from(
-            json["Categorylist"].map((x) => Categorylist.fromJson(x))),
-        joblist:
-            List<Joblist>.from(json["joblist"].map((x) => Joblist.fromJson(x))),
-        advlist:
-            List<Advlist>.from(json["Advlist"].map((x) => Advlist.fromJson(x))),
-        banner:
-            List<Advlist>.from(json["banner"].map((x) => Advlist.fromJson(x))),
+        categorylist: json["Categorylist"] != null
+            ? List<Categorylist>.from(
+                json["Categorylist"].map((x) => Categorylist.fromJson(x)))
+            : null,
+        joblist: json["joblist"] != null
+            ? List<Joblist>.from(
+                json["joblist"].map((x) => Joblist.fromJson(x)))
+            : null,
+        advlist: json["Advlist"] != null
+            ? List<Advlist>.from(
+                json["Advlist"].map((x) => Advlist.fromJson(x)))
+            : null,
+        banner: json["banner"] != null
+            ? List<Advlist>.from(json["banner"].map((x) => Advlist.fromJson(x)))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "Categorylist": List<dynamic>.from(categorylist.map((x) => x.toJson())),
-        "joblist": List<dynamic>.from(joblist.map((x) => x.toJson())),
-        "Advlist": List<dynamic>.from(advlist.map((x) => x.toJson())),
-        "banner": List<dynamic>.from(banner.map((x) => x.toJson())),
+        "Categorylist": categorylist?.map((x) => x.toJson()).toList(),
+        "joblist": joblist?.map((x) => x.toJson()).toList(),
+        "Advlist": advlist?.map((x) => x.toJson()).toList(),
+        "banner": banner?.map((x) => x.toJson()).toList(),
       };
 }
 
 class Advlist {
-  String advertismentId;
-  String url;
-  String image;
+  String? advertismentId;
+  String? url;
+  String? image;
 
   Advlist({
-    required this.advertismentId,
-    required this.url,
-    required this.image,
+    this.advertismentId,
+    this.url,
+    this.image,
   });
 
   factory Advlist.fromJson(Map<String, dynamic> json) => Advlist(
@@ -70,14 +74,14 @@ class Advlist {
 }
 
 class Categorylist {
-  String categoryId;
-  String categoryName;
-  String image;
+  String? categoryId;
+  String? categoryName;
+  String? image;
 
   Categorylist({
-    required this.categoryId,
-    required this.categoryName,
-    required this.image,
+    this.categoryId,
+    this.categoryName,
+    this.image,
   });
 
   factory Categorylist.fromJson(Map<String, dynamic> json) => Categorylist(
@@ -94,30 +98,30 @@ class Categorylist {
 }
 
 class Joblist {
-  String jobpostId;
-  String age;
-  String gender;
-  String religion;
-  String maritalStatus;
-  String jobLocation;
-  String workingHours;
-  String experience;
-  String monthPrice;
-  String jobType;
-  String postedBy;
+  String? jobpostId;
+  String? age;
+  String? gender;
+  String? religion;
+  String? maritalStatus;
+  String? jobLocation;
+  String? workingHours;
+  dynamic experience;
+  String? monthPrice;
+  String? jobType;
+  String? postedBy;
 
   Joblist({
-    required this.jobpostId,
-    required this.age,
-    required this.gender,
-    required this.religion,
-    required this.maritalStatus,
-    required this.jobLocation,
-    required this.workingHours,
-    required this.experience,
-    required this.monthPrice,
-    required this.jobType,
-    required this.postedBy,
+    this.jobpostId,
+    this.age,
+    this.gender,
+    this.religion,
+    this.maritalStatus,
+    this.jobLocation,
+    this.workingHours,
+    this.experience,
+    this.monthPrice,
+    this.jobType,
+    this.postedBy,
   });
 
   factory Joblist.fromJson(Map<String, dynamic> json) => Joblist(

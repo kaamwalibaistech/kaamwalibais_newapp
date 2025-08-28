@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/assets/colors.dart';
@@ -21,9 +22,9 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
   final gender;
   final passport;
   final education;
-  final timing;
+
   final workingHrs;
-  final address;
+
   final location;
   final expectedSalary;
   final totalExperience;
@@ -42,9 +43,7 @@ class CandidateRegisterOtpScreen extends StatefulWidget {
       required this.gender,
       required this.passport,
       required this.education,
-      required this.timing,
       required this.workingHrs,
-      required this.address,
       required this.location,
       required this.expectedSalary,
       required this.totalExperience,
@@ -91,9 +90,7 @@ class _CandidateRegisterOtpScreenState
         widget.gender,
         widget.passport.toString(),
         widget.education,
-        widget.timing,
         widget.workingHrs,
-        widget.address,
         widget.location,
         widget.expectedSalary,
         widget.totalExperience,
@@ -193,8 +190,7 @@ class _CandidateRegisterOtpScreenState
                   Navigator.pop(context);
                   Navigator.pop(context);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Invalid OTP")));
+                  Fluttertoast.showToast(msg: "Invalid OTP");
                 }
               },
               child: Padding(

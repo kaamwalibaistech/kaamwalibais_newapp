@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:kaamwalijobs_new/assets/colors.dart';
+=======
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 
 import '../network/auth_repository.dart';
@@ -209,8 +214,7 @@ class _ForgetPasswordState extends State<EmployerForgetPassword> {
                                     builder: (context) => EmployerNewPassword(
                                         number: phoneNumberController.text)));
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Invalid OTP")));
+                            Fluttertoast.showToast(msg: "Invalid OTP");
                           }
                         },
                         child: Container(

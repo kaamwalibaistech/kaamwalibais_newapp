@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 
+<<<<<<< HEAD
 import '../../../assets/colors.dart';
+=======
+import '../../../bloc/homepage_bloc.dart';
+import '../../../constant/colors.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import '../../../core/local_storage.dart';
 import '../../../models/categorylist.dart';
 import '../../../models/employer_register_model.dart';
+import '../../../models/job_post_count_minus.dart';
 import '../../auth/network/auth_repository.dart';
-import '../network/job_repository.dart';
+import '../../navigation/bloc/packages_bloc.dart';
+import '../../navigation/bloc/packages_event.dart';
+import '../../navigation/network/saerch_candidates_api.dart';
 
 class JobsPost extends StatefulWidget {
   const JobsPost({super.key});
@@ -17,10 +28,12 @@ class JobsPost extends StatefulWidget {
 }
 
 class _JobsPostState extends State<JobsPost> {
+  late HomepageBloc _homepageBloc;
   @override
   void initState() {
     super.initState();
     loadCategoryUpload();
+    _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
   }
 
   Categorylistmodel? categoryitemModel;
@@ -157,29 +170,51 @@ class _JobsPostState extends State<JobsPost> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: SizedBox(
+                SizedBox(
                     width: MediaQuery.of(context).size.width * 0.93,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Job Location";
-                        }
-                        return null;
+                    child: GestureDetector(
+                      onTap: () async {
+                        final address = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LocationSelectScreen()));
+                        setState(() {
+                          locationController.text = address;
+                        });
                       },
-                      controller: locationController,
-                      decoration: InputDecoration(
-                        counterText: "",
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                        hintText: "Thane, Maharashtra, India",
-                        hintStyle: TextStyle(color: textGreyColor),
-                        border: OutlineInputBorder(),
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
+                          border: Border.all(color: textGreyColor),
+                        ),
+                        child: Center(
+                            child: locationController.text.isEmpty
+                                ? Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          "Enter work location",
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text(locationController.text),
+                                      ),
+                                    ],
+                                  )),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
                 const Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 5),
                   child: Text(
@@ -739,31 +774,56 @@ class _JobsPostState extends State<JobsPost> {
                       if (formKey.currentState!.validate() &&
                           jobShiftvalue!.isNotEmpty &&
                           scheduleValue!.isNotEmpty) {
-                        JobRepository jobRepository = JobRepository();
-                        await jobRepository.createJobsPost(
-                            localUserProfileData!.userId.toString(),
-                            categoryvalue.toString(),
-                            locationController.text,
-                            jobShiftvalue.toString(),
-                            scheduleValue.toString(),
-                            genderValue.toString(),
-                            marriedvalue.toString(),
-                            religionValue.toString(),
-                            educationValue.toString(),
-                            languageValue.toString(),
-                            ageValue.toString(),
-                            experienceValue.toString(),
-                            minimumPaymentController.text,
-                            maximumPaymentController.text);
-                        if (localUserProfileData.flag == "0") {
-                          Fluttertoast.showToast(
-                              msg: "Job posted SuccessFully");
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "Only Employer can post a job !");
-                        }
+                        Jobpostcountminus data = await NavRepositiory()
+                            .getJobPostCount(
+                                categoryvalue.toString(),
+                                locationController.text,
+                                jobShiftvalue.toString(),
+                                scheduleValue.toString(),
+                                genderValue.toString(),
+                                religionValue.toString(),
+                                ageValue.toString(),
+                                marriedvalue.toString(),
+                                educationValue.toString(),
+                                languageValue.toString(),
+                                experienceValue.toString(),
+                                minimumPaymentController.text,
+                                maximumPaymentController.text,
+                                localUserProfileData!.userId);
+
+                        // if (data.status == "200") {
+                        //   JobRepository jobRepository = JobRepository();
+                        //   await jobRepository.createJobsPost(
+                        //       localUserProfileData.userId.toString(),
+                        //       categoryvalue.toString(),
+                        //       locationController.text,
+                        //       jobShiftvalue.toString(),
+                        //       scheduleValue.toString(),
+                        //       genderValue.toString(),
+                        //       marriedvalue.toString(),
+                        //       religionValue.toString(),
+                        //       educationValue.toString(),
+                        //       languageValue.toString(),
+                        //       ageValue.toString(),
+                        //       experienceValue.toString(),
+                        //       minimumPaymentController.text,
+                        //       maximumPaymentController.text);
+                        //   _homepageBloc!.add(GetHomePageCategoriesEvents());
+                        //   BlocProvider.of<PurchasedPackageDataBloc>(context)
+                        //       .add(PurchasedPackageEvent());
+                        // } else {
+                        //   Fluttertoast.showToast(msg: data.msg);
+                        // }
+                        _homepageBloc.add(GetHomePageCategoriesEvents());
+                        BlocProvider.of<PurchasedPackageDataBloc>(context,
+                                listen: false)
+                            .add(PurchasedPackageEvent());
+
+                        Fluttertoast.showToast(msg: "Job Posted Successfully");
 
                         Navigator.pop(context);
+                      } else {
+                        Fluttertoast.showToast(msg: "All Fields are Required");
                       }
                     },
                     child: Container(
