@@ -16,12 +16,12 @@ final class SelectLocationSearchingState extends SelectLocationState {
 }
 
 final class SelectLocationSuccessState extends SelectLocationState {
-  final String currentAddress;
+  final String address;
 
-  SelectLocationSuccessState(this.currentAddress);
+  SelectLocationSuccessState(this.address);
 
   @override
-  List<Object?> get props => [currentAddress];
+  List<Object?> get props => [address];
 }
 
 final class SelectLocationErrorState extends SelectLocationState {

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
 import 'package:kaamwalijobs_new/constant/colors.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/features/dashboard/presentation/bookmaid_screen.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/homepage_screen.dart';
 
+<<<<<<< HEAD
+import '../../../assets/colors.dart';
+import '../../auth/presentation/login_popup.dart';
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import '../../dashboard/presentation/menu_screen.dart';
 import '../../dashboard/presentation/profile_screen.dart';
 
@@ -14,6 +22,48 @@ class Navigationscreen extends StatefulWidget {
 }
 
 class _NavigationscreenState extends State<Navigationscreen> {
+<<<<<<< HEAD
+  PersistentTabController controller = PersistentTabController(initialIndex: 0);
+  List<PersistentBottomNavBarItem> navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Image.asset(
+          "lib/assets/images/home2.png",
+          height: 20,
+          width: 20,
+        ),
+        title: ("Home"),
+        activeColorPrimary: CupertinoColors.white,
+        inactiveColorPrimary: CupertinoColors.systemGrey3,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Image.asset(
+          "lib/assets/images/job.png",
+          height: 20,
+          width: 20,
+        ),
+        title: ("BookMaid"),
+        activeColorPrimary: CupertinoColors.white,
+        inactiveColorPrimary: CupertinoColors.systemGrey3,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Image.asset(
+          'lib/assets/images/person2.png',
+          height: 20,
+          width: 20,
+        ),
+        title: ("Profile"),
+        activeColorPrimary: CupertinoColors.white,
+        inactiveColorPrimary: CupertinoColors.systemGrey3,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.menu),
+        title: ("Menu"),
+        activeColorPrimary: CupertinoColors.white,
+        inactiveColorPrimary: CupertinoColors.systemGrey3,
+      ),
+    ];
+=======
   int selectedIndex = 0;
   late final PageController _pageController;
 
@@ -21,6 +71,7 @@ class _NavigationscreenState extends State<Navigationscreen> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: selectedIndex);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
   void changeTab(int index) {
@@ -91,4 +142,16 @@ class _NavigationscreenState extends State<Navigationscreen> {
       ),
     );
   }
+<<<<<<< HEAD
+
+  checkLoginPopup() async {
+    // String isLogin = await LocalStoragePref.instance?.isLogin() ?? 'false';
+    // if (!(bool.tryParse(isLogin) ?? false)) {
+    showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(content: LoginPopup()));
+    // }
+  }
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 }
