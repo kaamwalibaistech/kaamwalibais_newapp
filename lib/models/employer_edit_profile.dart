@@ -1,26 +1,26 @@
 // To parse this JSON data, do
 //
-//     final employerProfileEdit = employerProfileEditFromJson(jsonString);
+//     final empolyereditprofilemodel = empolyereditprofilemodelFromJson(jsonString);
 
 import 'dart:convert';
 
-EmployerProfileEdit employerProfileEditFromJson(String str) =>
-    EmployerProfileEdit.fromJson(json.decode(str));
+Empolyereditprofilemodel empolyereditprofilemodelFromJson(String str) =>
+    Empolyereditprofilemodel.fromJson(json.decode(str));
 
-String employerProfileEditToJson(EmployerProfileEdit data) =>
+String empolyereditprofilemodelToJson(Empolyereditprofilemodel data) =>
     json.encode(data.toJson());
 
-class EmployerProfileEdit {
+class Empolyereditprofilemodel {
   String status;
   String msg;
 
-  EmployerProfileEdit({
+  Empolyereditprofilemodel({
     required this.status,
     required this.msg,
   });
 
-  factory EmployerProfileEdit.fromJson(Map<String, dynamic> json) =>
-      EmployerProfileEdit(
+  factory Empolyereditprofilemodel.fromJson(Map<String, dynamic> json) =>
+      Empolyereditprofilemodel(
         status: json["status"],
         msg: json["msg"],
       );

@@ -1,14 +1,20 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
+<<<<<<< HEAD
+import 'package:geolocator/geolocator.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:kaamwalijobs_new/assets/colors.dart';
+=======
 import 'package:google_fonts/google_fonts.dart';
 import 'package:in_app_update/in_app_update.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
-import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -35,6 +41,13 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
+<<<<<<< HEAD
+  bool isInternetConnected = true;
+  StreamSubscription? _streamSubscription;
+  // final listViewController = ListViewItems();
+  final featuredJobsController = FeaturedJobsItems();
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   String selectedJobName = "Select a job";
   String selecteJobdId = "2";
   String selectedLocation = "Location";
@@ -43,24 +56,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
   double _locationButtonScale = 1.0;
 
   Categorylistmodel? categorylistmodel;
-  List<String> categoriesImages = [
-    "lib/assets/images/jhaduPocha.png",
-    "lib/assets/images/maid.png",
-    "lib/assets/images/babysitter.png",
-    "lib/assets/images/cook.png",
-    "lib/assets/images/nanny.png",
-    "lib/assets/images/elderlyCare.png",
-    "lib/assets/images/patient_care.png",
-    "lib/assets/images/japa_maid2.png",
-    "lib/assets/images/nurse.png",
-    "lib/assets/images/chef.png",
-    "lib/assets/images/baby_massage.png",
-    "lib/assets/images/house-keeper.png",
-    "lib/assets/images/driver.png",
-    "lib/assets/images/security_gaurd.png",
-    "lib/assets/images/delivery_boy.png",
-    "lib/assets/images/office_boy.png"
-  ];
 
   Future<void> checkForUpdate() async {
     try {
@@ -87,12 +82,50 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
 
+<<<<<<< HEAD
+    _streamSubscription = InternetConnection().onStatusChange.listen((event) {
+      switch (event) {
+        case InternetStatus.connected:
+          setState(() {
+            isInternetConnected = true;
+          });
+          _homepageBloc.add(GetHomePageCategoriesEvents());
+          break;
+        case InternetStatus.disconnected:
+          setState(() {
+            isInternetConnected = false;
+          });
+          _homepageBloc.add(GetHomePageCategoriesEvents());
+          break;
+      }
+    });
+
+    checkPermission();
+
+    _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
+    _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
+
+    EmployerRegisterModel? userProfileData =
+        LocalStoragePref.instance?.getUserProfile();
+
+    if (userProfileData == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        checkLoginPopup();
+      });
+    } else {
+      // _authBloc.add(AuthenticationEvent(
+      //     password: '',
+      //     phoneNumber: userProfileData.mobileNo,
+      //     userType: USER.employer));
+    }
+=======
     checkForUpdate();
 
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _homepageBloc.add(GetHomePageCategoriesEvents());
     BlocProvider.of<PurchasedPackageDataBloc>(context);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
   checkLoginPopup() async {
@@ -108,6 +141,55 @@ class _HomepageScreenState extends State<HomepageScreen> {
   bool scanning = false;
   String addressData = "";
 
+<<<<<<< HEAD
+  checkPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    print(serviceEnabled);
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return;
+    }
+
+    //
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.whileInUse) {
+      Fluttertoast.showToast(msg: "Permission Allowed ");
+    }
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        Fluttertoast.showToast(msg: 'Request Denied');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      Fluttertoast.showToast(msg: "Denied Forever");
+    }
+    getLocation();
+  }
+
+  getLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      coordinates =
+          'Latitude ${position.latitude} \n Longitude ${position.longitude}';
+      List<Placemark> result =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      if (result.isNotEmpty) {
+        addressData = result[0].locality ?? "";
+        LocationData._instance.locationData = addressData ?? "";
+      }
+    } catch (e) {}
+  }
+
+=======
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   Future<void> getCoordinatesFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
@@ -148,8 +230,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               const Text(
                                 "Welcome Back!",
                                 style: TextStyle(
-                                    color: Color.fromARGB(255, 220, 7, 78),
-                                    fontSize: 16),
+                                    color: textGreyColor, fontSize: 16),
                               ),
                               Row(
                                 children: [
@@ -157,8 +238,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     state.userData.name,
                                     style: const TextStyle(
                                         fontSize: 22,
-                                        color:
-                                            Color.fromARGB(255, 35, 104, 209),
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
@@ -183,7 +262,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         }
                       }),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 15.0),
                     child: BlocBuilder(
                       bloc: _homepageBloc,
                       builder: (context, state) {
@@ -201,6 +280,27 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               onTapCancel: () =>
                                   setState(() => _buttonScale = 1.0),
                               onTap: () async {
+<<<<<<< HEAD
+                                if (isInternetConnected) {
+                                  categorylistmodel =
+                                      await HomepageBloc().loadCategoryUpload();
+                                  HomepageBloc().selectCategoryDropdown(
+                                    context,
+                                    categorylistmodel!,
+                                    (selectedName, selectedId) {
+                                      setState(() {
+                                        selectedJobName = selectedName;
+                                        selecteJobdId =
+                                            selectedId; // Update the selected text
+                                      });
+                                    },
+                                  );
+                                } else {
+                                  // showWifiDialog(context);  use later
+                                  Fluttertoast.showToast(
+                                      msg: "No internet connection!");
+                                }
+=======
                                 EasyLoading.show();
                                 HomepageBloc data = HomepageBloc();
                                 categorylistmodel =
@@ -216,6 +316,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     });
                                   },
                                 );
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                               },
                               child: AnimatedScale(
                                 scale: _buttonScale,
@@ -382,37 +483,27 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Our categories",
-                          style: GoogleFonts.robotoFlex(
-                              color: textBlackColor3,
+                        const Text(
+                          "Our Categories",
+                          style: TextStyle(
+                              color: blackColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              fontSize: 18),
                         ),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Allcategories(
-                                          image: categoriesImages)));
+                                      builder: (context) =>
+                                          const Allcategories()));
                             },
-                            child: Row(
-                              children: [
-                                Text(
-                                  "See all",
-                                  style: GoogleFonts.robotoFlex(
-                                      color: blueColor2,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                sizedBoxW5,
-                                Icon(
-                                  size: 18,
-                                  Icons.arrow_circle_right,
-                                  color: blueColor2,
-                                )
-                              ],
+                            child: const Text(
+                              "See all",
+                              style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                             ))
                       ],
                     ),
@@ -467,12 +558,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     boxShadow: const [
                                       BoxShadow(
                                         color:
+<<<<<<< HEAD
+                                            Color.fromARGB(255, 200, 197, 197),
+                                        blurRadius: 3,
+                                        // offset: Offset(
+                                        //     5, 5), // changes position of shadow
+=======
                                             Color.fromARGB(255, 245, 243, 243),
                                         blurRadius: 1,
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                       ),
                                     ],
                                     color: whiteColor,
-                                    borderRadius: BorderRadius.circular(15),
+                                    borderRadius: BorderRadius.circular(10),
                                     border: Border.all(
                                         color: const Color.fromARGB(
                                             255, 243, 243, 245))),
@@ -480,6 +578,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
+<<<<<<< HEAD
+                                    Image.network(
+                                      categories[index].image,
+                                      // color: const Color.fromARGB(255, 247, 115, 106),
+                                      height: 60,
+                                    ),
+                                    Text(
+                                      categories[index].categoryName,
+                                      style: const TextStyle(
+                                          // color: blueColor,
+                                          fontWeight: FontWeight.bold),
+=======
                                     Image.asset(
                                       categoriesImages[index],
                                       height: 60,
@@ -487,6 +597,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     Text(
                                       categories[index].categoryName ?? "",
                                       style: const TextStyle(fontSize: 12),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                     )
                                   ],
                                 ),
@@ -499,7 +610,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     },
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 25.0),
+                    padding: const EdgeInsets.only(top: 10.0),
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -507,51 +618,54 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             MaterialPageRoute(
                                 builder: (context) => CandidateRegister()));
                       },
+<<<<<<< HEAD
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.170,
+                        decoration: const BoxDecoration(color: Colors.grey),
+                        child: Image.asset(
+                          "lib/assets/images/apply_job_banner.jpg",
+                          fit: BoxFit.fill,
+                          width: MediaQuery.of(context).size.width,
+                        ),
+                      ),
+=======
                       child: Image.asset(
                           "lib/assets/images/homepage_banner (2).jpg"
 
                           // width: MediaQuery.of(context).size.width,
                           ),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Recent Job Openings",
-                        style: GoogleFonts.robotoFlex(
-                            color: textBlackColor3,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const Alljobsopenings()));
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                "See all",
-                                style: GoogleFonts.robotoFlex(
-                                    color: blueColor2,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              sizedBoxW5,
-                              Icon(
-                                size: 18,
-                                Icons.arrow_circle_right,
-                                color: blueColor2,
-                              )
-                            ],
-                          ))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Recent Job Openings",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Alljobsopenings()));
+                            },
+                            child: const Text(
+                              "See all",
+                              style: TextStyle(
+                                  color: blackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ))
+                      ],
+                    ),
                   ),
-                  sizedBoxH15,
+                  sizedBoxH10,
                   BlocBuilder<HomepageBloc, HomepageState>(
                       bloc: _homepageBloc,
                       buildWhen: (previous, current) =>
@@ -754,6 +868,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                             style:
                                                 TextStyle(color: iconGreyColor),
                                           ),
+<<<<<<< HEAD
+                                          Text(
+                                            " ${state.homepagemodel.joblist[index].workingHours}",
+                                            style:
+                                                TextStyle(color: iconGreyColor),
+=======
                                           Expanded(
                                             child: Text(
                                               maxLines: 1,
@@ -763,6 +883,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               style: TextStyle(
                                                   color: iconGreyColor),
                                             ),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                           )
                                         ],
                                       ),
@@ -784,6 +905,25 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                     Center(
                                       child: GestureDetector(
                                         onTap: () {
+<<<<<<< HEAD
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobsApply(
+                                                          jobsLocation: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobLocation,
+                                                          jobsType: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobType,
+                                                          jobsId: state
+                                                              .homepagemodel
+                                                              .joblist[index]
+                                                              .jobpostId)));
+=======
                                           final userLogIn = LocalStoragePref()
                                               .getUserProfile();
                                           if (userLogIn == null) {
@@ -837,6 +977,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                               );
                                             }
                                           }
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                                         },
                                         child: Container(
                                           height: 30,

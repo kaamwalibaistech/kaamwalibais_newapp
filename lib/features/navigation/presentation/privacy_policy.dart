@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/assets/colors.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});

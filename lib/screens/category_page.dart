@@ -4,9 +4,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/book_maid_shimmer.dart';
+<<<<<<< HEAD
+=======
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
@@ -23,12 +27,8 @@ import '../features/navigation/bloc/packages_event.dart';
 import '../models/sortlisted_candidate_model.dart';
 
 class CategoryPage extends StatefulWidget {
-  const CategoryPage({
-    super.key,
-    required this.categoryId,
-  });
+  const CategoryPage({super.key, required this.categoryId});
   final String categoryId;
-
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
@@ -647,6 +647,99 @@ class _CategoryPageState extends State<CategoryPage> {
                                 ],
                               ),
                             ),
+<<<<<<< HEAD
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              width: MediaQuery.of(context).size.width * 0.55,
+                              child: Stack(
+                                children: [
+                                  // employerRegisterModel != null
+                                  // ?
+                                  // ElevatedButton(
+                                  //     style: ElevatedButton.styleFrom(
+                                  //         backgroundColor:
+                                  //             const Color(0xFF0DA931),
+                                  //         minimumSize: const Size(0, 35),
+                                  //         shape: RoundedRectangleBorder(
+                                  //             borderRadius:
+                                  //                 BorderRadius.circular(
+                                  //                     5))),
+                                  //     onPressed: () {},
+                                  //     child: Row(
+                                  //       // mainAxisAlignment:
+                                  //       //     MainAxisAlignment.spaceEvenly,
+                                  //       children: [
+                                  //         const SizedBox(width: 30),
+                                  //         Image.asset(
+                                  //             "lib/assets/images/call.png",
+                                  //             height: 17),
+                                  //         const SizedBox(width: 20),
+                                  //         GestureDetector(
+                                  //           onTap: () {
+                                  //             final url = Uri(
+                                  //                 scheme: 'tel',
+                                  //                 path: model.mobileNo!
+                                  //                     .toString());
+
+                                  //             launchUrl(url);
+                                  //           },
+                                  //           child: SizedBox(
+                                  //             child: Text(
+                                  //               model.mobileNo!,
+                                  //               style:
+                                  //                   GoogleFonts.poppins(
+                                  //                       fontSize: 14,
+                                  //                       fontWeight:
+                                  //                           FontWeight
+                                  //                               .w500,
+                                  //                       color:
+                                  //                           whiteColor),
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     ),
+                                  //   )
+                                  // :
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xFF0DA931),
+                                        minimumSize: const Size(0, 35),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5))),
+                                    onPressed: () {
+                                      checkPackagesPopup();
+                                    },
+                                    child: Row(
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        const SizedBox(width: 30),
+                                        Image.asset(
+                                            "lib/assets/images/call.png",
+                                            height: 17),
+                                        const SizedBox(width: 20),
+                                        GestureDetector(
+                                          child: SizedBox(
+                                            child: Text(
+                                              model.mobileNo!
+                                                  .replaceRange(3, 7, "****"),
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: whiteColor),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+=======
                             BlocBuilder<PurchasedPackageDataBloc, PackageState>(
                                 buildWhen: (PackageState previous,
                                         PackageState current) =>
@@ -785,6 +878,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ),
                                   );
                                 }),
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                             const SizedBox(width: 5),
                             const SizedBox(
                               height: 10,

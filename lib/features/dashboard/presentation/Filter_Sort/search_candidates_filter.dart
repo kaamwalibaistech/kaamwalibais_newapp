@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/network/auth_repository.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/Filter_Sort/filter_control_model.dart';
 import 'package:kaamwalijobs_new/models/categorylist.dart';
@@ -58,12 +58,16 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
       maxAge = "",
       minExperience = "",
       maxExperience = "",
-      km = "";
+      km = "",
+      genderValue = "",
+      workingHoursValue = "",
+      religionValue = "",
+      languageValue = "";
 
-  List<String> genderValue = [];
-  List<String> workingHoursValue = [];
-  List<String> religionValue = [];
-  List<String> languageValue = [];
+  // List<String> genderValue = [];
+  // List<String> workingHoursValue = [];
+  // List<String> religionValue = [];
+  // List<String> languageValue = [];
 
   RangeValues salaryRange = const RangeValues(0, 30000);
   RangeValues ageRange = const RangeValues(18, 60);
@@ -110,10 +114,10 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                   for (int i = 0; i < filterText.length; i++) {
                     filterText[i].count = '';
                   }
-                  genderValue = [];
-                  workingHoursValue = [];
-                  religionValue = [];
-                  languageValue = [];
+                  genderValue = '';
+                  workingHoursValue = '';
+                  religionValue = '';
+                  languageValue = '';
                   kmRange = 3;
                   ageRange = const RangeValues(18, 60);
                   salaryRange = const RangeValues(0, 30000);
@@ -767,12 +771,20 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (genderValue.contains(genderList[index])) {
+<<<<<<< HEAD
+                              genderValue = '';
+                              filterText[5].count = "";
+                            } else {
+                              genderValue = genderList[index];
+                              filterText[5].count = "1";
+=======
                               genderValue.remove(genderList[index]);
                             } else {
                               genderValue.add(genderList[index]);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                             }
 
-                            if (genderValue.isEmpty) {
+                            if (genderValue == '') {
                               filterText[5].count = "";
                             } else {
                               filterText[5].count =
@@ -859,13 +871,21 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                             setState(() {
                               if (workingHoursValue
                                   .contains(workingHoursList[index])) {
+<<<<<<< HEAD
+                                workingHoursValue = '';
+                                filterText[6].count = "";
+                              } else {
+                                workingHoursValue = workingHoursList[index];
+                                filterText[6].count = "1";
+=======
                                 workingHoursValue
                                     .remove(workingHoursList[index]);
                               } else {
                                 workingHoursValue.add(workingHoursList[index]);
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                               }
 
-                              if (workingHoursValue.isEmpty) {
+                              if (workingHoursValue == '') {
                                 filterText[6].count = "";
                               } else {
                                 filterText[6].count =
@@ -953,12 +973,14 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (religionValue.contains(religionList[index])) {
-                              religionValue.remove(religionList[index]);
+                              religionValue = '';
+                              filterText[7].count = "";
                             } else {
-                              religionValue.add(religionList[index]);
+                              religionValue = religionList[index];
+                              filterText[7].count = "1";
                             }
 
-                            if (religionValue.isEmpty) {
+                            if (religionValue == '') {
                               filterText[7].count = "";
                             } else {
                               filterText[7].count =
@@ -1044,6 +1066,19 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                         onTap: () {
                           setState(() {
                             if (languageValue.contains(languageList[index])) {
+<<<<<<< HEAD
+                              languageValue = '';
+                              filterText[8].count = "";
+                            } else {
+                              languageValue = languageList[index];
+                              filterText[8].count = "1";
+                            }
+                            if (languageValue == '') {
+                              filterText[8].count = "";
+                            } else {
+                              filterText[8].count = "1";
+                            }
+=======
                               languageValue.remove(languageList[index]);
                             } else {
                               languageValue.add(languageList[index]);
@@ -1055,6 +1090,7 @@ class _SearchCandidatesFilterState extends State<SearchCandidatesFilter> {
                               filterText[8].count =
                                   languageValue.length.toString();
                             }
+>>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                           });
                         },
                         child: Container(

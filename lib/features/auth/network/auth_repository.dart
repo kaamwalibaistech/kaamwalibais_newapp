@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaamwalijobs_new/models/categorylist.dart';
 
@@ -302,14 +304,16 @@ class AuthRepository {
           return Categorylistmodel.fromJson(data);
         }
       }
+    } on SocketException {
+      Fluttertoast.showToast(msg: "No internet connection!");
     } catch (e) {
-      throw Exception();
+      Fluttertoast.showToast(msg: "Something went wrong: ${e.toString()}");
     }
-
-    return throw Exception();
+    Fluttertoast.showToast(msg: "No internet connection!");
+    throw Exception("API call failed");
   }
 
-  Future<EmployerProfileEdit?> updateUserProfile(
+  Future<Empolyereditprofilemodel> updateUserProfile(
       name, number, email, flag, userid) async {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
@@ -332,7 +336,7 @@ class AuthRepository {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['status'] == '200') {
-          return EmployerProfileEdit.fromJson(data);
+          return Empolyereditprofilemodel.fromJson(data);
         }
       }
     } catch (e) {

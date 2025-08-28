@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/assets/colors.dart';
 
 import '../../navigation/presentation/packages.dart';
 
