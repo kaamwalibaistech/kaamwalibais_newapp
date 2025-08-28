@@ -11,38 +11,42 @@ String currentPackagePlanToJson(CurrentPackagePlan data) =>
     json.encode(data.toJson());
 
 class CurrentPackagePlan {
-  String status;
-  List<Package> package;
+  String? status;
+  List<Package>? package;
 
   CurrentPackagePlan({
-    required this.status,
-    required this.package,
+    this.status,
+    this.package,
   });
 
   factory CurrentPackagePlan.fromJson(Map<String, dynamic> json) =>
       CurrentPackagePlan(
         status: json["status"],
-        package:
-            List<Package>.from(json["package"].map((x) => Package.fromJson(x))),
+        package: json["package"] == null
+            ? []
+            : List<Package>.from(
+                json["package"]!.map((x) => Package.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
-        "package": List<dynamic>.from(package.map((x) => x.toJson())),
+        "package": package == null
+            ? []
+            : List<dynamic>.from(package!.map((x) => x.toJson())),
       };
 }
 
 class Package {
-  String packageName;
-  String packageType;
-  String avilableCount;
-  String expDate;
+  String? packageName;
+  String? packageType;
+  String? avilableCount;
+  String? expDate;
 
   Package({
-    required this.packageName,
-    required this.packageType,
-    required this.avilableCount,
-    required this.expDate,
+    this.packageName,
+    this.packageType,
+    this.avilableCount,
+    this.expDate,
   });
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(

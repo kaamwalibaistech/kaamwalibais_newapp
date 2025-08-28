@@ -43,11 +43,14 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("incorrect credentials")));
                 }
-              } else if (state is AuthLoadedState) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Navigationscreen()));
+              }
+              if (state is AuthLoadedState) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Navigationscreen()),
+                  (Route<dynamic> route) => false,
+                );
               }
             },
             child: Form(

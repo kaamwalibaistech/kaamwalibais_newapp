@@ -14,15 +14,24 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   Future<void> _getCandidates(
-      GetCandidates event, Emitter<DashboardState> emit) async {
+    GetCandidates event,
+    Emitter<DashboardState> emit,
+  ) async {
     try {
       emit(CandidateListLoadingState());
-      CandidateModel successResponse = await dashboardNetwork.fetchCandidates(
-          candidateRequest: event.candidateRequest);
 
-      emit(CandidateListLoadedState(candidates: successResponse.data ?? []));
+      CandidateModel successResponse = await dashboardNetwork.fetchCandidates(
+        candidateRequest: event.candidateRequest,
+      );
+
+      emit(
+        CandidateListLoadedState(
+          candidates: successResponse.data ?? [],
+          pageKey: event.pageKey,
+        ),
+      );
     } catch (e) {
-      emit(CandidateLisFailedState());
+      emit(CandidateListFailedState());
     }
   }
 
