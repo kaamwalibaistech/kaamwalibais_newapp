@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_event.dart';
@@ -9,6 +10,7 @@ import 'package:kaamwalijobs_new/features/jobs/bloc/job_state.dart';
 import 'package:kaamwalijobs_new/models/job_listing.dart';
 
 import '../../../assets/shimmer_effect/book_maid_shimmer.dart';
+import '../../../core/local_storage.dart';
 import 'jobs_apply.dart';
 
 class Alljobsopenings extends StatefulWidget {
@@ -131,9 +133,9 @@ class JobCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 20,
-              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -141,7 +143,8 @@ class JobCard extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 5.0),
                     child: Text(
                       job!.jobType!,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                   ),
                   Text(
@@ -274,13 +277,26 @@ class JobCard extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => new JobsApply(
-                                    jobsLocation: job!.jobLocation.toString(),
-                                    jobsType: job!.jobType.toString(),
-                                    jobsId: job!.jobpostId.toString())));
+                        final userLogIn = LocalStoragePref().getUserProfile();
+                        if (userLogIn == null) {
+                          Fluttertoast.showToast(
+                              msg: "Please LogIn to Apply for jobs!");
+                        } else {
+                          if (userLogIn.flag == "1") {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => new JobsApply(
+                                        jobsLocation:
+                                            job!.jobLocation.toString(),
+                                        jobsType: job!.jobType.toString(),
+                                        jobsId: job!.jobpostId.toString())));
+                          } else {
+                            Fluttertoast.showToast(
+                                msg:
+                                    "Only candidates are eligible to apply for the jobs!");
+                          }
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(

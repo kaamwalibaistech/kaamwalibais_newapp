@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/candidate_register.dart';
 
 import '../../../Client/homepage_api.dart';
@@ -199,8 +199,9 @@ class _CandidateLoginSignupState extends State<CandidateLoginSignup> {
                                         const CandidateRegister()));
                           },
                           child: const Text(
-                            "उम्मीदवार साइनअप फॉर्म के लिए यहाँ क्लिक करें",
+                            "रजिस्टर करने के लिए यहां क्लिक करें",
                             style: TextStyle(
+                              fontSize: 15,
                               color: blueColor,
                               decoration: TextDecoration.underline,
                             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../colors.dart';
+import '../../constant/colors.dart';
 
 class PackageLoader extends StatelessWidget {
   const PackageLoader({super.key});
