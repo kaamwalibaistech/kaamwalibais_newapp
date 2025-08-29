@@ -6,7 +6,7 @@ import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
-import '../../../assets/colors.dart';
+import '../../../constant/colors.dart';
 import '../../auth/bloc/auth_bloc.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../auth/presentation/login_popup.dart';

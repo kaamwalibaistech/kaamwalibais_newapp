@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/packages_shimmer.dart';
 import 'package:kaamwalijobs_new/assets/widgets/packages_image.dart';
 import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../Client/homepage_api.dart';
@@ -256,12 +256,26 @@ class _PackagesState extends State<Packages> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: Center(
-                  child: Text(
-                    "Choose a Candidate Plan That's right for you",
+                    child: RichText(
+                        text: TextSpan(children: [
+                  TextSpan(
+                    text: "Choose a ",
                     style: GoogleFonts.poltawskiNowy(
                         fontSize: 18, color: blueColor),
                   ),
-                ),
+                  TextSpan(
+                    text: "Candidate Plan",
+                    style: GoogleFonts.poltawskiNowy(
+                        fontSize: 18,
+                        color: blueColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: " That's right for you",
+                    style: GoogleFonts.poltawskiNowy(
+                        fontSize: 18, color: blueColor),
+                  )
+                ]))),
               ),
               if (state is PackagesLoadedState)
                 SizedBox(
@@ -468,12 +482,26 @@ class _PackagesState extends State<Packages> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
                 child: Center(
-                  child: Text(
-                    "Choose a Job Posting Plan That's right for you",
+                    child: RichText(
+                        text: TextSpan(children: [
+                  TextSpan(
+                    text: "Choose a ",
                     style: GoogleFonts.poltawskiNowy(
                         fontSize: 18, color: blueColor),
                   ),
-                ),
+                  TextSpan(
+                    text: "Job Posting Plan",
+                    style: GoogleFonts.poltawskiNowy(
+                        fontSize: 18,
+                        color: blueColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: " That's right for you",
+                    style: GoogleFonts.poltawskiNowy(
+                        fontSize: 18, color: blueColor),
+                  )
+                ]))),
               ),
               if (state is PackagesLoadedState)
                 SizedBox(

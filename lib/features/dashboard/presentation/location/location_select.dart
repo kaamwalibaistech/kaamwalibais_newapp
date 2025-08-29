@@ -13,12 +13,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
   @override
   void initState() {
     super.initState();
-<<<<<<< HEAD
-    context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
-=======
     // context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
     // SelectLocationBloc().enableLocation();
->>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
   }
 
   @override
@@ -66,34 +62,6 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
       ),
       body: BlocBuilder<SelectLocationBloc, SelectLocationState>(
         builder: (context, state) {
-<<<<<<< HEAD
-          if (state is SelectLocationInitialState) {
-            context.read<SelectLocationBloc>().add(GetCurrentLocationEvent());
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    context
-                        .read<SelectLocationBloc>()
-                        .add(GetCurrentLocationEvent());
-                  },
-                  child: ListTile(
-                    leading: Icon(
-                      size: 16,
-                      Icons.my_location,
-                      color: Colors.blue.shade700,
-                    ),
-                    title: Text(
-                      "Click to get current location",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    textColor: Colors.blue.shade700,
-                  ),
-                )
-              ],
-            );
-          } else if (state is SelectLocationSearchingState) {
-=======
           // if (state is SelectLocationInitialState) {
           //   return Column(
           //     children: [
@@ -120,7 +88,6 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
           //   );
           // }
           if (state is SelectLocationSearchingState) {
->>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
             return ListView.builder(
                 itemCount: state.searchLocationModel!.predictions.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -141,13 +108,17 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                     ),
                   );
                 });
-          } else if (state is SelectLocationSuccessState) {
+          }
+          if (state is SelectLocationSuccessState) {
             return Column(
               children: [
                 GestureDetector(
                   onTap: () {
-                    String city = state.address;
-                    Navigator.pop(context, city);
+                    if (state.currentAddress !=
+                        "Click to get current location") {
+                      String city = state.currentAddress;
+                      Navigator.pop(context, city);
+                    }
                   },
                   child: ListTile(
                     leading: Icon(
@@ -156,7 +127,7 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                       color: Colors.blue.shade700,
                     ),
                     title: Text(
-                      "${state.address}",
+                      "${state.currentAddress}",
                       style: TextStyle(fontSize: 14),
                     ),
                     textColor: Colors.blue.shade700,
@@ -164,7 +135,8 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                 )
               ],
             );
-          } else if (state is SelectLocationErrorState) {
+          }
+          if (state is SelectLocationErrorState) {
             return Padding(
               padding: const EdgeInsets.all(30),
               child: Center(
@@ -183,6 +155,11 @@ class _LocationSelectScreenState extends State<LocationSelectScreen> {
                       state.error,
                       textAlign: TextAlign.center,
                     ),
+                    TextButton(
+                        onPressed: () {
+                          SelectLocationBloc().enableLocation();
+                        },
+                        child: Text("Click"))
                   ],
                 ),
               ),
