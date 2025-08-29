@@ -8,10 +8,13 @@ abstract class DashboardEvent extends Equatable {
 }
 
 class GetCandidates extends DashboardEvent {
-  GetCandidates({required this.candidateRequest});
   final CandidateRequest candidateRequest;
-  @override
-  List<Object> get props => [];
+  final int pageKey;
+
+  GetCandidates({
+    required this.candidateRequest,
+    required this.pageKey,
+  });
 }
 
 class GetDatabyCategory extends DashboardEvent {

@@ -387,8 +387,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                               ],
                             ),
                           ),
-                          if (categoryvalue.isEmpty &&
-                              _formKey.currentState?.validate() == false)
+                          if (categoryvalue.isEmpty)
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Text(
@@ -438,7 +437,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                     ),
                   ),
-
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5),
                     child: Text(
@@ -645,41 +643,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                     ),
                   ),
-                  // const Padding(
-                  //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                  //   child: Text(
-                  //     "Timing (समय) *",
-                  //     style: TextStyle(fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   child: DropdownButtonFormField<String>(
-                  //     decoration: InputDecoration(
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(8),
-                  //       ),
-                  //     ),
-                  //     hint: const Text("Select Timing"),
-                  //     value: timingValue,
-                  //     items: timingItem.map((source) {
-                  //       return DropdownMenuItem(
-                  //         value: source,
-                  //         child: Text(source),
-                  //       );
-                  //     }).toList(),
-                  //     onChanged: (String? newValue) {
-                  //       setState(() {
-                  //         timingValue = newValue!;
-                  //       });
-                  //     },
-                  //     validator: (value) {
-                  //       if (value == null || value.isEmpty) {
-                  //         return 'Select Timing'; // Validation message
-                  //       }
-                  //       return null; // Valid input
-                  //     },
-                  //   ),
-                  // ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -715,59 +678,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       },
                     ),
                   ),
-                  // const Padding(
-                  //   padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                  //   child: Text(
-                  //     "Address (पता) *",
-                  //     style: TextStyle(fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.93,
-                  //   child: TextFormField(
-                  //     validator: (value) {
-                  //       if (value!.isEmpty) {
-                  //         return "Enter Address";
-                  //       }
-                  //       return null;
-                  //     },
-                  //     controller: addressController,
-                  //     cursorColor: Colors.black,
-                  //     style: const TextStyle(
-                  //       fontSize: 14,
-                  //     ),
-                  //     decoration: InputDecoration(
-                  //       filled: true,
-                  //       fillColor: whiteColor,
-                  //       border: OutlineInputBorder(),
-                  //       hintText: 'Home Address',
-                  //       hintStyle: const TextStyle(
-                  //         color: textGreyColor4,
-                  //         fontWeight: FontWeight.w500,
-                  //         fontSize: 14,
-                  //         fontFamily: "Arial",
-                  //       ),
-                  //       contentPadding: const EdgeInsets.symmetric(
-                  //           vertical: 12, horizontal: 6),
-                  //       enabledBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10.0),
-                  //         borderSide: const BorderSide(
-                  //           color: blackColor,
-                  //           width: 0.80,
-                  //         ),
-                  //       ),
-                  //       focusedBorder: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(10.0),
-                  //         borderSide: const BorderSide(
-                  //           color: blackColor,
-                  //           width: 0.80,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     keyboardType: TextInputType.text,
-                  //     maxLines: 3,
-                  //   ),
-                  // ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -820,57 +730,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                                       ],
                                     )),
                         ),
-                      )
-                      // TextField(
-                      //   onChanged: (value) => context
-                      //       .read<SelectLocationBloc>()
-                      //       .add(SearchEvent(value)),
-                      //   onSubmitted: (value) => context
-                      //       .read<SelectLocationBloc>()
-                      //       .add(SearchEvent(value)),
-                      //   // validator: (value) {
-                      //   //   if (value!.isEmpty) {
-                      //   //     return "Enter Work Location";
-                      //   //   }
-                      //   //   return null;
-                      //   // },
-                      //   controller: locationController,
-                      //   cursorColor: Colors.black,
-                      //   style: const TextStyle(
-                      //     fontSize: 14,
-                      //   ),
-                      //   decoration: InputDecoration(
-                      //     filled: true,
-                      //     fillColor: whiteColor,
-                      //     border: OutlineInputBorder(),
-                      //     hintText: 'Enter Work Location',
-                      //     hintStyle: const TextStyle(
-                      //       color: textGreyColor4,
-                      //       fontWeight: FontWeight.w500,
-                      //       fontSize: 14,
-                      //       fontFamily: "Arial",
-                      //     ),
-                      //     contentPadding: const EdgeInsets.symmetric(
-                      //         vertical: 12, horizontal: 6),
-                      //     enabledBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(10.0),
-                      //       borderSide: const BorderSide(
-                      //         color: blackColor,
-                      //         width: 0.80,
-                      //       ),
-                      //     ),
-                      //     focusedBorder: OutlineInputBorder(
-                      //       borderRadius: BorderRadius.circular(10.0),
-                      //       borderSide: const BorderSide(
-                      //         color: blackColor,
-                      //         width: 0.80,
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   keyboardType: TextInputType.text,
-                      //   // maxLines: 2,
-                      // ),
-                      ),
+                      )),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
@@ -1031,90 +891,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                       ),
                     ],
                   ),
-                  // Column(
-                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                  //   children: [
-                  //     const Padding(
-                  //       padding: EdgeInsets.only(left: 20.0, top: 15.0),
-                  //       child: Text(
-                  //         "Upload Image (तस्वीर डालिये) *",
-                  //         style: TextStyle(
-                  //           fontFamily: "Arial",
-                  //           fontSize: 13,
-                  //           color: blackColor,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(
-                  //           left: 14.0, right: 14.0, top: 8.0),
-                  //       child: Row(
-                  //         children: [
-                  //           Expanded(
-                  //             child: Container(
-                  //               width: double.infinity,
-                  //               decoration: BoxDecoration(
-                  //                 color: whiteColor,
-                  //                 borderRadius:
-                  //                     const BorderRadius.all(Radius.circular(10.0)),
-                  //                 border: Border.all(
-                  //                   color: Colors.grey,
-                  //                   width: 0.80,
-                  //                 ),
-                  //               ),
-                  //               child: InkWell(
-                  //                 onTap: () {
-                  //                   setState(() {
-                  //                     imageStatus = 3;
-                  //                   });
-                  //                   selectImageDialog(context);
-                  //                 },
-                  //                 child: Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     Expanded(
-                  //                       child: Padding(
-                  //                         padding: const EdgeInsets.only(left: 8.0),
-                  //                         child: Text(
-                  //                           otherDoc != null
-                  //                               ? otherDoc!
-                  //                               : "No file found",
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                     Container(
-                  //                       width: 70,
-                  //                       height: 48,
-                  //                       decoration: const BoxDecoration(
-                  //                         color: Color(0xFF006DCF),
-                  //                         borderRadius: BorderRadius.only(
-                  //                           topRight: Radius.circular(8.0),
-                  //                           bottomRight: Radius.circular(8.0),
-                  //                         ),
-                  //                       ),
-                  //                       child: const Center(
-                  //                         child: Text(
-                  //                           'Browse',
-                  //                           style: TextStyle(
-                  //                             fontWeight: FontWeight.normal,
-                  //                             fontFamily: "Arial",
-                  //                             fontSize: 13,
-                  //                             color: whiteColor,
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -1196,161 +972,6 @@ class _CandidateRegisterState extends State<CandidateRegister> {
       ),
     );
   }
-
-  // void selectImageDialog(BuildContext context) {
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return SimpleDialog(
-  //           backgroundColor: Colors.white,
-  //           contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-  //           titlePadding:
-  //               const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-  //           title: const Column(
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: <Widget>[
-  //               Text(
-  //                 'Select Image',
-  //                 style: TextStyle(
-  //                     color: blueColor,
-  //                     fontWeight: FontWeight.w500,
-  //                     fontSize: 15),
-  //               ),
-  //               Divider(
-  //                 thickness: 1,
-  //                 color: Colors.black26,
-  //               ),
-  //             ],
-  //           ),
-  //           children: <Widget>[
-  //             Padding(
-  //               padding: const EdgeInsets.only(bottom: 20.0),
-  //               child: InkWell(
-  //                 onTap: () async {
-  //                   pickImageCamera();
-  //                   Navigator.pop(context);
-  //                 },
-  //                 child: const Row(
-  //                   children: [
-  //                     Icon(
-  //                       Icons.camera_alt,
-  //                       size: 25,
-  //                     ),
-  //                     Padding(
-  //                       padding: EdgeInsets.only(left: 8.0),
-  //                       child: Text(
-  //                         'Camera',
-  //                         style: TextStyle(
-  //                             color: blueColor,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 15),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.only(bottom: 20.0),
-  //               child: InkWell(
-  //                 onTap: () async {
-  //                   pickImage();
-  //                   Navigator.pop(context);
-  //                 },
-  //                 child: const Row(
-  //                   children: [
-  //                     Icon(
-  //                       Icons.image,
-  //                       size: 25,
-  //                     ),
-  //                     Padding(
-  //                       padding: EdgeInsets.only(left: 8.0),
-  //                       child: Text(
-  //                         'Pick image from gallery',
-  //                         style: TextStyle(
-  //                             color: blueColor,
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 15),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
-
-  // void pickImageCamera() async {
-  //   _pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-
-  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
-  //     sourcePath: _pickedFile!.path,
-  //     aspectRatioPresets: [
-  //       CropAspectRatioPreset.square,
-  //     ],
-  //     uiSettings: [
-  //       AndroidUiSettings(
-  //           toolbarTitle: 'Cropper',
-  //           toolbarColor: primaryColor,
-  //           toolbarWidgetColor: Colors.white,
-  //           hideBottomControls: true,
-  //           // initAspectRatio: CropAspectRatioPreset.original,
-  //           lockAspectRatio: true),
-  //       IOSUiSettings(
-  //         title: 'Cropper',
-  //       ),
-  //     ],
-  //     compressQuality: 60,
-  //   );
-
-  //   _pickedFile = XFile(croppedFile!.path);
-
-  //   if (imageStatus == 2) {
-  //     aadhaar = _pickedFile!.name;
-  //     aadharFile = _pickedFile;
-  //   } else if (imageStatus == 3) {
-  //     otherDoc = _pickedFile!.name;
-  //     Image = _pickedFile;
-  //   }
-
-  //   setState(() {});
-  // }
-
-  // void pickImage() async {
-  //   _pickedFile = (await ImagePicker().pickImage(source: ImageSource.gallery))!;
-
-  //   CroppedFile? croppedFile = await ImageCropper().cropImage(
-  //     sourcePath: _pickedFile!.path,
-  //     aspectRatioPresets: [
-  //       CropAspectRatioPreset.square,
-  //     ],
-  //     uiSettings: [
-  //       AndroidUiSettings(
-  //           toolbarTitle: 'Cropper',
-  //           toolbarColor: primaryColor,
-  //           toolbarWidgetColor: Colors.white,
-  //           hideBottomControls: true,
-  //           // initAspectRatio: CropAspectRatioPreset.original,
-  //           lockAspectRatio: true),
-  //       IOSUiSettings(
-  //         title: 'Cropper',
-  //       ),
-  //     ],
-  //     compressQuality: 80,
-  //   );
-  //   _pickedFile = XFile(croppedFile!.path);
-
-  //   if (imageStatus == 2) {
-  //     aadhaar = _pickedFile!.name;
-  //     aadharFile = _pickedFile;
-  //   } else if (imageStatus == 3) {
-  //     otherDoc = _pickedFile!.name;
-  //     Image = _pickedFile;
-  //   }
-  //   setState(() {});
-  // }
 
   DropdownMenuItem<String> buildMarriedItem(String marriageItems) =>
       DropdownMenuItem(value: marriageItems, child: Text(marriageItems));
