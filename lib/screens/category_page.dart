@@ -87,7 +87,7 @@ class _CategoryPageState extends State<CategoryPage> {
           current is PackageLoadedStates,
       builder: (context, state) {
         if (state is PackageLoadedStates) {
-          if (state.currentPackagePlan.package.isEmpty) {
+          if (state.currentPackagePlan.package?.isEmpty ?? false) {
             return Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 10),
               child: Row(
@@ -109,7 +109,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Widget _buildPackageInfoCards(PackageLoadedStates state) {
-    final package = state.currentPackagePlan.package.first;
+    final package = state.currentPackagePlan.package!.first;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Row(
@@ -118,7 +118,7 @@ class _CategoryPageState extends State<CategoryPage> {
           _buildInfoCard(
             "lib/assets/images/icons-package.png",
             "Current Package",
-            package.packageName,
+            package.packageName.toString(),
           ),
           _buildInfoCard(
             "lib/assets/images/icons-resume.png",
@@ -761,9 +761,10 @@ class _CategoryPageState extends State<CategoryPage> {
                                       onPressed: () async {
                                         if (state is PackageLoadedStates) {
                                           if (state.currentPackagePlan.package
-                                              .isNotEmpty) {
-                                            if (state.currentPackagePlan
-                                                    .package[0].packageType ==
+                                                  ?.isNotEmpty ??
+                                              false) {
+                                            if (state.currentPackagePlan.package
+                                                    ?.first.packageType ==
                                                 Variable) {
                                               LocalStoragePref
                                                   localStoragePref =

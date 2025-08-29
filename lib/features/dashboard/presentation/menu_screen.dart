@@ -75,8 +75,8 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void _handlePostJobNavigation(PackageState state) {
-    String wallentPan = "Wallet Plan";
-    String variable = "P";
+    String postCount = "P";
+    String viewCount = "V";
     final userLogIn = LocalStoragePref().getUserProfile();
 
     if (userLogIn == null) {
@@ -86,16 +86,16 @@ class _MenuScreenState extends State<MenuScreen> {
     }
 
     if (state is PackageLoadedStates) {
-      if (state.currentPackagePlan.package.isEmpty) {
+      if (state.currentPackagePlan.package?.isEmpty ?? false) {
         showNoPlanDialog(context);
         return;
       }
 
-      final package = state.currentPackagePlan.package.first;
+      final package = state.currentPackagePlan.package!.last;
 
-      if (package.packageType == variable ||
-          package.packageName == wallentPan) {
-        final availableCount = int.tryParse(package.avilableCount) ?? 0;
+      if (package.packageType == postCount) {
+        final availableCount =
+            int.tryParse(package.avilableCount.toString()) ?? 0;
         if (availableCount > 0) {
           Navigator.push(
             context,
@@ -651,7 +651,7 @@ class _MenuScreenState extends State<MenuScreen> {
           current is PackageLoadedStates,
       builder: (context, state) {
         if (state is PackageLoadedStates) {
-          if (state.currentPackagePlan.package.isEmpty) {
+          if (state.currentPackagePlan.package?.isEmpty ?? false) {
             return const SizedBox.shrink();
           } else {
             return _buildPackageInfoCards(state);
@@ -663,14 +663,14 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildPackageInfoCards(PackageLoadedStates state) {
-    final package = state.currentPackagePlan.package.first;
+    final package = state.currentPackagePlan.package!.first;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildInfoCard(
           "lib/assets/images/icons-package.png",
           "Current Package",
-          package.packageName,
+          package.packageName.toString(),
         ),
         _buildInfoCard(
           "lib/assets/images/icons-resume.png",

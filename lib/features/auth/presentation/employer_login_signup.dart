@@ -42,15 +42,17 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
             listenWhen: (previous, current) =>
                 current is AuthLoadFailedState || current is AuthLoadedState,
             listener: (context, state) {
-              if (state is AuthLoadFailedState) {
+              if (state is AuthLoadedState) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Navigationscreen()),
+                  (Route<dynamic> route) => false, // removes everything
+                );
+              } else if (state is AuthLoadFailedState) {
                 if (state.userfailed == USERFAILED.unregister) {
                   Fluttertoast.showToast(msg: "Invalid Credentials!");
                 }
-              } else if (state is AuthLoadedState) {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Navigationscreen()));
               }
             },
             child: Form(

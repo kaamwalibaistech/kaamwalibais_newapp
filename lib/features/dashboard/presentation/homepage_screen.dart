@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
@@ -51,6 +52,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
   String selecteJobdId = "2";
   String selectedLocation = "Location";
   bool toggleSearch = true;
+  double _buttonScale = 1.0;
+  double _locationButtonScale = 1.0;
+
   Categorylistmodel? categorylistmodel;
 
   Future<void> checkForUpdate() async {
@@ -266,6 +270,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
+                              onTapDown: (_) {
+                                HapticFeedback.lightImpact(); // vibration
+                                setState(() =>
+                                    _buttonScale = 0.95); // shrink on press
+                              },
+                              onTapUp: (_) => setState(
+                                  () => _buttonScale = 1.0), // release back
+                              onTapCancel: () =>
+                                  setState(() => _buttonScale = 1.0),
                               onTap: () async {
 <<<<<<< HEAD
                                 if (isInternetConnected) {
@@ -305,37 +318,61 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 );
 >>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
                               },
-                              child: Container(
-                                padding: const EdgeInsets.only(left: 15),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
-                                width: MediaQuery.of(context).size.width * 0.52,
-                                decoration: BoxDecoration(
+                              child: AnimatedScale(
+                                scale: _buttonScale,
+                                duration: const Duration(milliseconds: 120),
+                                curve: Curves.easeOut,
+                                child: Container(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.52,
+                                  decoration: BoxDecoration(
                                     color: whiteColor,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      selectedJobName,
-                                      style: TextStyle(
-                                        color: selectedJobName == "Select a job"
-                                            ? Colors.grey
-                                            : Colors.black,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
                                       ),
-                                    ),
-                                    Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 14),
-                                      child: Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        color: Colors.grey,
+                                    ],
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        selectedJobName,
+                                        style: TextStyle(
+                                          color:
+                                              selectedJobName == "Select a job"
+                                                  ? Colors.grey
+                                                  : Colors.black,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const Spacer(),
+                                      const Padding(
+                                        padding: EdgeInsets.only(right: 14),
+                                        child: Icon(
+                                          Icons.keyboard_arrow_down_outlined,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                             GestureDetector(
+                              onTapDown: (_) {
+                                HapticFeedback.lightImpact(); // light vibration
+                                setState(() => _locationButtonScale =
+                                    0.95); // shrink on press
+                              },
+                              onTapUp: (_) => setState(() =>
+                                  _locationButtonScale = 1.0), // release back
+                              onTapCancel: () =>
+                                  setState(() => _locationButtonScale = 1.0),
                               onTap: () async {
                                 final city = await Navigator.push(
                                   context,
@@ -351,39 +388,54 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 }
                                 getCoordinatesFromAddress(selectedLocation);
                               },
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
-                                width: MediaQuery.of(context).size.width * 0.40,
-                                decoration: BoxDecoration(
+                              child: AnimatedScale(
+                                scale: _locationButtonScale,
+                                duration: const Duration(milliseconds: 120),
+                                curve: Curves.easeOut,
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.40,
+                                  decoration: BoxDecoration(
                                     color: whiteColor,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          selectedLocation,
-                                          style: TextStyle(
-                                              color:
-                                                  selectedLocation == "Location"
-                                                      ? Colors.grey
-                                                      : Colors.black),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Icon(
-                                        Icons.keyboard_arrow_down_outlined,
-                                        color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
                                       ),
                                     ],
                                   ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            selectedLocation,
+                                            style: TextStyle(
+                                              color:
+                                                  selectedLocation == "Location"
+                                                      ? Colors.grey
+                                                      : Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        const Icon(
+                                          Icons.keyboard_arrow_down_outlined,
+                                          color: Colors.grey,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            )
                           ],
                         );
                       },
