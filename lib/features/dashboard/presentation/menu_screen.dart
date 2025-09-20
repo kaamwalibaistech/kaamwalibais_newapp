@@ -112,16 +112,31 @@ class _MenuScreenState extends State<MenuScreen> {
       backgroundColor: scaffoldColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
-        child: Column(
-          children: [
-            _buildAuthSection(),
-            _buildPackageInfoSection(),
-            _buildMenuDivider(),
-            _buildMainMenuGrid(),
-            _buildBottomMenuGrid(),
-            _buildTermsAndConditions(),
-            _buildLogoutButton(),
-          ],
+// <<<<<<< ritesh_new
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildAuthSection(),
+              _buildPackageInfoSection(),
+              _buildMenuDivider(),
+              _buildMainMenuGrid(),
+              _buildBottomMenuGrid(),
+              _buildTermsAndConditions(),
+              _buildLogoutButton(),
+            ],
+          ),
+// =======
+//         child: Column(
+//           children: [
+//             _buildAuthSection(),
+//             _buildPackageInfoSection(),
+//             _buildMenuDivider(),
+//             _buildMainMenuGrid(),
+//             _buildBottomMenuGrid(),
+//             _buildTermsAndConditions(),
+//             _buildLogoutButton(),
+//           ],
+// >>>>>>> main
         ),
       ),
     );

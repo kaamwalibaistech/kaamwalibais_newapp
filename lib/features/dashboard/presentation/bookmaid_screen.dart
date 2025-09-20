@@ -181,6 +181,66 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
   String variablee = "v";
   @override
   Widget build(BuildContext context) {
+
+    return Scaffold(
+      backgroundColor: scaffoldColor,
+      appBar: PreferredSize(
+        preferredSize: Size(20, MediaQuery.of(context).size.height * 0.13),
+        child: _buildPackageInfoSection(),
+      ),
+      body: BlocConsumer<DashboardBloc, DashboardState>(
+        bloc: dashboardBloc,
+        listenWhen: (_, state) => state is CandidateListLoadedState,
+        listener: (context, state) {
+          if (state is CandidateListLoadedState) {
+            try {
+              final candidates = state.candidates;
+              final isLastPage = candidates.length < _pageSize;
+
+              if (state.pageKey == 1) {
+                // clear on refresh
+                _paginationController.itemList = [];
+              }
+
+              if (isLastPage) {
+                _paginationController.appendLastPage(candidates);
+              } else {
+                final nextPageKey = state.pageKey + 1;
+                _paginationController.appendPage(candidates, nextPageKey);
+              }
+            } catch (error) {
+              _paginationController.error = error;
+            }
+          }
+        },
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              _paginationController.refresh();
+            },
+            child: PagedListView<int, CandidateData?>(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              shrinkWrap: true,
+              pagingController: _paginationController,
+              scrollController: _scrollController,
+              builderDelegate: PagedChildBuilderDelegate<CandidateData?>(
+                noMoreItemsIndicatorBuilder: (_) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Center(child: SizedBox(height: 21)),
+                ),
+                newPageProgressIndicatorBuilder: (_) =>
+                    const Center(child: BookMaidShimmer()),
+                firstPageProgressIndicatorBuilder: (_) =>
+                    const Center(child: BookMaidShimmer()),
+                itemBuilder: (context, model, index) {
+                  return BookMaidCard(model: model!);
+                },
+                noItemsFoundIndicatorBuilder: (_) => const SizedBox.shrink(),
+              ),
+            ),
+          );
+        },
+
     // purchasedPackageBloc =
     //     BlocProvider.of<PurchasedPackageDataBloc>(context, listen: false);
     return Scaffold(
@@ -243,10 +303,14 @@ class _BookmaidScreenState extends State<BookmaidScreen> {
             )
           ],
         ),
+
       ),
     );
   }
 }
+
+// Your BookMaidCard widget remains unchanged
+// (no need to paste again unless you want modifications for that part)
 
 class BookMaidCard extends StatefulWidget {
   const BookMaidCard({
