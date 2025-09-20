@@ -787,29 +787,6 @@ class _JobsPostState extends State<JobsPost> {
                                 maximumPaymentController.text,
                                 localUserProfileData!.userId);
 
-                        // if (data.status == "200") {
-                        //   JobRepository jobRepository = JobRepository();
-                        //   await jobRepository.createJobsPost(
-                        //       localUserProfileData.userId.toString(),
-                        //       categoryvalue.toString(),
-                        //       locationController.text,
-                        //       jobShiftvalue.toString(),
-                        //       scheduleValue.toString(),
-                        //       genderValue.toString(),
-                        //       marriedvalue.toString(),
-                        //       religionValue.toString(),
-                        //       educationValue.toString(),
-                        //       languageValue.toString(),
-                        //       ageValue.toString(),
-                        //       experienceValue.toString(),
-                        //       minimumPaymentController.text,
-                        //       maximumPaymentController.text);
-                        //   _homepageBloc!.add(GetHomePageCategoriesEvents());
-                        //   BlocProvider.of<PurchasedPackageDataBloc>(context)
-                        //       .add(PurchasedPackageEvent());
-                        // } else {
-                        //   Fluttertoast.showToast(msg: data.msg);
-                        // }
                         _homepageBloc.add(GetHomePageCategoriesEvents());
                         BlocProvider.of<PurchasedPackageDataBloc>(context,
                                 listen: false)
