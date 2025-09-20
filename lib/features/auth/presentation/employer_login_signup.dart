@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
-import 'package:kaamwalijobs_new/assets/colors.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
@@ -43,6 +44,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                 current is AuthLoadFailedState || current is AuthLoadedState,
             listener: (context, state) {
               if (state is AuthLoadedState) {
+                EasyLoading.dismiss();
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -50,6 +52,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                   (Route<dynamic> route) => false, // removes everything
                 );
               } else if (state is AuthLoadFailedState) {
+                EasyLoading.dismiss();
                 if (state.userfailed == USERFAILED.unregister) {
                   Fluttertoast.showToast(msg: "Invalid Credentials!");
                 }
@@ -167,6 +170,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                         ),
                         InkWell(
                           onTap: () async {
+                            EasyLoading.show();
                             if (formkey.currentState?.validate() ?? false) {
                               BlocProvider.of<AuthBloc>(context, listen: false)
                                   .add(AuthenticationEvent(

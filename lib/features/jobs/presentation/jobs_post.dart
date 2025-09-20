@@ -5,12 +5,8 @@ import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 
-<<<<<<< HEAD
-import '../../../assets/colors.dart';
-=======
 import '../../../bloc/homepage_bloc.dart';
 import '../../../constant/colors.dart';
->>>>>>> 3c365715246824f55bd1c788ec0eb6b7fe2a3825
 import '../../../core/local_storage.dart';
 import '../../../models/categorylist.dart';
 import '../../../models/employer_register_model.dart';
@@ -683,7 +679,7 @@ class _JobsPostState extends State<JobsPost> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0, right: 150),
+                  padding: const EdgeInsets.only(left: 5.0, right: 140),
                   child: Row(
                     children: [
                       Text(
@@ -693,7 +689,7 @@ class _JobsPostState extends State<JobsPost> {
                         ),
                       ),
                       SizedBox(
-                        width: 70,
+                        width: MediaQuery.of(context).size.width * 0.18,
                       ),
                       Text(
                         "Maximum",
@@ -791,29 +787,6 @@ class _JobsPostState extends State<JobsPost> {
                                 maximumPaymentController.text,
                                 localUserProfileData!.userId);
 
-                        // if (data.status == "200") {
-                        //   JobRepository jobRepository = JobRepository();
-                        //   await jobRepository.createJobsPost(
-                        //       localUserProfileData.userId.toString(),
-                        //       categoryvalue.toString(),
-                        //       locationController.text,
-                        //       jobShiftvalue.toString(),
-                        //       scheduleValue.toString(),
-                        //       genderValue.toString(),
-                        //       marriedvalue.toString(),
-                        //       religionValue.toString(),
-                        //       educationValue.toString(),
-                        //       languageValue.toString(),
-                        //       ageValue.toString(),
-                        //       experienceValue.toString(),
-                        //       minimumPaymentController.text,
-                        //       maximumPaymentController.text);
-                        //   _homepageBloc!.add(GetHomePageCategoriesEvents());
-                        //   BlocProvider.of<PurchasedPackageDataBloc>(context)
-                        //       .add(PurchasedPackageEvent());
-                        // } else {
-                        //   Fluttertoast.showToast(msg: data.msg);
-                        // }
                         _homepageBloc.add(GetHomePageCategoriesEvents());
                         BlocProvider.of<PurchasedPackageDataBloc>(context,
                                 listen: false)

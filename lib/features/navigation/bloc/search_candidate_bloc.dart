@@ -18,9 +18,6 @@ class SearchCandidateBloc
       emit(SearchCandidateSuccessState(candidates: _searchCandidateModel.data));
       emit(SearchCandidateCountLoaded(
           candidatecount: _searchCandidateModel.candidateCount));
-      if (_searchCandidateModel.data == []) {
-        emit(SearchCandidateErrorState(errorMsg: "No candidate available."));
-      }
     } catch (e) {
       emit(SearchCandidateErrorState(
           errorMsg: "Unable to fetch candidates. Please try again later."));
