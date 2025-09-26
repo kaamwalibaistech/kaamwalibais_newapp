@@ -44,7 +44,9 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                 current is AuthLoadFailedState || current is AuthLoadedState,
             listener: (context, state) {
               if (state is AuthLoadedState) {
+
                 EasyLoading.dismiss();
+
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -52,6 +54,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                   (Route<dynamic> route) => false, // removes everything
                 );
               } else if (state is AuthLoadFailedState) {
+
                 EasyLoading.dismiss();
                 if (state.userfailed == USERFAILED.unregister) {
                   Fluttertoast.showToast(msg: "Invalid Credentials!");
