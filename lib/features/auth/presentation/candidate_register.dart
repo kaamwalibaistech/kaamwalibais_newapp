@@ -4,7 +4,6 @@ import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/models/categorylist.dart';
 
 import '../../../models/empolyer_registerotp_model.dart';
-import '../../dashboard/presentation/location/location_select.dart';
 import '../network/auth_repository.dart';
 import 'candidate_register_otpscreen.dart';
 
@@ -255,7 +254,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5),
                     child: Text(
-                      "Password *",
+                      " create Password (पासवर्ड बनाएं)*",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -686,51 +685,36 @@ class _CandidateRegisterState extends State<CandidateRegister> {
                     ),
                   ),
                   SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: GestureDetector(
-                        onTap: () async {
-                          final address = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LocationSelectScreen()));
-                          setState(() {
-                            locationController.text = address;
-                          });
-                        },
-                        child: Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ),
-                            border: Border.all(color: textGreyColor),
-                          ),
-                          child: Center(
-                              child: locationController.text.isEmpty
-                                  ? Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text(
-                                            "Enter work location",
-                                            style: TextStyle(fontSize: 16),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Row(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text(locationController.text),
-                                        ),
-                                      ],
-                                    )),
+                    width: MediaQuery.of(context).size.width * 0.93,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Enter Work Location";
+                        }
+                        return null;
+                      },
+                      controller: locationController,
+                      decoration: InputDecoration(
+                        hintText: "Enter work location",
+                        hintStyle: const TextStyle(fontSize: 16),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: textGreyColor),
                         ),
-                      )),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: textGreyColor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Colors.blue), // highlight on focus
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 14),
+                      ),
+                    ),
+                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
                     child: Text(
