@@ -180,8 +180,7 @@ class AuthRepository {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
-    Uri url = Uri.parse(
-            "https://test.kaamwalijobs.com/API/Mobile_api/testsendforgototp")
+    Uri url = Uri.parse("https://kaamwalijobs.com/API/Mobile_api/sendsignupotp")
         .replace(queryParameters: queryParameters);
 
     final body = {'mobile_no': number};
