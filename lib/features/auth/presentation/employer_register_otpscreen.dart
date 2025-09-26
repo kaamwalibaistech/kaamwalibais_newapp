@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -138,6 +140,7 @@ class _EmolpyerRegisterOtpscreenState extends State<EmolpyerRegisterOtpscreen> {
             sizedBoxH20,
             GestureDetector(
               onTap: () async {
+                log(widget.otp.msg);
                 if (widget.otp.otp == otpcontroller) {
                   await _registerEmployer();
                   ScaffoldMessenger.of(context).showSnackBar(

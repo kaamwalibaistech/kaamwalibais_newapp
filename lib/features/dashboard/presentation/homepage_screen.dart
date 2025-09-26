@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:in_app_update/in_app_update.dart';
+// import 'package:in_app_update/in_app_update.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_state.dart';
@@ -62,24 +62,24 @@ class _HomepageScreenState extends State<HomepageScreen> {
     "lib/assets/images/office_boy.png"
   ];
 
-  Future<void> checkForUpdate() async {
-    try {
-      AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+  // Future<void> checkForUpdate() async {
+  //   try {
+  //     AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
 
-      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-        if (updateInfo.immediateUpdateAllowed) {
-          await InAppUpdate.performImmediateUpdate();
-        } else if (updateInfo.flexibleUpdateAllowed) {
-          await InAppUpdate.startFlexibleUpdate();
-          await InAppUpdate.completeFlexibleUpdate();
-        } else {
-          print("Update available, but no method allowed.");
-        }
-      }
-    } catch (e) {
-      print("Error checking for update: $e");
-    }
-  }
+  //     if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+  //       if (updateInfo.immediateUpdateAllowed) {
+  //         await InAppUpdate.performImmediateUpdate();
+  //       } else if (updateInfo.flexibleUpdateAllowed) {
+  //         await InAppUpdate.startFlexibleUpdate();
+  //         await InAppUpdate.completeFlexibleUpdate();
+  //       } else {
+  //         print("Update available, but no method allowed.");
+  //       }
+  //     }
+  //   } catch (e) {
+  //     print("Error checking for update: $e");
+  //   }
+  // }
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
@@ -87,7 +87,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
 
-    checkForUpdate();
+    // checkForUpdate();
 
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);

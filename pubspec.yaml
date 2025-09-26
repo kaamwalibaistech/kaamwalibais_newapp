@@ -63,7 +63,7 @@ dependencies:
   device_preview: ^1.2.0
   flutter_screenutil: ^5.9.3
   location: ^7.0.1
-  in_app_update: ^4.2.3
+  # in_app_update: ^4.2.5
   flutter_easyloading: ^3.0.5
 
 dev_dependencies:
