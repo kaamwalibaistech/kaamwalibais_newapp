@@ -235,11 +235,15 @@ class _ViewJobPostedState extends State<ViewJobPosted> {
                         color: Colors.grey[600],
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        job.jobLocation,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14,
-                          color: Colors.grey[600],
+                      Expanded(
+                        child: Text(
+                          maxLines: 1,
+                          job.jobLocation,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ),
                     ],

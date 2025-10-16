@@ -47,7 +47,8 @@ class _PackagesState extends State<Packages> {
   checkLoginPopup() async {
     showDialog(
         context: context,
-        builder: (context) => const AlertDialog(content: LoginPopup()));
+        builder: (context) => const Dialog(
+            backgroundColor: Colors.transparent, child: LoginPopup()));
   }
 
   String? packageId;

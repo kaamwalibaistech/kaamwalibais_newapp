@@ -44,7 +44,6 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                 current is AuthLoadFailedState || current is AuthLoadedState,
             listener: (context, state) {
               if (state is AuthLoadedState) {
-
                 EasyLoading.dismiss();
 
                 Navigator.pushAndRemoveUntil(
@@ -54,9 +53,9 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                   (Route<dynamic> route) => false, // removes everything
                 );
               } else if (state is AuthLoadFailedState) {
-
                 EasyLoading.dismiss();
                 if (state.userfailed == USERFAILED.unregister) {
+                  EasyLoading.dismiss();
                   Fluttertoast.showToast(msg: "Invalid Credentials!");
                 }
               }
@@ -175,11 +174,28 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                           onTap: () async {
                             EasyLoading.show();
                             if (formkey.currentState?.validate() ?? false) {
+                              EasyLoading.dismiss();
                               BlocProvider.of<AuthBloc>(context, listen: false)
-                                  .add(AuthenticationEvent(
-                                      phoneNumber: _mobileNoController.text,
-                                      password: _passwordController.text,
-                                      userType: USER.employer));
+                                  .add(
+                                AuthenticationEvent(
+                                  phoneNumber: _mobileNoController.text,
+                                  password: _passwordController.text,
+                                  userType: USER.employer,
+                                ),
+                              );
+                            } else {
+                              EasyLoading.dismiss();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    "Please fill all required fields correctly",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
                             }
                           },
                           child: Container(
