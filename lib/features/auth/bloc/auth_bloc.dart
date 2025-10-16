@@ -65,7 +65,6 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         EmployerRegisterModel? employerDetails = await authRepository.userLogin(
             event.phoneNumber, event.password, event.userType);
         if (employerDetails != null && employerDetails.status == '200') {
-          // store locally
           LocalStoragePref.instance
               ?.storeUserProfile(jsonEncode(employerDetails.toJson()));
           emit(AuthLoadedState(userData: employerDetails));

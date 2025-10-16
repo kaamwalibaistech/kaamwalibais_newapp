@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/models/categorylist.dart';
@@ -25,40 +26,25 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   Categorylistmodel? categoryitemModel;
 
   final marriageItems = ["Unmarried", "Married", "Divorce"];
-  final religionItems = [
-    "Hindu",
-    "Muslim",
-    "Catholic",
-  ];
-
+  final religionItems = ["Hindu", "Muslim", "Catholic"];
   final genderItems = ["Male", "Female", "Not prefer to say"];
   final educationItem = ["<5th", ">5th", ">10"];
   final timingItem = [
     "Morning Shift",
     "Afternoon Shift",
     "Evening Shift",
-    "Night Shift",
+    "Night Shift"
   ];
-
-  @override
-  void initState() {
-    super.initState();
-    loadCategoryUpload();
-  }
-
-  Future<void> loadCategoryUpload() async {
-    final categorydata = await AuthRepository().getcategorynameid();
-    setState(() {
-      categoryitemModel = categorydata;
-    });
-  }
-
   final workingItem = [
-    // hours
-    "2 Hours", "4 Hours", "6 Hours", "8 Hours",
-    "10 Hours", "12 Hours", "24 Hours"
+    "2 Hours",
+    "4 Hours",
+    "6 Hours",
+    "8 Hours",
+    "10 Hours",
+    "12 Hours",
+    "24 Hours"
   ];
-  final expectedSalaryItem = [
+  final below6HoursSalaryItem = [
     "1000",
     "2000",
     "3000",
@@ -68,6 +54,9 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     "7000",
     "8000",
     "9000",
+    "10000"
+  ];
+  final above6HoursSalaryItem = [
     "10000",
     "11000",
     "12000",
@@ -108,21 +97,49 @@ class _CandidateRegisterState extends State<CandidateRegister> {
   String? workingHrsValue;
   String? expectedSalaryValue;
   String? totalExperienceValue;
+
   TextEditingController nameController = TextEditingController();
   TextEditingController numberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-
   TextEditingController locationController = TextEditingController();
 
-  // String? validateEmail(String? email) {
-  //   RegExp emailRegEx = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
-  //   final isEmailValid = emailRegEx.hasMatch(email ?? "");
-  //   if (!isEmailValid) return "please  Enter a valid email";
-  //   return null;
-  // }
+  bool _obscurePassword = true;
+  Otp? otp;
+
+  @override
+  void initState() {
+    super.initState();
+    loadCategoryUpload();
+  }
+
+  Future<void> loadCategoryUpload() async {
+    final categorydata = await AuthRepository().getcategorynameid();
+    setState(() {
+      categoryitemModel = categorydata;
+    });
+  }
+
+  InputDecoration buildInputDecoration(String hint) {
+    return InputDecoration(
+      counterText: "",
+      hintText: hint,
+      hintStyle: TextStyle(color: Colors.grey.shade600),
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade300),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: blueColor, width: 1.5),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,825 +147,296 @@ class _CandidateRegisterState extends State<CandidateRegister> {
       backgroundColor: scaffoldColor,
       appBar: AppBar(
         backgroundColor: scaffoldColor,
-        leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back)),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Center(
-                      child: Text(
-                    "APPLY FOR A JOB",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  )),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      "ध्यान दें: नौकरी के लिए आवेदन करने के बाद प्रतीक्षा करें। कामवाली जॉब्स के अधिकारी यथाशीघ्र आपसे संपर्क करेंगे.",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: primaryColor,
-                      ),
-                    ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10),
+                Text(
+                  "APPLY FOR A JOB",
+                  style: GoogleFonts.poppins(
+                      fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: primaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    "ध्यान दें: नौकरी के लिए आवेदन करने के बाद प्रतीक्षा करें। कामवाली जॉब्स के अधिकारी यथाशीघ्र आपसे संपर्क करेंगे.",
+                    style: TextStyle(fontSize: 14, color: primaryColor),
+                    textAlign: TextAlign.center,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10.0, left: 5),
-                    child: Text(
-                      "Full Name (नाम) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter Full Name";
-                          }
-                          return null;
-                        },
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                          hintText: "Enter Full Name.",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5),
-                    child: Text(
-                      "Mobile No. (मोबाइल नंबर) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Phone number should be 10 in digits";
-                          }
-                          return null;
-                        },
-                        controller: numberController,
-                        maxLength: 10,
-                        decoration: InputDecoration(
-                          counterText: "",
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                          hintText: "Enter Mobile no.",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5),
-                    child: Text(
-                      "Email (ईमेल)",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        // validator: validateEmail,
-                        controller: emailController,
-                        // maxLength: 10,
-                        decoration: InputDecoration(
-                          counterText: "",
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                          hintText: "Enter Email.",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5),
-                    child: Text(
-                      " create Password (पासवर्ड बनाएं)*",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty && value.split("").length < 6) {
-                            return "Enter Password";
-                          }
-                          return null;
-                        },
-                        controller: passwordController,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                          hintText: "Enter Password",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Category (वर्ग)*",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  List<String> tempSelectedCategories =
-                                      List.from(categoryvalue);
+                ),
+                const SizedBox(height: 20),
 
-                                  return AlertDialog(
-                                    title: Text("Select Categories"),
-                                    content: Container(
-                                      width: double.maxFinite,
-                                      child: categoryitemModel == null
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: categoryitemModel!
-                                                  .data.length,
-                                              itemBuilder: (context, index) {
-                                                final category =
-                                                    categoryitemModel!
-                                                        .data[index];
-                                                return CheckboxListTile(
-                                                  title: Text(
-                                                      category.categoryName),
-                                                  value: tempSelectedCategories
-                                                      .contains(
-                                                          category.categoryId),
-                                                  onChanged: (bool? value) {
-                                                    if (value == true) {
-                                                      tempSelectedCategories
-                                                          .add(category
-                                                              .categoryId);
-                                                    } else {
-                                                      tempSelectedCategories
-                                                          .remove(category
-                                                              .categoryId);
-                                                    }
-                                                    (context as Element)
-                                                        .markNeedsBuild();
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Cancel"),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            categoryvalue =
-                                                tempSelectedCategories;
-                                          });
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Done"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                categoryvalue.isEmpty
-                                    ? Text(
-                                        "Select Category",
-                                        style: TextStyle(
-                                            color: Colors.grey.shade600,
-                                            fontSize: 16),
-                                      )
-                                    : Expanded(
-                                        child: Text(
-                                          _getSelectedCategoryNames(),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                Icon(Icons.arrow_drop_down),
-                              ],
-                            ),
-                          ),
-                          if (categoryvalue.isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Text(
-                                'Select Category',
-                                style:
-                                    TextStyle(color: Colors.red, fontSize: 12),
+                // Name
+                buildTextField("Full Name (नाम) *", nameController,
+                    validator: (v) {
+                  if (v!.isEmpty) return "Enter Full Name";
+                  return null;
+                }),
+
+                // Mobile
+                buildTextField("Mobile No. (मोबाइल नंबर) *", numberController,
+                    maxLength: 10,
+                    keyboardType: TextInputType.phone, validator: (v) {
+                  if (v!.isEmpty || v.length != 10)
+                    return "Enter 10 digit number";
+                  return null;
+                }),
+
+                // Email
+                buildTextField("Email (ईमेल)", emailController,
+                    keyboardType: TextInputType.emailAddress),
+
+                // Password
+                buildTextField(
+                  "Create Password (पासवर्ड बनाएं) *",
+                  passwordController,
+                  obscureText: _obscurePassword,
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscurePassword
+                        ? Icons.visibility_off
+                        : Icons.visibility),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
+                  ),
+                  validator: (v) {
+                    if (v!.isEmpty || v.length < 6)
+                      return "Password min 6 characters";
+                    return null;
+                  },
+                ),
+
+                // Category
+                const SizedBox(height: 15),
+                buildSectionTitle("Category (वर्ग) *"),
+                buildCategorySelector(),
+
+                // Marital Status
+                buildDropdown(
+                    "Marital Status (वैवाहिक स्थिति ) *",
+                    marriedvalue,
+                    marriageItems,
+                    (v) => setState(() => marriedvalue = v),
+                    validator: (v) =>
+                        v == null ? "Select Marital Status" : null),
+
+                // Age
+                buildTextField("Age (आयु) *", ageController,
+                    keyboardType: TextInputType.number,
+                    maxLength: 3, validator: (v) {
+                  if (v!.isEmpty) return "Enter Age";
+                  if (int.parse(v) < 18) return "Age must be >=18";
+                  return null;
+                }),
+
+                // Religion
+                buildDropdown("Religion (धर्म) *", religionvalue, religionItems,
+                    (v) => setState(() => religionvalue = v),
+                    validator: (v) => v == null ? "Select Religion" : null),
+
+                // Gender
+                buildDropdown("Gender (लिंग) *", genderValue, genderItems,
+                    (v) => setState(() => genderValue = v),
+                    validator: (v) => v == null ? "Select Gender" : null),
+
+                // Passport
+                buildSectionTitle("Passport (पारपत्र)"),
+                Row(
+                  children: Passport.values.map((p) {
+                    return Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: p,
+                          groupValue: passportSelected,
+                          onChanged: (val) => setState(() {
+                            passportSelected = val;
+                            passport = val!.name;
+                          }),
+                        ),
+                        Text(p.name, style: TextStyle(fontSize: 14))
+                      ],
+                    );
+                  }).toList(),
+                ),
+
+                // Education
+                buildDropdown("Education (शिक्षा) *", educationValue,
+                    educationItem, (v) => setState(() => educationValue = v),
+                    validator: (v) => v == null ? "Select Education" : null),
+
+                // Working Hrs
+                buildDropdown(
+                    "Working Hrs (कार्य घंटे) *",
+                    workingHrsValue,
+                    workingItem,
+                    (v) => setState(() {
+                          workingHrsValue = v;
+                          expectedSalaryValue = null;
+                        }),
+                    validator: (v) =>
+                        v == null ? "Select Working Hours" : null),
+
+                // Work Location
+                buildTextField(
+                    "Work Location (कार्यस्थल) *", locationController,
+                    validator: (v) =>
+                        v!.isEmpty ? "Enter Work Location" : null),
+
+                // Expected Salary
+                buildDropdown(
+                  "Expected Salary (अपेक्षित वेतन) *",
+                  expectedSalaryValue,
+                  workingHrsValue != null &&
+                          ["2 Hours", "4 Hours", "6 Hours"]
+                              .contains(workingHrsValue)
+                      ? below6HoursSalaryItem
+                      : above6HoursSalaryItem,
+                  (v) => setState(() => expectedSalaryValue = v),
+                  validator: (v) => v == null ? "Select Expected Salary" : null,
+                ),
+
+                // Total Experience
+                buildDropdown(
+                    "Total Experience (कुल अनुभव) *",
+                    totalExperienceValue,
+                    totalExperienceItem,
+                    (v) => setState(() => totalExperienceValue = v),
+                    validator: (v) =>
+                        v == null ? "Select Total Experience" : null),
+
+                // Languages
+                buildSectionTitle(
+                    "Which languages do you know? (तुम कौन सी भाषा जानते हो)"),
+                Row(
+                  children: Language.values.map((l) {
+                    return Row(
+                      children: [
+                        Radio(
+                          activeColor: selectionGreenColor,
+                          value: l,
+                          groupValue: languageSelected,
+                          onChanged: (val) => setState(() {
+                            languageSelected = val;
+                            language = val!.name;
+                          }),
+                        ),
+                        Text(l.name, style: TextStyle(fontSize: 14))
+                      ],
+                    );
+                  }).toList(),
+                ),
+
+                const SizedBox(height: 20),
+
+                // Submit Button
+                GestureDetector(
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        EasyLoading.show();
+
+                        otp = await AuthRepository()
+                            .getEmployerRegisterOtp(numberController.text);
+
+                        if (otp != null && otp!.status == '200') {
+                          EasyLoading.dismiss();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CandidateRegisterOtpScreen(
+                                name: nameController.text,
+                                mobileNo: numberController.text,
+                                password: passwordController.text,
+                                email: emailController.text,
+                                category: categoryvalue,
+                                maritalStatus: marriedvalue,
+                                age: ageController.text,
+                                religion: religionvalue,
+                                gender: genderValue,
+                                passport: passport.toString(),
+                                education: educationValue,
+                                workingHrs: workingHrsValue,
+                                location: locationController.text,
+                                expectedSalary: expectedSalaryValue,
+                                totalExperience: totalExperienceValue,
+                                launguage: language.toString(),
+                                otp: otp,
                               ),
                             ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Marital Status (वैवाहिक स्थिति ) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Maritial Status"),
-                      value: marriedvalue,
-                      items: marriageItems.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
+                          );
+                        } else {
+                          EasyLoading.dismiss();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                otp?.msg ??
+                                    "Something went wrong. Please try again.",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Error: ${e.toString()}",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            backgroundColor: Colors.red,
+                            duration: const Duration(seconds: 3),
+                          ),
                         );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          marriedvalue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Maritial Status'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
+                      }
+                    }
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: LinearGradient(
+                          colors: [blueColor, Colors.blueAccent]),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.shade200,
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        )
+                      ],
                     ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5),
-                    child: Text(
-                      "Age (आयु) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.93,
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        maxLength: 3,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Enter Age";
-                          } else {
-                            if (int.parse(value) < 18) {
-                              return "Age must be greater than 18";
-                            }
-                          }
-                          return null;
-                        },
-                        controller: ageController,
-                        decoration: InputDecoration(
-                          counterText: "",
-                          contentPadding:
-                              EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-                          hintText: "Eg.18",
-                          hintStyle: TextStyle(color: textGreyColor),
-                          border: OutlineInputBorder(),
+                    child: Center(
+                      child: Text(
+                        "Submit",
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Religion (धर्म) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Religion"),
-                      value: religionvalue,
-                      items: religionItems.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          religionvalue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Religion'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Gender (लिंग) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Gender"),
-                      value: genderValue,
-                      items: genderItems.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          genderValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Gender'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Passport (पारपत्र )",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                            activeColor: selectionGreenColor,
-                            value: Passport.Yes,
-                            groupValue: passportSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                passportSelected = value;
-                                passport = value!.name;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Yes',
-                            style: TextStyle(
-                                fontFamily: "Arial",
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF2F2F2F)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            activeColor: selectionGreenColor,
-                            value: Passport.No,
-                            groupValue: passportSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                passportSelected = value;
-                                passport = value!.name;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'No',
-                            style: TextStyle(
-                                fontFamily: "Arial",
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF2F2F2F)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Education (शिक्षा) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Education"),
-                      value: educationValue,
-                      items: educationItem.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          educationValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Education'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Working Hrs (कार्य घंटे) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Working Hours"),
-                      value: workingHrsValue,
-                      items: workingItem.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          workingHrsValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Working Hours'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Work Location (कार्यस्थल) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.93,
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Enter Work Location";
-                        }
-                        return null;
-                      },
-                      controller: locationController,
-                      decoration: InputDecoration(
-                        hintText: "Enter work location",
-                        hintStyle: const TextStyle(fontSize: 16),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: textGreyColor),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(color: textGreyColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide(
-                              color: Colors.blue), // highlight on focus
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 14),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Expected Salary (अपेक्षित वेतन) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Expected Salary"),
-                      value: expectedSalaryValue,
-                      items: expectedSalaryItem.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          expectedSalaryValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Expected Salary'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20.0, left: 5, bottom: 5),
-                    child: Text(
-                      "Total Experience (कुल अनुभव) *",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    child: DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 6, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      hint: const Text("Select Experience"),
-                      value: totalExperienceValue,
-                      items: totalExperienceItem.map((source) {
-                        return DropdownMenuItem(
-                          value: source,
-                          child: Text(source),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          totalExperienceValue = newValue!;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Select Total Experience'; // Validation message
-                        }
-                        return null; // Valid input
-                      },
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      "Which languages do you know? (तुम कौन सी भाषा जानते हो) ",
-                      style: TextStyle(
-                        fontFamily: "Arial",
-                        fontSize: 14,
-                        color: blackColor,
-                      ),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Radio(
-                            activeColor: selectionGreenColor,
-                            value: Language.English,
-                            groupValue: languageSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                languageSelected = value;
-                                language = value!.name;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'English',
-                            style: TextStyle(
-                                fontFamily: "Arial",
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF2F2F2F)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            activeColor: selectionGreenColor,
-                            value: Language.Hindi,
-                            groupValue: languageSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                languageSelected = value;
-                                language = value!.name;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Hindi',
-                            style: TextStyle(
-                                fontFamily: "Arial",
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF2F2F2F)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            activeColor: selectionGreenColor,
-                            value: Language.Marathi,
-                            groupValue: languageSelected,
-                            onChanged: (value) {
-                              setState(() {
-                                languageSelected = value;
-                                language = value!.name;
-                              });
-                            },
-                          ),
-                          const Text(
-                            'Marathi',
-                            style: TextStyle(
-                                fontFamily: "Arial",
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xFF2F2F2F)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Center(
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (_formKey.currentState!.validate() &&
-                            nameController.text.isNotEmpty &&
-                            numberController.text.isNotEmpty &&
-                            passwordController.text.isNotEmpty &&
-                            categoryvalue.isNotEmpty &&
-                            marriedvalue!.isNotEmpty &&
-                            religionvalue!.isNotEmpty &&
-                            genderValue!.isNotEmpty &&
-                            passportSelected!.name.isNotEmpty &&
-                            educationValue!.isNotEmpty &&
-                            workingHrsValue!.isNotEmpty &&
-                            ageController.text.isNotEmpty &&
-                            locationController.text.isNotEmpty &&
-                            expectedSalaryValue!.isNotEmpty &&
-                            totalExperienceValue!.isNotEmpty &&
-                            languageSelected!.name.isNotEmpty) {
-                          Otp? otp = await AuthRepository()
-                              .getEmployerRegisterOtp(numberController.text);
-                          if (otp != null && otp.status == '200') {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CandidateRegisterOtpScreen(
-                                            name: nameController.text,
-                                            mobileNo: numberController.text,
-                                            password: passwordController.text,
-                                            email: emailController.text,
-                                            category: categoryvalue,
-                                            maritalStatus: marriedvalue,
-                                            age: ageController.text,
-                                            religion: religionvalue,
-                                            gender: genderValue,
-                                            passport: passport.toString(),
-                                            education: educationValue,
-                                            workingHrs: workingHrsValue,
-                                            location: locationController.text,
-                                            expectedSalary: expectedSalaryValue,
-                                            totalExperience:
-                                                totalExperienceValue,
-                                            launguage: language.toString(),
-                                            otp: otp)));
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'Mobile Number is Already Registered')));
-                          }
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 50),
-                        width: MediaQuery.of(context).size.width * 0.50,
-                        decoration: BoxDecoration(
-                            color: blueColor,
-                            borderRadius: BorderRadius.circular(10)),
-                        height: MediaQuery.of(context).size.height * 0.06,
-                        child: Center(
-                          child: Text(
-                            "Submit",
-                            style: GoogleFonts.poltawskiNowy(
-                                color: whiteColor, fontSize: 18),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(height: 50),
+              ],
             ),
           ),
         ),
@@ -956,36 +444,170 @@ class _CandidateRegisterState extends State<CandidateRegister> {
     );
   }
 
-  DropdownMenuItem<String> buildMarriedItem(String marriageItems) =>
-      DropdownMenuItem(value: marriageItems, child: Text(marriageItems));
+  Widget buildTextField(String label, TextEditingController controller,
+      {bool obscureText = false,
+      Widget? suffixIcon,
+      TextInputType? keyboardType,
+      int? maxLength,
+      String? Function(String?)? validator}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 15),
+        buildSectionTitle(label),
+        const SizedBox(height: 5),
+        TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          maxLength: maxLength,
+          validator: validator,
+          decoration:
+              buildInputDecoration(label).copyWith(suffixIcon: suffixIcon),
+        ),
+      ],
+    );
+  }
 
-  DropdownMenuItem<String> buildReligionItem(String religionItems) =>
-      DropdownMenuItem(value: religionItems, child: Text(religionItems));
+  Widget buildDropdown(String label, String? value, List<String> items,
+      void Function(String?) onChanged,
+      {String? Function(String?)? validator}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 15),
+        buildSectionTitle(label),
+        const SizedBox(height: 5),
+        DropdownButtonFormField<String>(
+          value: value,
+          decoration: buildInputDecoration("").copyWith(hintText: label),
+          items: items
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: onChanged,
+          validator: validator,
+        ),
+      ],
+    );
+  }
 
-  DropdownMenuItem<String> buildGenderItems(String genderItems) =>
-      DropdownMenuItem(value: genderItems, child: Text(genderItems));
+  Widget buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3.0),
+      child: Text(title,
+          style:
+              GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 14)),
+    );
+  }
 
-  DropdownMenuItem<String> buildEducationItems(String educationItem) =>
-      DropdownMenuItem(value: educationItem, child: Text(educationItem));
-
-  DropdownMenuItem<String> buildTimingItems(String timingItem) =>
-      DropdownMenuItem(value: timingItem, child: Text(timingItem));
-  DropdownMenuItem<String> buildWorkingHrsItems(String timingItem) =>
-      DropdownMenuItem(value: timingItem, child: Text(timingItem));
-
-  DropdownMenuItem<String> buildExpectedSalaryItems(
-          String expectedSalaryItem) =>
-      DropdownMenuItem(
-          value: expectedSalaryItem, child: Text(expectedSalaryItem));
-
-  DropdownMenuItem<String> buildTotalExperienceItems(
-          String totalExperienceItem) =>
-      DropdownMenuItem(
-          value: totalExperienceItem, child: Text(totalExperienceItem));
+  Widget buildCategorySelector() {
+    return FormField<List<String>>(
+      validator: (value) =>
+          categoryvalue.isEmpty ? 'Select at least one category' : null,
+      builder: (formState) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    List<String> tempSelectedCategories =
+                        List.from(categoryvalue);
+                    return AlertDialog(
+                      title: const Text("Select Categories"),
+                      content: SizedBox(
+                        width: double.maxFinite,
+                        child: categoryitemModel == null
+                            ? const Center(child: CircularProgressIndicator())
+                            : StatefulBuilder(
+                                builder: (context, setStateDialog) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: categoryitemModel!.data.length,
+                                  itemBuilder: (context, index) {
+                                    final category =
+                                        categoryitemModel!.data[index];
+                                    return CheckboxListTile(
+                                      title: Text(category.categoryName),
+                                      value: tempSelectedCategories
+                                          .contains(category.categoryId),
+                                      onChanged: (bool? value) {
+                                        setStateDialog(() {
+                                          if (value == true) {
+                                            tempSelectedCategories
+                                                .add(category.categoryId);
+                                          } else {
+                                            tempSelectedCategories
+                                                .remove(category.categoryId);
+                                          }
+                                        });
+                                      },
+                                    );
+                                  },
+                                );
+                              }),
+                      ),
+                      actions: [
+                        TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text("Cancel")),
+                        TextButton(
+                            onPressed: () {
+                              setState(
+                                  () => categoryvalue = tempSelectedCategories);
+                              formState.didChange(categoryvalue);
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Done"))
+                      ],
+                    );
+                  },
+                );
+              },
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                      color: formState.hasError
+                          ? Colors.red
+                          : Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        categoryvalue.isEmpty
+                            ? "Select Category"
+                            : _getSelectedCategoryNames(),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                    const Icon(Icons.arrow_drop_down),
+                  ],
+                ),
+              ),
+            ),
+            if (formState.hasError)
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0, left: 4),
+                child: Text(formState.errorText!,
+                    style: const TextStyle(color: Colors.red, fontSize: 12)),
+              ),
+          ],
+        );
+      },
+    );
+  }
 
   String _getSelectedCategoryNames() {
     if (categoryitemModel == null) return "";
-
     List<String> names = [];
     for (String categoryId in categoryvalue) {
       for (var category in categoryitemModel!.data) {

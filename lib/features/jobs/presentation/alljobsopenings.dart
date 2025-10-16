@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_event.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_state.dart';
@@ -279,8 +279,11 @@ class JobCard extends StatelessWidget {
                       onTap: () {
                         final userLogIn = LocalStoragePref().getUserProfile();
                         if (userLogIn == null) {
-                          Fluttertoast.showToast(
-                              msg: "Please LogIn to Apply for jobs!");
+                          showDialog(
+                              context: context,
+                              builder: (context) => const Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: LoginPopup()));
                         } else {
                           if (userLogIn.flag == "1") {
                             Navigator.push(
@@ -292,9 +295,60 @@ class JobCard extends StatelessWidget {
                                         jobsType: job!.jobType.toString(),
                                         jobsId: job!.jobpostId.toString())));
                           } else {
-                            Fluttertoast.showToast(
-                                msg:
-                                    "Only candidates are eligible to apply for the jobs!");
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                backgroundColor: Colors.white,
+                                title: Row(
+                                  children: [
+                                    Icon(Icons.info_outline,
+                                        color: Colors.redAccent, size: 28),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Candidates Eligibility',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: Text(
+                                  "Only candidates are eligible to apply for the jobs!",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey[700],
+                                    height: 1.4,
+                                  ),
+                                ),
+                                actionsPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                actions: [
+                                  TextButton(
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: Colors.white,
+                                      backgroundColor: Colors.redAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 18, vertical: 10),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      'OK',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
                           }
                         }
                       },

@@ -69,24 +69,14 @@ class _SearchCandidatesState extends State<SearchCandidates> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    candidateRequest.categoryId = widget.categoryId.toString();
-    candidateRequest.userId = "";
+    // Only update the pagination-related fields, preserve other filters
+    if (widget.categoryId.isNotEmpty) {
+      candidateRequest.categoryId = widget.categoryId.toString();
+    }
     candidateRequest.page = pageKey.toString();
     candidateRequest.latitude = widget.latitude.toString();
     candidateRequest.longitude = widget.longitude.toString();
-    candidateRequest.km = "3";
-    candidateRequest.minSalry = "";
-    candidateRequest.maxSalary = "";
-    candidateRequest.passport = "";
-    candidateRequest.minAge = "";
-    candidateRequest.maxAge = "";
-    candidateRequest.minExp = "";
-    candidateRequest.maxExp = "";
-    candidateRequest.gender = "";
-    candidateRequest.workingHours = "";
-    candidateRequest.religon = "";
-    candidateRequest.language = "";
-    candidateRequest.sortBy = "";
+
     _searchCandidateBloc
         .add(SearchCandidateLoadDataEvent(candidateRequest: candidateRequest));
   }

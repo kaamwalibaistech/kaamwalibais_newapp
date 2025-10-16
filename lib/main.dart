@@ -17,12 +17,16 @@ import 'features/dashboard/presentation/location/bloc/select_location_bloc.dart'
 import 'features/jobs/network/job_repository.dart';
 import 'features/navigation/bloc/search_candidate_bloc.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await LocalStoragePref.instance?.initPrefBox();
+// final updater = ShorebirdUpdater();
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await LocalStoragePref.instance?.initPrefBox();
   await dotenv.load(fileName: ".env");
+
   runApp(MyApp());
+
   configLoading();
 }
 
@@ -36,9 +40,7 @@ void configLoading() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({
-    super.key,
-  });
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -64,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             create: (context) => PurchasedPackageDataBloc()),
       ],
       child: ScreenUtilInit(
-        designSize: Size(375, 812),
+        designSize: const Size(375, 812),
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: "KaamWaliJobs",

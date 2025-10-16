@@ -42,190 +42,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: scaffoldColor,
       appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
         title: userProfileData != null
-            ? Image.asset(
-                "lib/assets/images/kaamwalijobs.png",
-                cacheHeight: 40,
+            ? Text(
+                "Profile",
+                style: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87),
               )
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
         backgroundColor: scaffoldColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
           child: BlocBuilder<AuthBloc, AuthBlocState>(
-              bloc: _authBloc,
-              buildWhen: (previous, current) =>
-                  current is AuthLoadedState ||
-                  current is AuthLoadFailedState ||
-                  current is AuthLoadingState,
-              builder: (context, state) {
-                if (state is AuthLoadedState) {
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.04,
-                      ),
-                      Text(
-                        "Personal Details",
-                        style: GoogleFonts.poltawskiNowy(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.30,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: whiteColor,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color.fromARGB(255, 200, 197, 197),
-                                spreadRadius: 1,
-                                blurRadius: 7,
-                                offset: Offset(0, 0),
-                              ),
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Name",
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    ),
-                                    Text(
-                                      state.userData.name,
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Contact",
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    ),
-                                    Text(
-                                      state.userData.mobileNo,
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              BlocConsumer<SelectLocationBloc,
-                                      SelectLocationState>(
-                                  listener: (context, state) {},
-                                  builder: (context, snapshot) {
-                                    if (snapshot
-                                        is SelectLocationSuccessState) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Location",
-                                              style:
-                                                  GoogleFonts.poltawskiNowy(),
-                                            ),
-                                            Text(
-                                              snapshot.currentAddress
-                                                  .split(",")
-                                                  .first,
-                                              style:
-                                                  GoogleFonts.poltawskiNowy(),
-                                            )
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Location",
-                                            style: GoogleFonts.poltawskiNowy(),
-                                          ),
-                                          Text(
-                                            "---",
-                                            style: GoogleFonts.poltawskiNowy(),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 20.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Email",
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    ),
-                                    Text(
-                                      state.userData.emailId,
-                                      style: GoogleFonts.poltawskiNowy(),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.04,
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditProfile()));
-                                },
-                                child: Container(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.042,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.28,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: blueColor)),
-                                  child: Center(
-                                    child: Text(
-                                      "Edit profile",
-                                      style: GoogleFonts.poltawskiNowy(
-                                          color: blueColor),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+            bloc: _authBloc,
+            buildWhen: (previous, current) =>
+                current is AuthLoadedState ||
+                current is AuthLoadFailedState ||
+                current is AuthLoadingState,
+            builder: (context, state) {
+              if (state is AuthLoadedState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 45,
+                      backgroundColor: blueColor.withOpacity(0.1),
+                      child: Icon(Icons.person,
+                          size: 50, color: blueColor.withOpacity(0.9)),
+                    ),
+                    sizedBoxH10,
+                    Text(
+                      state.userData.name,
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    sizedBoxH5,
+                    Text(
+                      state.userData.emailId,
+                      style: GoogleFonts.poppins(
+                          fontSize: 14, color: Colors.grey[600]),
+                    ),
+                    sizedBoxH20,
+                    Card(
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            _buildInfoRow(
+                                icon: Icons.phone,
+                                label: "Contact",
+                                value: state.userData.mobileNo),
+                            const Divider(),
+                            BlocBuilder<SelectLocationBloc,
+                                SelectLocationState>(
+                              builder: (context, snapshot) {
+                                String location = "---";
+                                if (snapshot is SelectLocationSuccessState) {
+                                  location =
+                                      snapshot.currentAddress.split(",").first;
+                                }
+                                return _buildInfoRow(
+                                    icon: Icons.location_on,
+                                    label: "Location",
+                                    value: location);
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  );
-                }
-                return Center(
-                    child: Padding(
+                    ),
+                    sizedBoxH20,
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 12),
+                        backgroundColor: blueColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                      icon: const Icon(Icons.edit, color: Colors.white),
+                      label: Text(
+                        "Edit Profile",
+                        style: GoogleFonts.poppins(
+                            fontSize: 16, color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditProfile()),
+                        );
+                      },
+                    )
+                  ],
+                );
+              }
+              return Center(
+                child: Padding(
                   padding: const EdgeInsets.only(top: 200.0),
                   child: Column(
                     children: [
@@ -236,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       sizedBoxH20,
                       Text(
                         "Kaamwalijobs",
-                        style: TextStyle(fontSize: 22),
+                        style: const TextStyle(fontSize: 22),
                       ),
                       sizedBoxH5,
                       ElevatedButton(
@@ -247,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Please Login >",
                           style: TextStyle(color: Colors.white),
                         ),
@@ -257,16 +178,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                ));
-              }),
+                ),
+              );
+            },
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(
+      {required IconData icon, required String label, required String value}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Icon(icon, color: blueColor),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: GoogleFonts.poppins(
+                  fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+          ),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey[800]),
+          ),
+        ],
       ),
     );
   }
 
   checkLoginPopup() async {
     showDialog(
-        context: context,
-        builder: (context) => const AlertDialog(content: LoginPopup()));
+      context: context,
+      builder: (context) => const Dialog(
+        child: LoginPopup(),
+        backgroundColor: Colors.transparent,
+      ),
+    );
   }
 }

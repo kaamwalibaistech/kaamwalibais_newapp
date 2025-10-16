@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:in_app_update/in_app_update.dart';
 // import 'package:in_app_update/in_app_update.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/homepage_event.dart';
@@ -17,6 +21,8 @@ import 'package:kaamwalijobs_new/features/dashboard/presentation/location/locati
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
+import 'package:restart_app/restart_app.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../../../assets/shimmer_effect/homepage_categories.dart';
 import '../../../models/categorylist.dart';
@@ -62,32 +68,40 @@ class _HomepageScreenState extends State<HomepageScreen> {
     "lib/assets/images/office_boy.png"
   ];
 
-  // Future<void> checkForUpdate() async {
-  //   try {
-  //     AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
+  Future<void> checkForUpdate() async {
+    try {
+      AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
 
-  //     if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-  //       if (updateInfo.immediateUpdateAllowed) {
-  //         await InAppUpdate.performImmediateUpdate();
-  //       } else if (updateInfo.flexibleUpdateAllowed) {
-  //         await InAppUpdate.startFlexibleUpdate();
-  //         await InAppUpdate.completeFlexibleUpdate();
-  //       } else {
-  //         print("Update available, but no method allowed.");
-  //       }
-  //     }
-  //   } catch (e) {
-  //     print("Error checking for update: $e");
-  //   }
-  // }
+      if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+        if (updateInfo.immediateUpdateAllowed) {
+          await InAppUpdate.performImmediateUpdate();
+        } else if (updateInfo.flexibleUpdateAllowed) {
+          await InAppUpdate.startFlexibleUpdate();
+
+          await InAppUpdate.completeFlexibleUpdate();
+        } else {
+          print("Update available, but no method allowed.");
+        }
+      } else {
+        print("No update available.");
+      }
+    } catch (e) {
+      print("Error checking for update: $e");
+    }
+  }
 
   late HomepageBloc _homepageBloc;
   late AuthBloc _authBloc;
   @override
   void initState() {
     super.initState();
+    checkForUpdateShoreBird();
 
-    // checkForUpdate();
+    Timer.periodic(const Duration(minutes: 5), (timer) {
+      checkForUpdateShoreBird();
+    });
+
+    checkForUpdate();
 
     _homepageBloc = BlocProvider.of<HomepageBloc>(context, listen: false);
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
@@ -98,7 +112,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
   checkLoginPopup() async {
     showDialog(
         context: context,
-        builder: (context) => const AlertDialog(content: LoginPopup()));
+        builder: (context) => const Dialog(
+            backgroundColor: Colors.transparent, child: LoginPopup()));
   }
 
   String coordinates = "";
@@ -119,6 +134,39 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
   }
 
+  final updater = ShorebirdUpdater();
+
+  Future<void> checkForUpdateShoreBird() async {
+    try {
+      final status = await updater.checkForUpdate();
+
+      if (status == UpdateStatus.outdated) {
+        print("🔄 Update available via Shorebird... Applying now.");
+
+        EasyLoading.show(status: 'Applying update... Please wait.');
+
+        await updater.update();
+
+        await Future.delayed(const Duration(seconds: 3));
+
+        EasyLoading.showSuccess('Update applied! Restarting app...');
+
+        await Future.delayed(const Duration(seconds: 2));
+
+        await Restart.restartApp(
+          notificationTitle: 'Restarting App',
+          notificationBody: 'Tap here to reopen the app.',
+        );
+      } else {
+        log("✅ App is up to date.");
+      }
+    } catch (e) {
+      log("❌ Shorebird update failed: $e");
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,6 +179,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 //   mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // _showBanner(),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.02,
                   ),
@@ -192,21 +241,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           children: [
                             GestureDetector(
                               onTapDown: (_) {
-                                HapticFeedback.lightImpact(); // vibration
-                                setState(() =>
-                                    _buttonScale = 0.95); // shrink on press
+                                HapticFeedback.heavyImpact();
+                                setState(() => _buttonScale = 0.95);
                               },
-                              onTapUp: (_) => setState(
-                                  () => _buttonScale = 1.0), // release back
+                              onTapUp: (_) =>
+                                  setState(() => _buttonScale = 1.0),
                               onTapCancel: () =>
                                   setState(() => _buttonScale = 1.0),
                               onTap: () async {
                                 EasyLoading.show();
-                                HomepageBloc data = HomepageBloc();
+
                                 categorylistmodel =
-                                    await data.loadCategoryUpload();
+                                    await _homepageBloc.loadCategoryUpload();
                                 EasyLoading.dismiss();
-                                data.selectCategoryDropdown(
+                                _homepageBloc.selectCategoryDropdown(
                                   context,
                                   categorylistmodel!,
                                   (selectedName, selectedId) {
@@ -264,12 +312,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             ),
                             GestureDetector(
                               onTapDown: (_) {
-                                HapticFeedback.lightImpact(); // light vibration
-                                setState(() => _locationButtonScale =
-                                    0.95); // shrink on press
+                                HapticFeedback.heavyImpact();
+                                setState(() => _locationButtonScale = 0.95);
                               },
-                              onTapUp: (_) => setState(() =>
-                                  _locationButtonScale = 1.0), // release back
+                              onTapUp: (_) =>
+                                  setState(() => _locationButtonScale = 1.0),
                               onTapCancel: () =>
                                   setState(() => _locationButtonScale = 1.0),
                               onTap: () async {
@@ -356,7 +403,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       longitude,
                                       selecteJobdId,
                                       selectedJobName,
-                                      selectedLocation)));
+                                      selectedLocation))).then((_) {
+                            setState(() {
+                              selectedJobName = "Select a job";
+                              selectedLocation = "Location";
+                            });
+                          });
                         },
                         child: Container(
                           margin: EdgeInsets.only(top: 20),
@@ -383,7 +435,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Our categories",
+                          "Our Categories",
                           style: GoogleFonts.robotoFlex(
                               color: textBlackColor3,
                               fontWeight: FontWeight.bold,
@@ -817,22 +869,74 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                 context: context,
                                                 builder: (context) =>
                                                     AlertDialog(
-                                                  title: Text(
-                                                      'candidates eligibility'),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                  ),
+                                                  backgroundColor: Colors.white,
+                                                  title: Row(
+                                                    children: [
+                                                      Icon(Icons.info_outline,
+                                                          color:
+                                                              Colors.redAccent,
+                                                          size: 28),
+                                                      SizedBox(width: 10),
+                                                      Text(
+                                                        'Candidates Eligibility',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 18,
+                                                          color: Colors.black87,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                   content: Text(
-                                                      "Only candidates are eligible to apply for the jobs!"),
+                                                    "Only candidates are eligible to apply for the jobs!",
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.grey[700],
+                                                      height: 1.4,
+                                                    ),
+                                                  ),
+                                                  actionsPadding:
+                                                      EdgeInsets.symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
                                                   actions: [
                                                     TextButton(
+                                                      style:
+                                                          TextButton.styleFrom(
+                                                        foregroundColor:
+                                                            Colors.white,
+                                                        backgroundColor:
+                                                            Colors.redAccent,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 18,
+                                                                vertical: 10),
+                                                      ),
                                                       onPressed: () =>
                                                           Navigator.pop(
                                                               context),
-                                                      child: Text('Cancel'),
+                                                      child: Text(
+                                                        'OK',
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
                                                     ),
                                                   ],
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
                                                 ),
                                               );
                                             }
