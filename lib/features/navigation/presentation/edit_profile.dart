@@ -26,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController otpController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  bool isVisible = false;
+  // bool isVisible = false;
   Otp? otpData;
 
   String? validateEmail(String? email) {
@@ -113,7 +113,7 @@ class _EditProfileState extends State<EditProfile> {
                               );
                               setState(() {
                                 otpData = otpResponse;
-                                isVisible = true;
+                                // isVisible = true;
                               });
                               Fluttertoast.showToast(
                                   msg: "OTP sent successfully");
@@ -135,23 +135,23 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     sizedBoxH10,
-                    if (isVisible) ...[
-                      _buildLabel("OTP *"),
-                      _buildTextField(
-                        controller: otpController,
-                        hint: "Enter OTP",
-                        keyboardType: TextInputType.number,
-                        maxLength: 6,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter OTP";
-                          }
-                          if (value.length < 4) return "Invalid OTP";
-                          return null;
-                        },
-                      ),
-                      sizedBoxH20,
-                    ],
+                    // if (isVisible) ...[
+                    _buildLabel("OTP *"),
+                    _buildTextField(
+                      controller: otpController,
+                      hint: "Enter OTP",
+                      keyboardType: TextInputType.number,
+                      maxLength: 6,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter OTP";
+                        }
+                        if (value.length < 4) return "Invalid OTP";
+                        return null;
+                      },
+                    ),
+                    sizedBoxH20,
+                    // ],
                     _buildLabel("Email Address *"),
                     _buildTextField(
                       controller: emailController,
@@ -200,8 +200,7 @@ class _EditProfileState extends State<EditProfile> {
   Future<void> _updateProfile() async {
     if (!_formKey.currentState!.validate()) return;
 
-    if (isVisible &&
-        (otpData == null || otpController.text != otpData!.otp.toString())) {
+    if ((otpData == null || otpController.text != otpData!.otp.toString())) {
       Fluttertoast.showToast(msg: "Please enter valid OTP");
       return;
     }
