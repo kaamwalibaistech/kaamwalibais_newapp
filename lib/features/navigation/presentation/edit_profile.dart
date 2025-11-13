@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
@@ -9,32 +10,42 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_event.dart';
 import 'package:kaamwalijobs_new/features/auth/network/auth_repository.dart';
 
 import '../../../core/local_storage.dart';
-import '../../../models/employer_register_model.dart';
 import '../../../models/empolyer_registerotp_model.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({super.key});
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNoController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController otpController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneNoController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
   bool isVisible = false;
+  Otp? otpData;
 
   String? validateEmail(String? email) {
-    RegExp emailRegEx = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
-    final isEmailValid = emailRegEx.hasMatch(email ?? "");
-    if (!isEmailValid) return "Please enter a valid email";
+    final emailRegEx = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
+    if (email == null || email.isEmpty) return "Please enter email";
+    if (!emailRegEx.hasMatch(email)) return "Please enter a valid email";
     return null;
   }
 
-  final _formKey = GlobalKey<FormState>();
-  Otp? otpdata;
+  @override
+  void initState() {
+    super.initState();
+    final profile = LocalStoragePref.instance?.getUserProfile();
+    if (profile != null) {
+      nameController.text = profile.name;
+      phoneNoController.text = profile.mobileNo;
+      emailController.text = profile.emailId;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,133 +67,129 @@ class _EditProfileState extends State<EditProfile> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildLabel("Name *"),
-                _buildTextField(
-                  controller: nameController,
-                  hint: "Enter your name",
-                  validator: (value) =>
-                      value!.isEmpty ? "Please enter name" : null,
-                ),
-                sizedBoxH20,
-                _buildLabel("Phone Number *"),
-                _buildTextField(
-                  controller: phoneNoController,
-                  hint: "Enter phone number",
-                  keyboardType: TextInputType.number,
-                  maxLength: 10,
-                  validator: (value) {
-                    if (value!.length < 10) {
-                      return "Phone number should be 10 digits";
-                    }
-                    return null;
-                  },
-                  suffix: GestureDetector(
-                    onTap: () async {
-                      if (phoneNoController.text.length == 10) {
-                        Otp? otpp = await AuthRepository()
-                            .getEmployerRegisterOtp(phoneNoController.text);
-                        setState(() {
-                          otpdata = otpp;
-                          isVisible = true;
-                        });
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Phone number should be 10 digits");
-                      }
-                    },
-                    child: Text(
-                      "Get OTP",
-                      style: GoogleFonts.poppins(
-                        color: blueColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: AnimationLimiter(
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: AnimationConfiguration.toStaggeredList(
+                  duration: const Duration(milliseconds: 500),
+                  childAnimationBuilder: (widget) => SlideAnimation(
+                    horizontalOffset: 50.0,
+                    child: FadeInAnimation(child: widget),
+                  ),
+                  children: [
+                    _buildLabel("Name *"),
+                    _buildTextField(
+                      controller: nameController,
+                      hint: "Enter your name",
+                      validator: (value) =>
+                          value!.isEmpty ? "Please enter name" : null,
                     ),
-                  ),
-                ),
-                sizedBoxH10,
-                if (isVisible) ...[
-                  _buildLabel("OTP *"),
-                  _buildTextField(
-                    controller: otpController,
-                    hint: "Enter OTP",
-                    keyboardType: TextInputType.number,
-                    maxLength: 6,
-                    validator: (value) =>
-                        value!.length < 4 ? "Enter OTP" : null,
-                  ),
-                  sizedBoxH20,
-                ],
-                _buildLabel("Email Address *"),
-                _buildTextField(
-                  controller: emailController,
-                  hint: "Enter email address",
-                  keyboardType: TextInputType.emailAddress,
-                  validator: validateEmail,
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: blueColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3,
-                      ),
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate() &&
-                            otpController.text == otpdata!.otp.toString()) {
-                          try {
-                            EmployerRegisterModel? localUserProfileData =
-                                LocalStoragePref.instance?.getUserProfile();
-
-                            await AuthRepository()
-                                .updateUserProfile(
-                                    nameController.text,
-                                    phoneNoController.text,
-                                    emailController.text,
-                                    localUserProfileData!.flag,
-                                    localUserProfileData.userId)
-                                .then((_) {
-                              BlocProvider.of<AuthBloc>(context, listen: false)
-                                  .add(GetUserProfile(
-                                      userId: localUserProfileData.userId,
-                                      flag: localUserProfileData.flag));
-                            });
-
-                            Navigator.pop(context);
-
-                            Fluttertoast.showToast(msg: "Updated Successfully");
-                          } catch (e) {
-                            Fluttertoast.showToast(
-                                msg: "Mobile number already exists");
-                          }
-                        } else {
-                          Fluttertoast.showToast(msg: "Please enter valid OTP");
+                    sizedBoxH20,
+                    _buildLabel("Phone Number *"),
+                    _buildTextField(
+                      controller: phoneNoController,
+                      hint: "Enter phone number",
+                      keyboardType: TextInputType.number,
+                      maxLength: 10,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter phone number";
                         }
+                        if (value.length != 10) {
+                          return "Phone number should be 10 digits";
+                        }
+                        return null;
                       },
-                      child: Text(
-                        "Update Profile",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
+                      suffix: GestureDetector(
+                        onTap: () async {
+                          if (phoneNoController.text.length == 10) {
+                            try {
+                              final otpResponse =
+                                  await AuthRepository().getEmployerRegisterOtp(
+                                phoneNoController.text,
+                              );
+                              setState(() {
+                                otpData = otpResponse;
+                                isVisible = true;
+                              });
+                              Fluttertoast.showToast(
+                                  msg: "OTP sent successfully");
+                            } catch (e) {
+                              Fluttertoast.showToast(msg: "Failed to send OTP");
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Phone number should be 10 digits");
+                          }
+                        },
+                        child: Text(
+                          "Get OTP",
+                          style: GoogleFonts.poppins(
+                            color: blueColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    sizedBoxH10,
+                    if (isVisible) ...[
+                      _buildLabel("OTP *"),
+                      _buildTextField(
+                        controller: otpController,
+                        hint: "Enter OTP",
+                        keyboardType: TextInputType.number,
+                        maxLength: 6,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter OTP";
+                          }
+                          if (value.length < 4) return "Invalid OTP";
+                          return null;
+                        },
+                      ),
+                      sizedBoxH20,
+                    ],
+                    _buildLabel("Email Address *"),
+                    _buildTextField(
+                      controller: emailController,
+                      hint: "Enter email address",
+                      keyboardType: TextInputType.emailAddress,
+                      validator: validateEmail,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: 48,
+                        child: ElevatedButton.icon(
+                          icon: const Icon(Icons.save, color: Colors.white),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: blueColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 3,
+                          ),
+                          onPressed: _updateProfile,
+                          label: Text(
+                            "Update Profile",
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -190,19 +197,56 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  /// Custom Label
-  Widget _buildLabel(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.0),
-      child: Text(
-        text,
-        style: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87),
-      ),
-    );
+  Future<void> _updateProfile() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (isVisible &&
+        (otpData == null || otpController.text != otpData!.otp.toString())) {
+      Fluttertoast.showToast(msg: "Please enter valid OTP");
+      return;
+    }
+
+    try {
+      final localUserProfileData = LocalStoragePref.instance?.getUserProfile();
+      if (localUserProfileData == null) {
+        Fluttertoast.showToast(msg: "User data not found");
+        return;
+      }
+
+      await AuthRepository().updateUserProfile(
+        nameController.text,
+        phoneNoController.text,
+        emailController.text,
+        localUserProfileData.flag,
+        localUserProfileData.userId,
+      );
+
+      BlocProvider.of<AuthBloc>(context, listen: false).add(
+        GetUserProfile(
+          userId: localUserProfileData.userId,
+          flag: localUserProfileData.flag,
+        ),
+      );
+
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Profile Updated Successfully");
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Something went wrong");
+    }
   }
 
-  /// Custom TextField
+  Widget _buildLabel(String text) => Padding(
+        padding: const EdgeInsets.only(bottom: 6.0),
+        child: Text(
+          text,
+          style: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+      );
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
@@ -218,6 +262,7 @@ class _EditProfileState extends State<EditProfile> {
         validator: validator,
         keyboardType: keyboardType,
         maxLength: maxLength,
+        style: GoogleFonts.poppins(fontSize: 14),
         decoration: InputDecoration(
           suffix: suffix,
           counterText: "",
