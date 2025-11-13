@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -10,7 +12,6 @@ import 'package:kaamwalijobs_new/features/navigation/presentation/term_condition
 import 'package:kaamwalijobs_new/features/navigation/presentation/view_job_posted.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
 
-import '../../../Client/homepage_api.dart';
 import '../../../core/local_storage.dart';
 import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
@@ -36,7 +37,6 @@ class _MenuScreenState extends State<MenuScreen> {
     super.initState();
     _authBloc = BlocProvider.of<AuthBloc>(context, listen: false);
     _packageBloc = BlocProvider.of<PurchasedPackageDataBloc>(context);
-
     _packageBloc.add(PurchasedPackageEvent());
   }
 
@@ -47,31 +47,65 @@ class _MenuScreenState extends State<MenuScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAuthSection(),
-              _buildPackageInfoSection(),
-              sizedBoxH20,
-              _buildSectionTitle("Main Menu"),
-              sizedBoxH20,
-              _buildMainMenuGrid(),
-              sizedBoxH15,
-              _buildSectionTitle("More Options"),
-              sizedBoxH20,
-              _buildBottomMenuGrid(),
-              sizedBoxH20,
-              _buildTermsAndConditions(),
-              sizedBoxH20,
-              _buildLogoutButton(),
-            ],
+          child: AnimationLimiter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: AnimationConfiguration.toStaggeredList(
+                duration: const Duration(milliseconds: 600),
+                childAnimationBuilder: (widget) => SlideAnimation(
+                  horizontalOffset: 40.0,
+                  child: FadeInAnimation(child: widget),
+                ),
+                children: [
+                  // _buildAnimatedHeader(),
+                  _buildAuthSection(),
+                  _buildPackageInfoSection(),
+                  sizedBoxH20,
+                  _buildSectionTitle("Main Menu"),
+                  sizedBoxH20,
+                  _buildMainMenuGrid(),
+                  sizedBoxH15,
+                  _buildSectionTitle("More Options"),
+                  sizedBoxH20,
+                  _buildBottomMenuGrid(),
+                  sizedBoxH20,
+                  _buildTermsAndConditions(),
+                  sizedBoxH20,
+                  _buildLogoutButton(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  /// ---------- UI Helpers ------------
+  /// 🖋️ Animated Header with Typewriter
+  // Widget _buildAnimatedHeader() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 10.0),
+  //     child: Center(
+  //       child: AnimatedTextKit(
+  //         animatedTexts: [
+  //           TypewriterAnimatedText(
+  //             'Welcome to Kaamwali Jobs',
+  //             textStyle: GoogleFonts.poppins(
+  //               fontSize: 22,
+  //               fontWeight: FontWeight.w600,
+  //               color: Colors.black87,
+  //             ),
+  //             speed: const Duration(milliseconds: 80),
+  //           ),
+  //         ],
+  //         totalRepeatCount: 1,
+  //         pause: const Duration(milliseconds: 500),
+  //         displayFullTextOnTap: true,
+  //         stopPauseOnTap: true,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildSectionTitle(String title) {
     return Row(
@@ -98,7 +132,8 @@ class _MenuScreenState extends State<MenuScreen> {
       onTap: onTap,
       child: Column(
         children: [
-          Container(
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: whiteColor,
@@ -134,18 +169,28 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildGrid(List<Widget> items) {
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 3,
-      childAspectRatio: 0.85,
-      mainAxisSpacing: 18,
-      crossAxisSpacing: 18,
-      children: items,
+    return AnimationLimiter(
+      child: GridView.count(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: 3,
+        childAspectRatio: 0.85,
+        mainAxisSpacing: 18,
+        crossAxisSpacing: 18,
+        children: List.generate(
+          items.length,
+          (index) => AnimationConfiguration.staggeredGrid(
+            position: index,
+            duration: const Duration(milliseconds: 400),
+            columnCount: 3,
+            child: ScaleAnimation(
+              child: FadeInAnimation(child: items[index]),
+            ),
+          ),
+        ),
+      ),
     );
   }
-
-  /// ---------- Sections ------------
 
   Widget _buildAuthSection() {
     return BlocBuilder(
@@ -443,7 +488,6 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  /// ---------- Logic kept same ------------
   void showNoPlanDialog(BuildContext context) {
     showDialog(
       context: context,
