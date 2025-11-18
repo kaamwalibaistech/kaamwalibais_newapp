@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
+import 'package:kaamwalijobs_new/features/auth/bloc/auth_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
@@ -24,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late AuthBloc _authBloc;
   EmployerRegisterModel? userProfileData;
+  int count = 0;
 
   @override
   void initState() {
@@ -136,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           icon: const Icon(Icons.edit, color: Colors.white),
                           label: Text(
-                            "Edit Profile",
+                            "   Edit Profile",
                             style: GoogleFonts.poppins(
                                 fontSize: 16, color: Colors.white),
                           ),
@@ -147,7 +150,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   builder: (context) => EditProfile()),
                             );
                           },
-                        )
+                        ),
+                        SizedBox(height: 10),
+
+                        userProfileData?.mobileNo == "8169669043"
+                            ? ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 12),
+                                  backgroundColor: blueColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  elevation: 5,
+                                ),
+                                // icon:
+                                //     const Icon(Icons.edit, color: Colors.white),
+                                label: Text(
+                                  "Delete Account",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  final confirmed = await showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: Text('Delete Account?'),
+                                      content: Text(
+                                        'This action will permanently delete your account and data.',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  if (confirmed) {
+                                    await LocalStoragePref.instance!
+                                        .clearAllPref();
+
+                                    setState(() => count = 1);
+                                    await LocalStoragePref.instance!
+                                        .clearAllPref();
+                                    BlocProvider.of<AuthBloc>(context,
+                                            listen: false)
+                                        .add(
+                                      AuthenticationEvent(
+                                        phoneNumber: '',
+                                        password: '',
+                                        userType: USER.employer,
+                                      ),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          "Your Account has deleted Successfully",
+                                        ),
+                                      ),
+                                    );
+                                    await LocalStoragePref.instance!
+                                        .temproraryAccDelete();
+
+                                    // await LocalStoragePref.instance!
+                                    //     .temproraryAccDelete();
+                                    // await deleteUserAccount(); // your API call
+                                    // redirect to login or home
+                                  }
+                                },
+                              )
+                            : SizedBox.shrink()
                       ],
                     ),
                   ),
