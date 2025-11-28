@@ -46,13 +46,31 @@ class _WebviewWidgetState extends State<WebviewWidget> {
             child: Stack(
           children: [
             InAppWebView(
+              initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+                  javaScriptEnabled: true,
+                  useShouldOverrideUrlLoading: true,
+                  clearCache: false,
+                ),
+                ios: IOSInAppWebViewOptions(
+                  allowsInlineMediaPlayback: true,
+                ),
+              ),
               key: webViewKey,
               initialUrlRequest: URLRequest(url: WebUri(url)),
               initialSettings: settings,
               onWebViewCreated: (controller) {
                 webViewController = controller;
               },
-              onLoadStart: (controller, url) {},
+              onLoadStart: (controller, url) async {
+                if (url.toString().contains("contact-us")) {
+                  await controller.evaluateJavascript(source: '''
+      if (typeof window.jQuery !== "undefined" && typeof jQuery.fn.countUp !== "function") {
+        jQuery.fn.countUp = function() {};
+      }
+    ''');
+                }
+              },
               onPermissionRequest: (controller, request) async {
                 return PermissionResponse(
                     resources: request.resources,
@@ -64,19 +82,40 @@ class _WebviewWidgetState extends State<WebviewWidget> {
                 return NavigationActionPolicy.ALLOW;
               },
               onLoadStop: (controller, url) async {
-                // Inject JavaScript to hide the element with class "sticky"
+                // Hide unwanted elements
                 await controller.evaluateJavascript(source: """
-            document.querySelector('.sticky').style.display = 'none';
-          """);
+    var sticky = document.querySelector('.sticky');
+    if (sticky) sticky.style.display = 'none';
+  """);
+
                 await controller.evaluateJavascript(source: """
-            document.querySelector('.city_app_hide').style.display = 'none';
-          """);
+    var cityHide = document.querySelector('.city_app_hide');
+    if (cityHide) cityHide.style.display = 'none';
+  """);
+
                 await controller.evaluateJavascript(source: """
-            var footer = document.querySelector('footer');
-            if (footer) {
-              footer.style.display = 'none';
-            }
-          """);
+    var footer = document.querySelector('footer');
+    if (footer) footer.style.display = 'none';
+  """);
+
+                // 🧩 Fix for 'countUp is not a function' issue
+                if (url.toString().contains("contact-us")) {
+                  await controller.evaluateJavascript(source: '''
+      (function() {
+        // Wait until jQuery is ready
+        if (typeof window.jQuery === "undefined") {
+          console.log("⚠️ jQuery not loaded yet.");
+        } else {
+          if (typeof jQuery.fn.countUp !== "function") {
+            console.log("✅ Patching missing countUp...");
+            jQuery.fn.countUp = function() {};
+          } else {
+            console.log("✅ countUp already defined.");
+          }
+        }
+      })();
+    ''');
+                }
               },
               onReceivedError: (controller, request, error) {},
               onProgressChanged: (controller, progress) {

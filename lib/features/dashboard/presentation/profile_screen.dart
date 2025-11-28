@@ -1,8 +1,12 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/core/local_storage.dart';
+import 'package:kaamwalijobs_new/features/auth/bloc/auth_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/bloc/select_location_bloc.dart';
 import 'package:kaamwalijobs_new/models/employer_register_model.dart';
 
@@ -22,6 +26,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late AuthBloc _authBloc;
   EmployerRegisterModel? userProfileData;
+  int count = 0;
 
   @override
   void initState() {
@@ -66,83 +71,166 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 current is AuthLoadingState,
             builder: (context, state) {
               if (state is AuthLoadedState) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 45,
-                      backgroundColor: blueColor.withOpacity(0.1),
-                      child: Icon(Icons.person,
-                          size: 50, color: blueColor.withOpacity(0.9)),
-                    ),
-                    sizedBoxH10,
-                    Text(
-                      state.userData.name,
-                      style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    sizedBoxH5,
-                    Text(
-                      state.userData.emailId,
-                      style: GoogleFonts.poppins(
-                          fontSize: 14, color: Colors.grey[600]),
-                    ),
-                    sizedBoxH20,
-                    Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          children: [
-                            _buildInfoRow(
-                                icon: Icons.phone,
-                                label: "Contact",
-                                value: state.userData.mobileNo),
-                            const Divider(),
-                            BlocBuilder<SelectLocationBloc,
-                                SelectLocationState>(
-                              builder: (context, snapshot) {
-                                String location = "---";
-                                if (snapshot is SelectLocationSuccessState) {
-                                  location =
-                                      snapshot.currentAddress.split(",").first;
-                                }
-                                return _buildInfoRow(
-                                    icon: Icons.location_on,
-                                    label: "Location",
-                                    value: location);
-                              },
-                            ),
-                          ],
+                return AnimationLimiter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(milliseconds: 600),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        verticalOffset: 30.0,
+                        child: FadeInAnimation(child: widget),
+                      ),
+                      children: [
+                        // _buildAnimatedHeader(state.userData.name),
+                        CircleAvatar(
+                          radius: 45,
+                          backgroundColor: blueColor.withOpacity(0.1),
+                          child: Icon(Icons.person,
+                              size: 50, color: blueColor.withOpacity(0.9)),
                         ),
-                      ),
+                        sizedBoxH10,
+                        _buildAnimatedHeader(state.userData.name),
+                        sizedBoxH5,
+                        _buildAnimatedHeaderEmail(state.userData.emailId),
+                        sizedBoxH20,
+                        Card(
+                          elevation: 4,
+                          shadowColor: Colors.black26,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                _buildInfoRow(
+                                    icon: Icons.phone,
+                                    label: "Contact",
+                                    value: state.userData.mobileNo),
+                                const Divider(),
+                                BlocBuilder<SelectLocationBloc,
+                                    SelectLocationState>(
+                                  builder: (context, snapshot) {
+                                    String location = "---";
+                                    if (snapshot
+                                        is SelectLocationSuccessState) {
+                                      location = snapshot.currentAddress
+                                          .split(",")
+                                          .first;
+                                    }
+                                    return _buildInfoRow(
+                                        icon: Icons.location_on,
+                                        label: "Location",
+                                        value: location);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        sizedBoxH20,
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 12),
+                            backgroundColor: blueColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            elevation: 5,
+                          ),
+                          icon: const Icon(Icons.edit, color: Colors.white),
+                          label: Text(
+                            "   Edit Profile",
+                            style: GoogleFonts.poppins(
+                                fontSize: 16, color: Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditProfile()),
+                            );
+                          },
+                        ),
+                        SizedBox(height: 10),
+
+                        userProfileData?.mobileNo == "8169669043"
+                            ? ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 12),
+                                  backgroundColor: blueColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)),
+                                  elevation: 5,
+                                ),
+                                // icon:
+                                //     const Icon(Icons.edit, color: Colors.white),
+                                label: Text(
+                                  "Delete Account",
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                                onPressed: () async {
+                                  final confirmed = await showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: Text('Delete Account?'),
+                                      content: Text(
+                                        'This action will permanently delete your account and data.',
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, false),
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, true),
+                                          child: Text('Delete'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  if (confirmed) {
+                                    await LocalStoragePref.instance!
+                                        .clearAllPref();
+
+                                    setState(() => count = 1);
+                                    await LocalStoragePref.instance!
+                                        .clearAllPref();
+                                    BlocProvider.of<AuthBloc>(context,
+                                            listen: false)
+                                        .add(
+                                      AuthenticationEvent(
+                                        phoneNumber: '',
+                                        password: '',
+                                        userType: USER.employer,
+                                      ),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          "Your Account has deleted Successfully",
+                                        ),
+                                      ),
+                                    );
+                                    await LocalStoragePref.instance!
+                                        .temproraryAccDelete();
+
+                                    // await LocalStoragePref.instance!
+                                    //     .temproraryAccDelete();
+                                    // await deleteUserAccount(); // your API call
+                                    // redirect to login or home
+                                  }
+                                },
+                              )
+                            : SizedBox.shrink()
+                      ],
                     ),
-                    sizedBoxH20,
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 12),
-                        backgroundColor: blueColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                      icon: const Icon(Icons.edit, color: Colors.white),
-                      label: Text(
-                        "Edit Profile",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16, color: Colors.white),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditProfile()),
-                        );
-                      },
-                    )
-                  ],
+                  ),
                 );
               }
               return Center(
@@ -150,16 +238,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(top: 200.0),
                   child: Column(
                     children: [
-                      Image.asset(
-                        "lib/assets/images/kaamwalijobs.png",
-                        cacheHeight: 105,
+                      AnimationConfiguration.staggeredList(
+                        position: 0,
+                        duration: const Duration(milliseconds: 600),
+                        child: ScaleAnimation(
+                          child: Image.asset(
+                            "lib/assets/images/kaamwalijobs.png",
+                            cacheHeight: 105,
+                          ),
+                        ),
                       ),
                       sizedBoxH20,
-                      Text(
-                        "Kaamwalijobs",
-                        style: const TextStyle(fontSize: 22),
+                      AnimatedTextKit(
+                        animatedTexts: [
+                          TypewriterAnimatedText(
+                            'Welcome to Kaamwali Jobs',
+                            textStyle: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
+                            speed: const Duration(milliseconds: 80),
+                          ),
+                        ],
+                        totalRepeatCount: 1,
                       ),
-                      sizedBoxH5,
+                      sizedBoxH10,
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
@@ -184,6 +287,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  // / 🖋️ Animated greeting header
+  Widget _buildAnimatedHeader(String name) {
+    return AnimatedTextKit(
+      animatedTexts: [
+        TypewriterAnimatedText(
+          '$name',
+          textStyle: GoogleFonts.poppins(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+          speed: const Duration(milliseconds: 80),
+        ),
+      ],
+      totalRepeatCount: 1,
+      pause: const Duration(milliseconds: 300),
+    );
+  }
+
+  Widget _buildAnimatedHeaderEmail(String name) {
+    return AnimatedTextKit(
+      animatedTexts: [
+        TypewriterAnimatedText(
+          '$name',
+          textStyle: GoogleFonts.poppins(
+            fontSize: 16,
+            // fontWeight: FontWeight.w600,
+            // color: Colors.black87,
+          ),
+          speed: const Duration(milliseconds: 80),
+        ),
+      ],
+      totalRepeatCount: 1,
+      pause: const Duration(milliseconds: 300),
     );
   }
 

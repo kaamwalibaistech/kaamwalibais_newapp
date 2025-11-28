@@ -58,7 +58,7 @@ class _PackagesState extends State<Packages> {
     final data = LocalStoragePref().getUserProfile();
 
     var options = {
-      'key': 'rzp_live_LyJ0vTp92CsDwL',
+      'key': 'rzp_live_RjrYDqvGXclgMf',
       'amount': int.parse(price) * 100,
       'name': 'KaamWaliJobs',
       'description': packagename,
