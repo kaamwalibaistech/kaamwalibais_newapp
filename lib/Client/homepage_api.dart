@@ -108,8 +108,8 @@ class Repositiory {
     throw Exception();
   }
 
-  Future<RazorpaytranscationModel> getTransactionstatus(
-      userId, razorpayId, price, packageId) async {
+  Future<RazorpaytranscationModel?> getTransactionstatus(
+      userId, razorpayId, price, packageId, orderId, signature) async {
     Map<String, String> queryParameters = {};
     queryParameters.addAll({"API-KEY": dotenv.get('API-KEY')});
 
@@ -121,6 +121,8 @@ class Repositiory {
       'razorpay_payment_id': razorpayId,
       'price': price,
       'PackageId': packageId,
+      'razorpay_order_id': orderId,
+      'razorpay_signature': signature,
     };
     try {
       final response =
@@ -131,8 +133,10 @@ class Repositiory {
         return RazorpaytranscationModel.fromJson(data);
       }
     } catch (e) {
-      throw Exception();
+      // throw Exception();
+      // return null;
     }
-    throw Exception();
+    // throw Exception();
+    return null;
   }
 }

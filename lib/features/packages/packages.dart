@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/assets/shimmer_effect/packages_shimmer.dart';
@@ -10,12 +13,13 @@ import 'package:kaamwalijobs_new/bloc/packages_state.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../../Client/homepage_api.dart';
-import '../../../core/local_storage.dart';
-import '../../../models/transcation_model.dart';
-import '../../auth/presentation/login_popup.dart';
-import '../bloc/packages_bloc.dart';
-import '../bloc/packages_event.dart';
+import '../../Client/homepage_api.dart';
+import '../../core/local_storage.dart';
+import '../../models/transcation_model.dart';
+import '../auth/presentation/login_popup.dart';
+import '../navigation/bloc/packages_bloc.dart';
+import '../navigation/bloc/packages_event.dart';
+import 'create-order_api.dart';
 
 class Packages extends StatefulWidget {
   const Packages({super.key});
@@ -29,6 +33,7 @@ class _PackagesState extends State<Packages> {
   late Razorpay _razorpay;
   late PurchasedPackageDataBloc _purchasedPackageData;
   // bool? candidatePlan;
+  late CreateOrderResponse? order;
 
   @override
   void initState() {
@@ -59,7 +64,10 @@ class _PackagesState extends State<Packages> {
 
     var options = {
       'key': 'rzp_live_RjrYDqvGXclgMf',
-      'amount': int.parse(price) * 100,
+      // 'key': 'rzp_test_RjqLXImZzIQB4p',
+      'order_id': order?.orderId,
+      'amount': order?.amount,
+      'currency': order?.currency,
       'name': 'KaamWaliJobs',
       'description': packagename,
       'prefill': {
@@ -71,7 +79,7 @@ class _PackagesState extends State<Packages> {
     try {
       _razorpay.open(options);
     } catch (e) {
-      print('error $e');
+      log("Error: $e");
     }
   }
 
@@ -91,8 +99,9 @@ class _PackagesState extends State<Packages> {
     String userId = localStoragePref.getUserProfile()!.userId;
 
     Repositiory repositiory = Repositiory();
-    RazorpaytranscationModel transactionData = await repositiory
-        .getTransactionstatus(userId, response.paymentId, price, packageId);
+    RazorpaytranscationModel? transactionData =
+        await repositiory.getTransactionstatus(userId, response.paymentId,
+            price, packageId, order?.orderId, response.signature);
 
     _purchasedPackageData.add(PurchasedPackageEvent());
 
@@ -111,6 +120,8 @@ class _PackagesState extends State<Packages> {
               const Icon(Icons.check_circle, color: Colors.green, size: 60),
               const SizedBox(height: 12),
               Text("Payment ID: ${response.paymentId}"),
+              // Text("order ID: ${order?.orderId ?? "NA"}"),
+              // Text("signature : ${response.signature}"),
               const SizedBox(height: 8),
               const Text("Thank you for your purchase!",
                   style: TextStyle(fontWeight: FontWeight.w500)),
@@ -135,6 +146,7 @@ class _PackagesState extends State<Packages> {
 
   void _handlePaymentError(PaymentFailureResponse response) {
     showPaymentCancelledDialog(context);
+    log("rzp_test_RjqLXImZzIQB4p");
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -191,6 +203,7 @@ class _PackagesState extends State<Packages> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -200,7 +213,7 @@ class _PackagesState extends State<Packages> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text("Try Again"),
+                  child: const Text("Close"),
                 ),
 
                 const SizedBox(height: 15),
@@ -409,15 +422,17 @@ class _PackagesState extends State<Packages> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
                                           // setState(() {
                                           //   candidatePlan = true;
                                           // });
+                                          EasyLoading.show();
                                           final userLogIn = LocalStoragePref()
                                               .getUserProfile();
 
                                           if (userLogIn == null) {
                                             checkLoginPopup();
+                                            EasyLoading.dismiss();
                                           } else {
                                             packageId = state
                                                 .candidatePackagesModel
@@ -425,25 +440,42 @@ class _PackagesState extends State<Packages> {
                                                 .packageId;
                                             price = state.candidatePackagesModel
                                                 .candidatePackage[index].price;
-                                            openCheckOut(
-                                                state
-                                                    .candidatePackagesModel
-                                                    .candidatePackage[index]
-                                                    .price,
-                                                state
-                                                    .candidatePackagesModel
-                                                    .candidatePackage[index]
-                                                    .packageName);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_SUCCESS,
-                                                _handlePaymentSuccess);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_ERROR,
-                                                _handlePaymentError);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_EXTERNAL_WALLET,
-                                                _handleExternalWallet);
+                                            final data = await createOrderApi(
+                                                price.toString());
+                                            setState(() {
+                                              order = data;
+                                            });
+                                            if (order!.status == "200") {
+                                              openCheckOut(
+                                                  state
+                                                      .candidatePackagesModel
+                                                      .candidatePackage[index]
+                                                      .price,
+                                                  state
+                                                      .candidatePackagesModel
+                                                      .candidatePackage[index]
+                                                      .packageName);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  _handlePaymentSuccess);
+                                              _razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  _handlePaymentError);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  _handleExternalWallet);
+                                              EasyLoading.dismiss();
+                                            } else {
+                                              EasyLoading.dismiss();
+                                              Fluttertoast.showToast(
+                                                  msg: order?.msg ??
+                                                      "Something went Wrong");
+                                            }
+                                            EasyLoading.dismiss();
                                           }
+                                          EasyLoading.dismiss();
                                         },
                                         child: ClipRRect(
                                           borderRadius:
@@ -631,10 +663,11 @@ class _PackagesState extends State<Packages> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: GestureDetector(
-                                        onTap: () {
+                                        onTap: () async {
                                           // setState(() {
                                           //   candidatePlan = false;
                                           // });
+                                          EasyLoading.show();
                                           final userLogIn = LocalStoragePref()
                                               .getUserProfile();
 
@@ -642,6 +675,7 @@ class _PackagesState extends State<Packages> {
                                             checkLoginPopup();
                                             Fluttertoast.showToast(
                                                 msg: "Please LogIn ");
+                                            EasyLoading.dismiss();
                                           } else {
                                             packageId = state
                                                 .candidatePackagesModel
@@ -649,22 +683,38 @@ class _PackagesState extends State<Packages> {
                                                 .packageId;
                                             price = state.candidatePackagesModel
                                                 .jobPackage[index].price;
-                                            openCheckOut(
-                                                state.candidatePackagesModel
-                                                    .jobPackage[index].price,
-                                                state
-                                                    .candidatePackagesModel
-                                                    .jobPackage[index]
-                                                    .packageName);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_SUCCESS,
-                                                _handlePaymentSuccess);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_PAYMENT_ERROR,
-                                                _handlePaymentError);
-                                            _razorpay.on(
-                                                Razorpay.EVENT_EXTERNAL_WALLET,
-                                                _handleExternalWallet);
+                                            final data = await createOrderApi(
+                                                price.toString());
+                                            setState(() {
+                                              order = data;
+                                            });
+                                            if (order!.status == "200") {
+                                              openCheckOut(
+                                                  state.candidatePackagesModel
+                                                      .jobPackage[index].price,
+                                                  state
+                                                      .candidatePackagesModel
+                                                      .jobPackage[index]
+                                                      .packageName);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  _handlePaymentSuccess);
+                                              _razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  _handlePaymentError);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  _handleExternalWallet);
+                                              EasyLoading.dismiss();
+                                            } else {
+                                              EasyLoading.dismiss();
+                                              Fluttertoast.showToast(
+                                                  msg: order?.msg ??
+                                                      "Something went Wrong");
+                                            }
+                                            EasyLoading.dismiss();
                                           }
 
                                           // ScaffoldMessenger.of(context)

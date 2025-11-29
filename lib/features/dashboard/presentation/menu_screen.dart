@@ -7,7 +7,7 @@ import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/login_popup.dart';
-import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
+import 'package:kaamwalijobs_new/features/packages/packages.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/term_condition.dart';
 import 'package:kaamwalijobs_new/features/navigation/presentation/view_job_posted.dart';
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
