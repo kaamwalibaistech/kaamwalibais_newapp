@@ -128,29 +128,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         sizedBoxH20,
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 12),
-                            backgroundColor: blueColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            elevation: 5,
-                          ),
-                          icon: const Icon(Icons.edit, color: Colors.white),
-                          label: Text(
-                            "   Edit Profile",
-                            style: GoogleFonts.poppins(
-                                fontSize: 16, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditProfile()),
-                            );
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 12),
+                                backgroundColor: Colors.blue.shade100,
+                                foregroundColor: Colors.blue.shade900,
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      color: Colors.blue.shade500,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                // elevation: 5,
+                              ),
+                              icon: const Icon(
+                                Icons.edit,
+                              ),
+                              label: Text(
+                                "   Edit Profile",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfile()),
+                                );
+                              },
+                            ),
+                            ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 12),
+                                backgroundColor: Colors.red.shade100,
+                                foregroundColor: Colors.red.shade900,
+                                shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                      color: Colors.red.shade500,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                // elevation: 5,
+                              ),
+                              icon: const Icon(
+                                Icons.logout,
+                              ),
+                              label: Text(
+                                "Log out",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              onPressed: () async {
+                                setState(() => count = 1);
+                                await LocalStoragePref.instance!.clearAllPref();
+                                BlocProvider.of<AuthBloc>(context,
+                                        listen: false)
+                                    .add(
+                                  AuthenticationEvent(
+                                    phoneNumber: '',
+                                    password: '',
+                                    userType: USER.employer,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
+
                         SizedBox(height: 10),
 
                         userProfileData?.mobileNo == "8169669043"

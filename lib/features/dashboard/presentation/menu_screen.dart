@@ -70,8 +70,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   _buildBottomMenuGrid(),
                   sizedBoxH20,
                   _buildTermsAndConditions(),
-                  sizedBoxH20,
-                  _buildLogoutButton(),
+                  // sizedBoxH20,
+                  // _buildLogoutButton(),
                 ],
               ),
             ),
@@ -436,7 +436,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _buildLogoutButton() {
+  /* Widget _buildLogoutButton() {
     return BlocBuilder(
       bloc: _authBloc,
       buildWhen: (previous, current) =>
@@ -486,7 +486,7 @@ class _MenuScreenState extends State<MenuScreen> {
         return const SizedBox();
       },
     );
-  }
+  }*/
 
   void showNoPlanDialog(BuildContext context) {
     showDialog(
