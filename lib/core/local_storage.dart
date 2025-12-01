@@ -38,6 +38,14 @@ class LocalStoragePref {
     return null;
   }
 
+  Future<void> temproraryAccDelete() async {
+    await storage?.setBool(LocalStorageKeys.accDelete, true);
+  }
+
+  bool? gettemproraryAccDelete() {
+    return storage?.getBool(LocalStorageKeys.accDelete);
+  }
+
   CurrentPackagePlan? currentPackageData() {
     String? response = storage?.getString(LocalStorageKeys.currentPackageData);
     if (response != null) {
@@ -72,5 +80,6 @@ class LocalStoragePref {
 class LocalStorageKeys {
   static String userProfile = 'user_profile';
   static String currentPackageData = 'current_package_data';
+  static const accDelete = 'token';
   // static String storeCandidateProfile = 'candidate_user_profile';
 }

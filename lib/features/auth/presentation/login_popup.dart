@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
-import 'package:kaamwalijobs_new/constant/sizebox.dart';
 
 import 'candidate_login_signup.dart';
 import 'employer_login_signup.dart';
@@ -10,96 +9,163 @@ class LoginPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(),
+    // final width = MediaQuery.of(context).size.width;
+
+    return Center(
+      child: Container(
+        // width: width * 0.85,
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(25),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 25,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 50.0),
-                  child: Text(
-                    "LogIn/Sign-up",
-                    style: TextStyle(
-                        color: blueColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
+                const Text(
+                  "Log In / Sign Up",
+                  style: TextStyle(
+                    color: blueColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
                   ),
                 ),
                 GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: blueColor,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: const Icon(
-                          Icons.close,
-                          size: 28,
-                          color: whiteColor,
-                        )))
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: blueColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.shade200,
+                          blurRadius: 10,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: whiteColor,
+                      size: 24,
+                    ),
+                  ),
+                )
               ],
             ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const EmployerLoginSignup()));
-                  },
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        "lib/assets/images/employer_icon.png",
-                        cacheHeight: 110,
-                      ),
-                      Text(
+            const SizedBox(height: 25),
+
+            // Employer Option
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EmployerLoginSignup()));
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [blueColor.withOpacity(0.1), Colors.white],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.shade50,
+                      blurRadius: 12,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "lib/assets/images/employer_icon.png",
+                      height: 80,
+                    ),
+                    const SizedBox(width: 15),
+                    const Expanded(
+                      child: Text(
                         "मुझे लोग काम पे रखना है",
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: blueColor),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                sizedBoxH10,
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const CandidateLoginSignup()));
-                  },
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        "lib/assets/images/candidate_icon.png",
-                        cacheHeight: 110,
-                      ),
-                      sizedBoxH5,
-                      Text(
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            // Candidate Option
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CandidateLoginSignup()));
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [blueColor.withOpacity(0.1), Colors.white],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blue.shade50,
+                      blurRadius: 12,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "lib/assets/images/candidate_icon.png",
+                      height: 80,
+                    ),
+                    const SizedBox(width: 15),
+                    const Expanded(
+                      child: Text(
                         "मुझे नौकरी चाहिए",
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                             color: blueColor),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

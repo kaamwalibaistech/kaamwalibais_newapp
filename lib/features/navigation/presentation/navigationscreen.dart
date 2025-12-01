@@ -47,17 +47,16 @@ class _NavigationscreenState extends State<Navigationscreen> {
         currentIndex: selectedIndex,
         onTap: (value) {
           changeTab(value);
-          setState(() => selectedIndex = value); // Update selected index
-          _pageController
-              .jumpToPage(value); // Update PageView when tapping tabs
-        }, // Update PageView when tapping tabs
+          setState(() => selectedIndex = value);
+          _pageController.jumpToPage(value);
+        },
         type: BottomNavigationBarType.fixed,
-        // backgroundColor: Colors.amber,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         iconSize: 30,
         selectedItemColor: blueColor,
         unselectedItemColor: Colors.blueGrey,
+        selectedLabelStyle: TextStyle(color: Colors.black, height: 1.0),
         items: [
           const BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),

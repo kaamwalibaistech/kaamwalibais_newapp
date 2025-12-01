@@ -190,9 +190,8 @@ class AuthRepository {
           await http.post(url, headers: queryParameters, body: body);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
-        if (data['status'] == '200') {
-          return Otp.fromJson(data);
-        }
+
+        return Otp.fromJson(data);
       }
     } catch (e) {
       throw Exception();

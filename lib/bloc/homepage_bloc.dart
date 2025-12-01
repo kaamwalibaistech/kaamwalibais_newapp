@@ -42,6 +42,7 @@ class HomepageBloc extends Bloc<HomePageEvent, HomepageState> {
         .toList();
     return DropDownState(
       dropDown: DropDown(
+        // isSearchVisible: false,
         data: dropdownData,
         onSelected: (List<dynamic> selectedList) {
           if (selectedList.isNotEmpty &&
