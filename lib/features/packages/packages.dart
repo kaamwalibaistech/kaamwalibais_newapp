@@ -11,6 +11,7 @@ import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
 import 'package:kaamwalijobs_new/bloc/packages_events.dart';
 import 'package:kaamwalijobs_new/bloc/packages_state.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/employer_login_signup.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../Client/homepage_api.dart';
@@ -49,12 +50,12 @@ class _PackagesState extends State<Packages> {
     WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
-  checkLoginPopup() async {
-    showDialog(
-        context: context,
-        builder: (context) => const Dialog(
-            backgroundColor: Colors.transparent, child: LoginPopup()));
-  }
+  // checkLoginPopup() async {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) => const Dialog(
+  //           backgroundColor: Colors.transparent, child: LoginPopup()));
+  // }
 
   String? packageId;
   String? price;
@@ -431,7 +432,13 @@ class _PackagesState extends State<Packages> {
                                               .getUserProfile();
 
                                           if (userLogIn == null) {
-                                            checkLoginPopup();
+                                            // checkLoginPopup();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EmployerLoginSignup(
+                                                            from: "package")));
                                             EasyLoading.dismiss();
                                           } else {
                                             packageId = state
@@ -672,7 +679,13 @@ class _PackagesState extends State<Packages> {
                                               .getUserProfile();
 
                                           if (userLogIn == null) {
-                                            checkLoginPopup();
+                                            // checkLoginPopup();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        EmployerLoginSignup(
+                                                            from: "package")));
                                             Fluttertoast.showToast(
                                                 msg: "Please LogIn ");
                                             EasyLoading.dismiss();

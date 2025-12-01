@@ -41,6 +41,7 @@ class _WebviewWidgetState extends State<WebviewWidget> {
               },
               icon: const Icon(Icons.arrow_back)),
           title: Text(widget.appBarTitle),
+          actions: [Text("V 2.0.5 (35) (5)   ")],
         ),
         body: SafeArea(
             child: Stack(
