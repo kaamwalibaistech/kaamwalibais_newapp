@@ -14,7 +14,7 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_event.dart';
 import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_state.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/packages_event.dart';
-import 'package:kaamwalijobs_new/features/navigation/presentation/packages.dart';
+import 'package:kaamwalijobs_new/features/packages/packages.dart';
 import 'package:kaamwalijobs_new/models/candidate_model.dart';
 import 'package:kaamwalijobs_new/models/candidate_request.dart';
 import 'package:url_launcher/url_launcher.dart';

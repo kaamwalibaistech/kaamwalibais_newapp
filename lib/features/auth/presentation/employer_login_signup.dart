@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
+import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/employer_register.dart';
@@ -174,15 +175,33 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                           onTap: () async {
                             EasyLoading.show();
                             if (formkey.currentState?.validate() ?? false) {
-                              EasyLoading.dismiss();
-                              BlocProvider.of<AuthBloc>(context, listen: false)
-                                  .add(
-                                AuthenticationEvent(
-                                  phoneNumber: _mobileNoController.text,
-                                  password: _passwordController.text,
-                                  userType: USER.employer,
-                                ),
-                              );
+                              final accDeleted = LocalStoragePref.instance
+                                      ?.gettemproraryAccDelete() ??
+                                  false;
+
+                              if (accDeleted == true) {
+                                  EasyLoading.dismiss();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Colors.red,
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text(
+                                      "Mobile Number is not Register",
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                EasyLoading.dismiss();
+                                BlocProvider.of<AuthBloc>(context,
+                                        listen: false)
+                                    .add(
+                                  AuthenticationEvent(
+                                    phoneNumber: _mobileNoController.text,
+                                    password: _passwordController.text,
+                                    userType: USER.employer,
+                                  ),
+                                );
+                              }
                             } else {
                               EasyLoading.dismiss();
                               ScaffoldMessenger.of(context).showSnackBar(

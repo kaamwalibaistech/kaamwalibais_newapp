@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 
-import '../../navigation/presentation/packages.dart';
+import '../../packages/packages.dart';
 
 class PackagesPurchasePopup extends StatelessWidget {
   const PackagesPurchasePopup({super.key});

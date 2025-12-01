@@ -1,0 +1,4 @@
+name: my_flutter_monorepo
+
+packages:
+  - packages/**

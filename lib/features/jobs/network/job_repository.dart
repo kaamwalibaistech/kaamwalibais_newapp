@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart ' as http;
+import 'package:http/http.dart' as http;
+// import 'package:http/http.dart ' as http;
 import 'package:kaamwalijobs_new/models/apply_candidate_list_model.dart';
 import 'package:kaamwalijobs_new/models/apply_candidate_status_update_model.dart';
 import 'package:kaamwalijobs_new/models/job_listing.dart';
