@@ -139,7 +139,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Category"),
-                    value: categoryvalue,
+                    initialValue: categoryvalue,
                     items: categoryitemModel?.data.map((source) {
                       return DropdownMenuItem(
                         value: source.categoryId,
@@ -429,7 +429,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Gender"),
-                    value: genderValue,
+                    initialValue: genderValue,
                     items: genderItems.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -466,7 +466,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Maritial Status"),
-                    value: marriedvalue,
+                    initialValue: marriedvalue,
                     items: marriageItems.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -503,7 +503,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Religion"),
-                    value: religionValue,
+                    initialValue: religionValue,
                     items: religionItems.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -540,7 +540,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Education"),
-                    value: educationValue,
+                    initialValue: educationValue,
                     items: educationItem.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -577,7 +577,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Language"),
-                    value: languageValue,
+                    initialValue: languageValue,
                     items: languageItems.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -614,7 +614,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Age"),
-                    value: ageValue,
+                    initialValue: ageValue,
                     items: ageItems.map((source) {
                       return DropdownMenuItem(
                         value: source,
@@ -651,7 +651,7 @@ class _JobsPostState extends State<JobsPost> {
                       ),
                     ),
                     hint: const Text("Select Experience"),
-                    value: experienceValue,
+                    initialValue: experienceValue,
                     items: experienceItems.map((source) {
                       return DropdownMenuItem(
                         value: source,

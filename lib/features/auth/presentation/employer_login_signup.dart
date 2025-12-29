@@ -9,8 +9,6 @@ import 'package:kaamwalijobs_new/core/local_storage.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/auth/presentation/employer_register.dart';
-import 'package:kaamwalijobs_new/features/packages/packages.dart';
-import 'package:kaamwalijobs_new/models/current_package_plan.dart';
 
 import '../../navigation/presentation/navigationscreen.dart';
 import '../bloc/auth_event.dart';

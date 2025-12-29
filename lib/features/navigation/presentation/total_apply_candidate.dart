@@ -82,7 +82,7 @@ class _ApplyCandidateListScreenState extends State<ApplyCandidateListScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField(
-              value: selectedStatus,
+              initialValue: selectedStatus,
               decoration: InputDecoration(
                 labelText: 'Select Status',
                 border: OutlineInputBorder(

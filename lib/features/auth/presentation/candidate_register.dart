@@ -479,7 +479,7 @@ class _CandidateRegisterState extends State<CandidateRegister> {
         buildSectionTitle(label),
         const SizedBox(height: 5),
         DropdownButtonFormField<String>(
-          value: value,
+          initialValue: value,
           decoration: buildInputDecoration("").copyWith(hintText: label),
           items: items
               .map((e) => DropdownMenuItem(value: e, child: Text(e)))
