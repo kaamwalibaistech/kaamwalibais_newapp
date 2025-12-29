@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kaamwalijobs_new/Client/homepage_api.dart';
 import 'package:kaamwalijobs_new/constant/colors.dart';
 import 'package:kaamwalijobs_new/constant/sizebox.dart';
 import 'package:kaamwalijobs_new/features/auth/bloc/auth_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:kaamwalijobs_new/features/navigation/presentation/view_job_poste
 import 'package:kaamwalijobs_new/screens/webview_widget.dart';
 
 import '../../../core/local_storage.dart';
-import '../../auth/bloc/auth_event.dart';
 import '../../auth/bloc/auth_state.dart';
 import '../../jobs/presentation/jobs_post.dart';
 import '../../navigation/bloc/packages.state.dart';
@@ -70,8 +68,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   _buildBottomMenuGrid(),
                   sizedBoxH20,
                   _buildTermsAndConditions(),
-                  sizedBoxH20,
-                  _buildLogoutButton(),
+                  // sizedBoxH20,
+                  // _buildLogoutButton(),
                 ],
               ),
             ),
@@ -436,7 +434,7 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget _buildLogoutButton() {
+  /* Widget _buildLogoutButton() {
     return BlocBuilder(
       bloc: _authBloc,
       buildWhen: (previous, current) =>
@@ -486,7 +484,7 @@ class _MenuScreenState extends State<MenuScreen> {
         return const SizedBox();
       },
     );
-  }
+  }*/
 
   void showNoPlanDialog(BuildContext context) {
     showDialog(

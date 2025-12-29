@@ -15,7 +15,8 @@ import '../bloc/auth_event.dart';
 import 'Employer_forget_password.dart';
 
 class EmployerLoginSignup extends StatefulWidget {
-  const EmployerLoginSignup({super.key});
+  final String from;
+  const EmployerLoginSignup({super.key, this.from = ""});
 
   @override
   State<EmployerLoginSignup> createState() => _EmployerLoginSignupState();
@@ -46,13 +47,15 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
             listener: (context, state) {
               if (state is AuthLoadedState) {
                 EasyLoading.dismiss();
-
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const Navigationscreen()),
-                  (Route<dynamic> route) => false, // removes everything
-                );
+                if (widget.from == "package") {
+                  Navigator.pop(context);
+                } else
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Navigationscreen()),
+                    (Route<dynamic> route) => false, // removes everything
+                  );
               } else if (state is AuthLoadFailedState) {
                 EasyLoading.dismiss();
                 if (state.userfailed == USERFAILED.unregister) {
@@ -180,7 +183,7 @@ class _EmployerLoginSignupState extends State<EmployerLoginSignup> {
                                   false;
 
                               if (accDeleted == true) {
-                                  EasyLoading.dismiss();
+                                EasyLoading.dismiss();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     backgroundColor: Colors.red,
