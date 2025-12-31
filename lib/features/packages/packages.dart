@@ -244,538 +244,554 @@ class _PackagesState extends State<Packages> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: scaffoldColor,
-      body: BlocBuilder<PackagesBloc, PackagesState>(
-          buildWhen: (previous, current) {
-        if (current is PackagesLoadedState) {
-          return true;
-        }
-        return false;
-      }, builder: (context, state) {
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Icon(Icons.arrow_back),
+      body: SafeArea(
+        child: BlocBuilder<PackagesBloc, PackagesState>(
+            buildWhen: (previous, current) {
+          if (current is PackagesLoadedState) {
+            return true;
+          }
+          return false;
+        }, builder: (context, state) {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Icon(Icons.arrow_back),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(children: [
-                  TextSpan(
-                    text: "Choose a ",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18, color: blueColor),
-                  ),
-                  TextSpan(
-                    text: "Candidate Plan",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18,
-                        color: blueColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text: " That's right for you",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18, color: blueColor),
-                  )
-                ]))),
-              ),
-              if (state is PackagesLoadedState)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  child: ListView.builder(
-                      itemCount:
-                          state.candidatePackagesModel.candidatePackage.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            decoration: ShapeDecoration(
-                              shadows: const [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
-                                )
-                              ],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15.0, horizontal: 10),
+                  child: Center(
+                      child: RichText(
+                          text: TextSpan(children: [
+                    TextSpan(
+                      text: "Choose a ",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    ),
+                    TextSpan(
+                      text: "Candidate Plan",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18,
+                          color: blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: " That's right for you",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    )
+                  ]))),
+                ),
+                if (state is PackagesLoadedState)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    child: ListView.builder(
+                        itemCount: state
+                            .candidatePackagesModel.candidatePackage.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: ShapeDecoration(
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x3F000000),
+                                    blurRadius: 10,
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 0,
+                                  )
+                                ],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                color: whiteColor,
                               ),
-                              color: whiteColor,
-                            ),
-                            child: Stack(children: [
-                              Image.asset(
-                                image[index],
-                              ),
-                              Center(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(
-                                        state
-                                            .candidatePackagesModel
-                                            .candidatePackage[index]
-                                            .packageName,
-                                        style: GoogleFonts.poltawskiNowy(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
+                              child: Stack(children: [
+                                Image.asset(
+                                  image[index],
+                                ),
+                                Center(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Text(
+                                          state
+                                              .candidatePackagesModel
+                                              .candidatePackage[index]
+                                              .packageName,
+                                          style: GoogleFonts.poltawskiNowy(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "for ${state.candidatePackagesModel.candidatePackage[index].validFor} days",
-                                      style: GoogleFonts.poltawskiNowy(
-                                          fontSize: 18, color: blueColor),
-                                    ),
-                                    Text(
-                                        "Total Candidate${state.candidatePackagesModel.candidatePackage[index].totalCount}"),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.04,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: state
-                                                        .candidatePackagesModel
-                                                        .candidatePackage[index]
-                                                        .description
-                                                        .length >
-                                                    5
-                                                ? 5
-                                                : state
-                                                    .candidatePackagesModel
-                                                    .candidatePackage[index]
-                                                    .description
-                                                    .length,
-                                            itemBuilder: (context, index1) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4.0),
-                                                child: Center(
-                                                  child: Text(
-                                                      state
+                                      Text(
+                                        "for ${state.candidatePackagesModel.candidatePackage[index].validFor} days",
+                                        style: GoogleFonts.poltawskiNowy(
+                                            fontSize: 20, color: blueColor),
+                                      ),
+                                      Text(
+                                          "Total Candidate${state.candidatePackagesModel.candidatePackage[index].totalCount}"),
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.04,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount: state
                                                           .candidatePackagesModel
                                                           .candidatePackage[
                                                               index]
-                                                          .description[index1],
-                                                      style:
-                                                          GoogleFonts.quicksand(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 14,
-                                                      )),
-                                                ),
-                                              );
-                                            }),
+                                                          .description
+                                                          .length >
+                                                      5
+                                                  ? 5
+                                                  : state
+                                                      .candidatePackagesModel
+                                                      .candidatePackage[index]
+                                                      .description
+                                                      .length,
+                                              itemBuilder: (context, index1) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                        state
+                                                            .candidatePackagesModel
+                                                            .candidatePackage[
+                                                                index]
+                                                            .description[index1],
+                                                        style: GoogleFonts.quicksand(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 15,
+                                                        )),
+                                                  ),
+                                                );
+                                              }),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: RichText(
-                                          text: TextSpan(
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "RS. ${state.candidatePackagesModel.candidatePackage[index].price}",
+                                              style: GoogleFonts.poltawskiNowy(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              "${state.candidatePackagesModel.candidatePackage[index].validFor} days",
                                               style: const TextStyle(
-                                                  color: blackColor),
-                                              children: [
-                                            TextSpan(
-                                                text:
-                                                    "RS. ${state.candidatePackagesModel.candidatePackage[index].price}",
-                                                style:
-                                                    GoogleFonts.poltawskiNowy(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20)),
-                                            const TextSpan(
-                                                text: "/",
-                                                style: TextStyle(fontSize: 22)),
-                                            TextSpan(
-                                                text:
-                                                    "${state.candidatePackagesModel.candidatePackage[index].validFor} days",
-                                                style: const TextStyle(
-                                                    color: blackColor))
-                                          ])),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          // setState(() {
-                                          //   candidatePlan = true;
-                                          // });
-                                          EasyLoading.show();
-                                          final userLogIn = LocalStoragePref()
-                                              .getUserProfile();
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            // setState(() {
+                                            //   candidatePlan = true;
+                                            // });
+                                            EasyLoading.show();
+                                            final userLogIn = LocalStoragePref()
+                                                .getUserProfile();
 
-                                          if (userLogIn == null) {
-                                            // checkLoginPopup();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EmployerLoginSignup(
-                                                            from: "package")));
-                                            EasyLoading.dismiss();
-                                          } else {
-                                            packageId = state
-                                                .candidatePackagesModel
-                                                .candidatePackage[index]
-                                                .packageId;
-                                            price = state.candidatePackagesModel
-                                                .candidatePackage[index].price;
-                                            final data = await createOrderApi(
-                                                price.toString());
-                                            setState(() {
-                                              order = data;
-                                            });
-                                            if (order!.status == "200") {
-                                              openCheckOut(
-                                                  state
-                                                      .candidatePackagesModel
-                                                      .candidatePackage[index]
-                                                      .price,
-                                                  state
-                                                      .candidatePackagesModel
-                                                      .candidatePackage[index]
-                                                      .packageName);
-                                              _razorpay.on(
-                                                  Razorpay
-                                                      .EVENT_PAYMENT_SUCCESS,
-                                                  _handlePaymentSuccess);
-                                              _razorpay.on(
-                                                  Razorpay.EVENT_PAYMENT_ERROR,
-                                                  _handlePaymentError);
-                                              _razorpay.on(
-                                                  Razorpay
-                                                      .EVENT_EXTERNAL_WALLET,
-                                                  _handleExternalWallet);
+                                            if (userLogIn == null) {
+                                              // checkLoginPopup();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EmployerLoginSignup(
+                                                              from:
+                                                                  "package")));
                                               EasyLoading.dismiss();
                                             } else {
+                                              packageId = state
+                                                  .candidatePackagesModel
+                                                  .candidatePackage[index]
+                                                  .packageId;
+                                              price = state
+                                                  .candidatePackagesModel
+                                                  .candidatePackage[index]
+                                                  .price;
+                                              final data = await createOrderApi(
+                                                  price.toString());
+                                              setState(() {
+                                                order = data;
+                                              });
+                                              if (order!.status == "200") {
+                                                openCheckOut(
+                                                    state
+                                                        .candidatePackagesModel
+                                                        .candidatePackage[index]
+                                                        .price,
+                                                    state
+                                                        .candidatePackagesModel
+                                                        .candidatePackage[index]
+                                                        .packageName);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_PAYMENT_SUCCESS,
+                                                    _handlePaymentSuccess);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_PAYMENT_ERROR,
+                                                    _handlePaymentError);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_EXTERNAL_WALLET,
+                                                    _handleExternalWallet);
+                                                EasyLoading.dismiss();
+                                              } else {
+                                                EasyLoading.dismiss();
+                                                Fluttertoast.showToast(
+                                                    msg: order?.msg ??
+                                                        "Something went Wrong");
+                                              }
                                               EasyLoading.dismiss();
-                                              Fluttertoast.showToast(
-                                                  msg: order?.msg ??
-                                                      "Something went Wrong");
                                             }
                                             EasyLoading.dismiss();
-                                          }
-                                          EasyLoading.dismiss();
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: blackColor),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.06,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.30,
-                                            child: Center(
-                                              child: Text(
-                                                "Buy Now",
-                                                style: GoogleFonts.roboto(
-                                                    color: whiteColor),
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                  color: blackColor),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.07,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.34,
+                                              child: Center(
+                                                child: Text(
+                                                  "Buy Now",
+                                                  style: GoogleFonts.roboto(
+                                                      color: whiteColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ]),
-                          ),
-                        );
-                      }),
-                )
-              else
-                const PackageLoader(),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0),
-                child: Center(
-                    child: RichText(
-                        text: TextSpan(children: [
-                  TextSpan(
-                    text: "Choose a ",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18, color: blueColor),
-                  ),
-                  TextSpan(
-                    text: "Job Posting Plan",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18,
-                        color: blueColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(
-                    text: " That's right for you",
-                    style: GoogleFonts.poltawskiNowy(
-                        fontSize: 18, color: blueColor),
-                  )
-                ]))),
-              ),
-              if (state is PackagesLoadedState)
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  child: ListView.builder(
-                      itemCount: state.candidatePackagesModel.jobPackage.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            decoration: ShapeDecoration(
-                              shadows: const [
-                                BoxShadow(
-                                  color: Color(0x3F000000),
-                                  blurRadius: 10,
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 0,
+                                      )
+                                    ],
+                                  ),
                                 )
-                              ],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              color: whiteColor,
+                              ]),
                             ),
-                            child: Stack(children: [
-                              Image.asset(
-                                image[index],
+                          );
+                        }),
+                  )
+                else
+                  const PackageLoader(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Center(
+                      child: RichText(
+                          text: TextSpan(children: [
+                    TextSpan(
+                      text: "Choose a ",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    ),
+                    TextSpan(
+                      text: "Job Posting Plan",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18,
+                          color: blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: " That's right for you",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    )
+                  ]))),
+                ),
+                if (state is PackagesLoadedState)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    child: ListView.builder(
+                        itemCount:
+                            state.candidatePackagesModel.jobPackage.length,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: ShapeDecoration(
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x3F000000),
+                                    blurRadius: 10,
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 0,
+                                  )
+                                ],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                color: whiteColor,
                               ),
-                              Center(
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(
-                                        state.candidatePackagesModel
-                                            .jobPackage[index].packageName,
-                                        style: GoogleFonts.poltawskiNowy(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold),
+                              child: Stack(children: [
+                                Image.asset(
+                                  image[index],
+                                ),
+                                Center(
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: Text(
+                                          state.candidatePackagesModel
+                                              .jobPackage[index].packageName,
+                                          style: GoogleFonts.poltawskiNowy(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      "for ${state.candidatePackagesModel.jobPackage[index].validFor} days",
-                                      style: GoogleFonts.poltawskiNowy(
-                                          fontSize: 18, color: blueColor),
-                                    ),
-                                    Text(
-                                        "Total Job Posting ${state.candidatePackagesModel.jobPackage[index].totalCount}"),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.04,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: state
-                                                        .candidatePackagesModel
-                                                        .jobPackage[index]
-                                                        .description
-                                                        .length >
-                                                    5
-                                                ? 5
-                                                : state
-                                                    .candidatePackagesModel
-                                                    .jobPackage[index]
-                                                    .description
-                                                    .length,
-                                            itemBuilder: (context, index1) {
-                                              return Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 4.0),
-                                                child: Center(
-                                                  child: Text(
-                                                      state
+                                      Text(
+                                        "for ${state.candidatePackagesModel.jobPackage[index].validFor} days",
+                                        style: GoogleFonts.poltawskiNowy(
+                                            fontSize: 20, color: blueColor),
+                                      ),
+                                      Text(
+                                          "Total Job Posting ${state.candidatePackagesModel.jobPackage[index].totalCount}"),
+                                      SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.04,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount: state
                                                           .candidatePackagesModel
                                                           .jobPackage[index]
-                                                          .description[index1],
-                                                      style:
-                                                          GoogleFonts.quicksand(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 14,
-                                                      )),
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: RichText(
-                                          text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: blackColor),
-                                              children: [
-                                            TextSpan(
-                                                text:
-                                                    "RS. ${state.candidatePackagesModel.jobPackage[index].price}",
-                                                style:
-                                                    GoogleFonts.poltawskiNowy(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20)),
-                                            const TextSpan(
-                                                text: "/",
-                                                style: TextStyle(fontSize: 22)),
-                                            TextSpan(
-                                                text:
-                                                    "${state.candidatePackagesModel.jobPackage[index].validFor} days",
-                                                style: const TextStyle(
-                                                    color: blackColor))
-                                          ])),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          // setState(() {
-                                          //   candidatePlan = false;
-                                          // });
-                                          EasyLoading.show();
-                                          final userLogIn = LocalStoragePref()
-                                              .getUserProfile();
-
-                                          if (userLogIn == null) {
-                                            // checkLoginPopup();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EmployerLoginSignup(
-                                                            from: "package")));
-                                            Fluttertoast.showToast(
-                                                msg: "Please LogIn ");
-                                            EasyLoading.dismiss();
-                                          } else {
-                                            packageId = state
-                                                .candidatePackagesModel
-                                                .jobPackage[index]
-                                                .packageId;
-                                            price = state.candidatePackagesModel
-                                                .jobPackage[index].price;
-                                            final data = await createOrderApi(
-                                                price.toString());
-                                            setState(() {
-                                              order = data;
-                                            });
-                                            if (order!.status == "200") {
-                                              openCheckOut(
-                                                  state.candidatePackagesModel
-                                                      .jobPackage[index].price,
-                                                  state
+                                                          .description
+                                                          .length >
+                                                      5
+                                                  ? 5
+                                                  : state
                                                       .candidatePackagesModel
                                                       .jobPackage[index]
-                                                      .packageName);
-                                              _razorpay.on(
-                                                  Razorpay
-                                                      .EVENT_PAYMENT_SUCCESS,
-                                                  _handlePaymentSuccess);
-                                              _razorpay.on(
-                                                  Razorpay.EVENT_PAYMENT_ERROR,
-                                                  _handlePaymentError);
-                                              _razorpay.on(
-                                                  Razorpay
-                                                      .EVENT_EXTERNAL_WALLET,
-                                                  _handleExternalWallet);
+                                                      .description
+                                                      .length,
+                                              itemBuilder: (context, index1) {
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4.0),
+                                                  child: Center(
+                                                    child: Text(
+                                                        state
+                                                            .candidatePackagesModel
+                                                            .jobPackage[index]
+                                                            .description[index1],
+                                                        style: GoogleFonts.quicksand(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 15,
+                                                        )),
+                                                  ),
+                                                );
+                                              }),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "RS. ${state.candidatePackagesModel.jobPackage[index].price}",
+                                              style: GoogleFonts.poltawskiNowy(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 22),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              "${state.candidatePackagesModel.jobPackage[index].validFor} days",
+                                              style: const TextStyle(
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            // setState(() {
+                                            //   candidatePlan = false;
+                                            // });
+                                            EasyLoading.show();
+                                            final userLogIn = LocalStoragePref()
+                                                .getUserProfile();
+
+                                            if (userLogIn == null) {
+                                              // checkLoginPopup();
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EmployerLoginSignup(
+                                                              from:
+                                                                  "package")));
+                                              Fluttertoast.showToast(
+                                                  msg: "Please LogIn ");
                                               EasyLoading.dismiss();
                                             } else {
+                                              packageId = state
+                                                  .candidatePackagesModel
+                                                  .jobPackage[index]
+                                                  .packageId;
+                                              price = state
+                                                  .candidatePackagesModel
+                                                  .jobPackage[index]
+                                                  .price;
+                                              final data = await createOrderApi(
+                                                  price.toString());
+                                              setState(() {
+                                                order = data;
+                                              });
+                                              if (order!.status == "200") {
+                                                openCheckOut(
+                                                    state
+                                                        .candidatePackagesModel
+                                                        .jobPackage[index]
+                                                        .price,
+                                                    state
+                                                        .candidatePackagesModel
+                                                        .jobPackage[index]
+                                                        .packageName);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_PAYMENT_SUCCESS,
+                                                    _handlePaymentSuccess);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_PAYMENT_ERROR,
+                                                    _handlePaymentError);
+                                                _razorpay.on(
+                                                    Razorpay
+                                                        .EVENT_EXTERNAL_WALLET,
+                                                    _handleExternalWallet);
+                                                EasyLoading.dismiss();
+                                              } else {
+                                                EasyLoading.dismiss();
+                                                Fluttertoast.showToast(
+                                                    msg: order?.msg ??
+                                                        "Something went Wrong");
+                                              }
                                               EasyLoading.dismiss();
-                                              Fluttertoast.showToast(
-                                                  msg: order?.msg ??
-                                                      "Something went Wrong");
                                             }
-                                            EasyLoading.dismiss();
-                                          }
 
-                                          // ScaffoldMessenger.of(context)
-                                          //     .showSnackBar(SnackBar(
-                                          //         duration:
-                                          //             Duration(seconds: 1),
-                                          //         backgroundColor: blueColor,
-                                          //         content: Text(
-                                          //             "you will able to purchase this app soon")));
-                                        },
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                                color: blackColor),
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.06,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.30,
-                                            child: Center(
-                                              child: Text(
-                                                "Buy Now",
-                                                style: GoogleFonts.roboto(
-                                                    color: whiteColor),
+                                            // ScaffoldMessenger.of(context)
+                                            //     .showSnackBar(SnackBar(
+                                            //         duration:
+                                            //             Duration(seconds: 1),
+                                            //         backgroundColor: blueColor,
+                                            //         content: Text(
+                                            //             "you will able to purchase this app soon")));
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                  color: blackColor),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.07,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.34,
+                                              child: Center(
+                                                child: Text(
+                                                  "Buy Now",
+                                                  style: GoogleFonts.roboto(
+                                                      color: whiteColor,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ]),
-                          ),
-                        );
-                      }),
-                )
-              else
-                const PackageLoader(),
-            ],
-          ),
-        );
-      }),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ]),
+                            ),
+                          );
+                        }),
+                  )
+                else
+                  const PackageLoader(),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 }
