@@ -1,0 +1,711 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:kaamwalijobs_new/assets/shimmer_effect/packages_shimmer.dart';
+import 'package:kaamwalijobs_new/assets/widgets/packages_image.dart';
+import 'package:kaamwalijobs_new/bloc/packages_bloc.dart';
+import 'package:kaamwalijobs_new/bloc/packages_events.dart';
+import 'package:kaamwalijobs_new/bloc/packages_state.dart';
+import 'package:kaamwalijobs_new/constant/colors.dart';
+import 'package:kaamwalijobs_new/features/auth/presentation/employer_login_signup.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+import '../../Client/homepage_api.dart';
+import '../../core/local_storage.dart';
+import '../../models/transcation_model.dart';
+import '../navigation/bloc/packages_bloc.dart';
+import '../navigation/bloc/packages_event.dart';
+import 'create-order_api.dart';
+
+class Packages extends StatefulWidget {
+  const Packages({super.key});
+
+  @override
+  State<Packages> createState() => _PackagesState();
+}
+
+class _PackagesState extends State<Packages> {
+  late PackagesBloc _packageBloc;
+  late Razorpay _razorpay;
+  late PageController _cardController;
+  late PurchasedPackageDataBloc _purchasedPackageData;
+  // bool? candidatePlan;
+  late CreateOrderResponse? order;
+
+  @override
+  void initState() {
+    super.initState();
+    _purchasedPackageData =
+        BlocProvider.of<PurchasedPackageDataBloc>(context, listen: false);
+
+    _razorpay = Razorpay();
+
+    _cardController = PageController(viewportFraction: 0.84);
+
+    _packageBloc = BlocProvider.of<PackagesBloc>(context);
+    fetch();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+  }
+
+  // checkLoginPopup() async {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) => const Dialog(
+  //           backgroundColor: Colors.transparent, child: LoginPopup()));
+  // }
+
+  String? packageId;
+  String? price;
+
+  void openCheckOut(String price, String packagename) async {
+    final data = LocalStoragePref().getUserProfile();
+
+    var options = {
+      'key': 'rzp_live_RjrYDqvGXclgMf',
+      // 'key': 'rzp_test_RjqLXImZzIQB4p',
+      'order_id': order?.orderId,
+      'amount': order?.amount,
+      'currency': order?.currency,
+      'name': 'KaamWaliJobs',
+      'description': packagename,
+      'prefill': {
+        'contact': data?.mobileNo ?? "",
+        'email': data?.emailId ?? ""
+      },
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      log("Error: $e");
+    }
+  }
+
+  fetch() {
+    _packageBloc.add(GetPackagesEvent());
+  }
+
+  @override
+  void dispose() {
+    _cardController.dispose();
+    _razorpay.clear();
+    super.dispose();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    LocalStoragePref localStoragePref = LocalStoragePref();
+    String userId = localStoragePref.getUserProfile()!.userId;
+
+    Repositiory repositiory = Repositiory();
+    RazorpaytranscationModel? transactionData =
+        await repositiory.getTransactionstatus(userId, response.paymentId,
+            price, packageId, order?.orderId, response.signature);
+
+    _purchasedPackageData.add(PurchasedPackageEvent());
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text("🎉 Payment Successful"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Colors.green, size: 60),
+              const SizedBox(height: 12),
+              Text("Payment ID: ${response.paymentId}"),
+              // Text("order ID: ${order?.orderId ?? "NA"}"),
+              // Text("signature : ${response.signature}"),
+              const SizedBox(height: 8),
+              const Text("Thank you for your purchase!",
+                  style: TextStyle(fontWeight: FontWeight.w500)),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.pop(context); // close dialog
+                Navigator.popUntil(context, (route) => route.isFirst);
+                // or push to a success screen if you want
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    // Navigator.pop(context);
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    showPaymentCancelledDialog(context);
+    log("rzp_test_RjqLXImZzIQB4p");
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print("object");
+  }
+
+  void showPaymentCancelledDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // prevent closing by tapping outside
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Cancel Icon
+                Icon(Icons.cancel_outlined, size: 80, color: Colors.redAccent),
+                const SizedBox(height: 15),
+
+                // Title
+                const Text(
+                  "Payment Cancelled",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Subtitle
+                const Text(
+                  "Transaction not completed",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Description
+                const Text(
+                  "You cancelled the payment. Please try again if you wish to continue with the purchase.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                const SizedBox(height: 20),
+
+                // Retry Button
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 12),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Close"),
+                ),
+
+                const SizedBox(height: 15),
+
+                // Footer "Secured by Razorpay"
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Secured by ",
+                      style: TextStyle(fontSize: 12, color: Colors.black54),
+                    ),
+                    Image.network(
+                      "https://razorpay.com/favicon.png",
+                      height: 18,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: scaffoldColor,
+      // appBar: AppBar(),
+      body: SafeArea(
+        child: BlocBuilder<PackagesBloc, PackagesState>(
+            buildWhen: (previous, current) {
+          if (current is PackagesLoadedState) {
+            return true;
+          }
+                                    Text(
+                                      item.packageName,
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 20 : 26,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                // SizedBox(
+                                    Text(
+                                      "for ${item.validFor} days • Total ${item.totalCount}",
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 14 : 18,
+                                          color: blueColor),
+                                    ),
+                //   child: Padding(
+                //     padding: EdgeInsets.only(left: 10.0),
+                //     child: Icon(Icons.arrow_back),
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Center(
+                      child: RichText(
+                          text: TextSpan(children: [
+                    TextSpan(
+                      text: "Choose a ",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    ),
+                    TextSpan(
+                      text: "Candidate Plan",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18,
+                          color: blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: " That's right for you",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    )
+                  ]))),
+                ),
+
+                if (state is PackagesLoadedState)
+                  SizedBox(
+                    // make pageview responsive by taking available 60% of height but not massive on tablets
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("RS. ${item.price}",
+                                                style: GoogleFonts.poltawskiNowy(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: (w < 380) ? 18 : 22)),
+                                            Text("${item.validFor} days",
+                                                style: TextStyle(
+                                                    color: Colors.black54,
+                                                    fontSize: (w < 380) ? 12 : 14)),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: blackColor,
+                                            foregroundColor: whiteColor,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 18, vertical: 12),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // header image (optional)
+                                    if (image.length > index)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.asset(image[index],
+                                            height: 110,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      item.packageName,
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 18 : 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      "for ${item.validFor} days • Total ${item.totalCount}",
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 13 : 16,
+                                          color: blueColor),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    // description bullets
+                                    ...List.generate(
+                                      item.description.length > 5
+                                          ? 5
+                                          : item.description.length,
+                                      (i) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 4),
+                                              child: Icon(Icons.circle,
+                                                  size: 6,
+                                                  color: Colors.black54),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                item.description[i],
+                                                style: GoogleFonts.quicksand(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                              style: const TextStyle(
+                                                  color: blackColor),
+                                              children: [
+                                                TextSpan(
+                                                    text: "RS. ${item.price}",
+                                                    style: GoogleFonts
+                                                        .poltawskiNowy(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18)),
+                                                const TextSpan(text: "  /  "),
+                                                TextSpan(
+                                                    Text(
+                                                      item.packageName,
+                                                      style: GoogleFonts.poltawskiNowy(
+                                                        fontSize:
+                                                          (w < 380) ? 20 : 26,
+                                                        fontWeight: FontWeight.bold),
+                                                    ),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: blackColor,
+                                            foregroundColor: whiteColor,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 18, vertical: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                            EasyLoading.show();
+                                            final userLogIn = LocalStoragePref()
+                                                .getUserProfile();
+
+                                            if (userLogIn == null) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EmployerLoginSignup(
+                                                              from:
+                                                                  "package")));
+                                              EasyLoading.dismiss();
+                                              return;
+                                            }
+
+                                            packageId = item.packageId;
+                                            price = item.price;
+                                            final data = await createOrderApi(
+                                                price.toString());
+                                            setState(() {
+                                              order = data;
+                                            });
+                                            if (order!.status == "200") {
+                                              openCheckOut(
+                                                  item.price, item.packageName);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  _handlePaymentSuccess);
+                                              _razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  _handlePaymentError);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  _handleExternalWallet);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: order?.msg ??
+                                                      "Something went Wrong");
+                                            }
+
+                                            EasyLoading.dismiss();
+                                          },
+                                          child: Text("Buy Now",
+                                              style: GoogleFonts.roboto()),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  const PackageLoader(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Center(
+                      child: RichText(
+                          text: TextSpan(children: [
+                    TextSpan(
+                      text: "Choose a ",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    ),
+                    TextSpan(
+                      text: "Job Posting Plan",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18,
+                          color: blueColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text: " That's right for you",
+                      style: GoogleFonts.poltawskiNowy(
+                          fontSize: 18, color: blueColor),
+                    )
+                  ]))),
+                ),
+
+                if (state is PackagesLoadedState)
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.62,
+                    child: PageView.builder(
+                      controller: _cardController,
+                      itemCount: state.candidatePackagesModel.jobPackage.length,
+                      itemBuilder: (context, index) {
+                        final item =
+                            state.candidatePackagesModel.jobPackage[index];
+                        final w = MediaQuery.of(context).size.width;
+                        final cardWidth = (w < 420) ? w * 0.9 : w * 0.7;
+
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 10),
+                          child: Center(
+                            child: Container(
+                              width: cardWidth,
+                              decoration: ShapeDecoration(
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x24000000),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 2),
+                                  )
+                                ],
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                color: whiteColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14.0, vertical: 12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (image.length > index)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.asset(image[index],
+                                            height: 110,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      item.packageName,
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 18 : 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      "for ${item.validFor} days • Total ${item.totalCount}",
+                                      style: GoogleFonts.poltawskiNowy(
+                                          fontSize: (w < 380) ? 14 : 18,
+                                          color: blueColor),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    ...List.generate(
+                                      item.description.length > 5
+                                          ? 5
+                                          : item.description.length,
+                                      (i) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 6.0),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(top: 4),
+                                              child: Icon(Icons.circle,
+                                                  size: 6,
+                                                  color: Colors.black54),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                item.description[i],
+                                                style: GoogleFonts.quicksand(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                              style: const TextStyle(
+                                                  color: blackColor),
+                                              children: [
+                                                TextSpan(
+                                                    text: "RS. ${item.price}",
+                                                    style: GoogleFonts
+                                                        .poltawskiNowy(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            const SizedBox(height: 8),
+                                                            // price and button stacked – price above button as requested
+                                                            Row(
+                                                              children: [
+                                                                Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment.start,
+                                                                  children: [
+                                                                    Text("RS. ${item.price}",
+                                                                        style: GoogleFonts.poltawskiNowy(
+                                                                            fontWeight: FontWeight.w700,
+                                                                            fontSize: (w < 380) ? 18 : 22)),
+                                                                    Text("${item.validFor} days",
+                                                                        style: TextStyle(
+                                                                            color: Colors.black54,
+                                                                            fontSize: (w < 380) ? 12 : 14)),
+                                                                  ],
+                                                                ),
+                                                                const Spacer(),
+                                                                ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                    backgroundColor: blackColor,
+                                                                    foregroundColor: whiteColor,
+                                                                    padding: const EdgeInsets.symmetric(
+                                                                        horizontal: 18, vertical: 12),
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(8),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () async {
+                                              return;
+                                            }
+
+                                            packageId = item.packageId;
+                                            price = item.price;
+                                            final data = await createOrderApi(
+                                                price.toString());
+                                            setState(() {
+                                              order = data;
+                                            });
+                                            if (order!.status == "200") {
+                                              openCheckOut(
+                                                  item.price, item.packageName);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_PAYMENT_SUCCESS,
+                                                  _handlePaymentSuccess);
+                                              _razorpay.on(
+                                                  Razorpay.EVENT_PAYMENT_ERROR,
+                                                  _handlePaymentError);
+                                              _razorpay.on(
+                                                  Razorpay
+                                                      .EVENT_EXTERNAL_WALLET,
+                                                  _handleExternalWallet);
+                                            } else {
+                                              Fluttertoast.showToast(
+                                                  msg: order?.msg ??
+                                                      "Something went Wrong");
+                                            }
+
+                                            EasyLoading.dismiss();
+                                          },
+                                          child: Text("Buy Now",
+                                              style: GoogleFonts.roboto()),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else
+                  const PackageLoader(),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class packageData {
+  List<String> package = [];
+  static final _instance = packageData._internal();
+
+  static packageData get instance => _instance;
+
+  packageData._internal();
+}
