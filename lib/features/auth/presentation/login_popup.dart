@@ -102,12 +102,24 @@ class LoginPopup extends StatelessWidget {
                     ),
                     const SizedBox(width: 15),
                     const Expanded(
-                      child: Text(
-                        "मुझे लोग काम पे रखना है",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blueColor),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "मुझे लोग काम पे रखना है |",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blueColor),
+                          ),
+
+                           Text(
+                            "I need a maid.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blueColor),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -151,12 +163,23 @@ class LoginPopup extends StatelessWidget {
                     ),
                     const SizedBox(width: 15),
                     const Expanded(
-                      child: Text(
-                        "मुझे नौकरी चाहिए",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: blueColor),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "मुझे नौकरी चाहिए |",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blueColor),
+                          ),
+                           Text(
+                            "I need a Job.",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: blueColor),
+                          ),
+                        ],
                       ),
                     ),
                   ],

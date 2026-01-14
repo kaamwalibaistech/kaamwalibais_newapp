@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,7 +14,9 @@ import 'package:kaamwalijobs_new/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:kaamwalijobs_new/features/dashboard/network/dashboard_network.dart';
 import 'package:kaamwalijobs_new/features/jobs/bloc/job_bloc.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
+import 'package:kaamwalijobs_new/features/notification_service.dart';
 import 'package:kaamwalijobs_new/features/onboarding/presantation/splashscreen.dart';
+import 'package:kaamwalijobs_new/firebase_options.dart';
 
 import 'bloc/packages_bloc.dart';
 import 'features/dashboard/presentation/location/bloc/select_location_bloc.dart';
@@ -21,14 +27,41 @@ import 'features/navigation/bloc/search_candidate_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+ 
+
+ await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseMessaging.instance.requestPermission(
+  alert: true,
+  badge: true,
+  sound: true,
+);
+
+
+  // await NotificationService.init();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Title: ${message.notification?.title}');
+    print('Body: ${message.notification?.body}');
+  });
+
+
 
   await LocalStoragePref.instance?.initPrefBox();
   await dotenv.load(fileName: ".env");
+ 
 
   runApp(MyApp());
 
   configLoading();
 }
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Background message: ${message.messageId}");
+}
+
+
 
 void configLoading() {
   EasyLoading.instance
@@ -38,6 +71,12 @@ void configLoading() {
     ..maskType = EasyLoadingMaskType.black
     ..dismissOnTap = false;
 }
+
+// Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
