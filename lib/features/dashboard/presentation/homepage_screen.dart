@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:kaamwalijobs_new/features/auth/bloc/auth_state.dart';
 import 'package:kaamwalijobs_new/features/dashboard/presentation/location/location_select.dart';
 import 'package:kaamwalijobs_new/features/jobs/presentation/alljobsopenings.dart';
 import 'package:kaamwalijobs_new/features/navigation/bloc/packages_bloc.dart';
+import 'package:kaamwalijobs_new/features/notification_service.dart';
 import 'package:kaamwalijobs_new/screens/category_page.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
@@ -97,6 +99,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
   void initState() {
     super.initState();
     checkForUpdateShoreBird();
+   
 
     Timer.periodic(const Duration(minutes: 5), (timer) {
       checkForUpdateShoreBird();
@@ -136,6 +139,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   final updater = ShorebirdUpdater();
+
+
+ 
+
+
 
   Future<void> checkForUpdateShoreBird() async {
     try {
