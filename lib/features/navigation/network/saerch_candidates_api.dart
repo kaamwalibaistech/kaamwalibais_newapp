@@ -94,7 +94,7 @@ class NavRepositiory {
         'sort_by': candidateRequest.sortBy ?? '',
       };
 
-      // Remove empty parameters
+
       requestData.removeWhere((key, value) => value == '');
 
       var formData = FormData.fromMap(requestData);
